@@ -1,0 +1,377 @@
+  <div class="historyTab">
+              <ul class="nav nav-tabs nav-justified" role="tablist">
+                  <li class="nav-item">
+                      <a class="nav-link active" href="#todayBook" role="tab" data-toggle="tab" id="today">Today Booking</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#pendingBook" role="tab" data-toggle="tab">Pending Booking 
+                    <% if(plistdata.length){ %>
+                      <span class="bookCount">
+                      <%= plistdata.length %></span>
+                      <% }%>
+                      </a>
+
+                  </li>
+              </ul>
+          </div>
+          <div class="BookinDataInfo">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="todayBook">
+                    <div class="col-md-12">
+                  <%
+
+                  if(clistdata.length>0){
+                   clistdata.forEach(function(rs) {
+
+                      var userId = rs.userId;
+                     
+
+                    %>
+
+                      <div class="userListlead">
+                        <div class="userDetails">
+                          <div class="media">
+                            <div class="media-left">
+                              <div class="user-image">
+                                <a href="/profile?id=<%= cryptr.encrypt(userId); %>" target="_self">
+                                  <img src="<%= rs.userDetail[0].profileImage %>" class="img-responsive">
+                                </a>
+                              </div>
+                            </div>
+                           
+                            <div class="media-body" >
+                              <div class="row">
+                                <div class="col-md-8" style="cursor:pointer;" onclick=" window.location.href = '/bookingInfo/<%= cryptr.encrypt(rs._id) %>';">
+                                  <h4 class="media-heading">
+                                    <a href="#"><%= rs.userDetail[0].userName %></a>
+                                  </h4>
+                                  <div class="serviseslead" >
+                                    <%
+                                    i=0;
+                                    bookingList = rs.bookingData;
+                                    s=0;
+                                     bookingList.forEach(function(brs) { 
+                                        if(brs.staff!='' && brs.staff!=session.fUser._id && staffId!='' && session.fUser.businessType!="business"){
+                                          delete bookingList[s];
+                                        }
+                                      s++;});
+                                     bookingList.forEach(function(brs) { 
+                                      artistServicesData.forEach(function(ars) { 
+
+                                      if(ars._id==brs.artistServiceId){
+
+                                     %>
+
+                                    <% if(i!=(bookingList.length-1)){%>
+                                 
+                                     <span><%= ars.title %>,</span>
+                                     <% }else{ %>
+                                     <span><%= ars.title %></span>
+                                     <% } %>
+
+                                    
+                                    <% } });i++;});%> 
+                                  </div>
+                                  <% 
+
+                                       if(staffId==''){
+
+                                        staffaId = bookingList[0].staff;
+
+                                      }else  if(staffId=='all'){
+
+                                        staffaId = rs.artistId;
+
+                                      }else{
+
+                                        staffaId = staffId;
+                                      }
+
+
+                                  if(staffaId){ %>
+
+
+                                  <% if(businessType=="independent"){%>
+
+                                    <div class="usName">
+                                       <%  
+
+
+                                       stafData.forEach(function(srs) {
+                                          if(staffaId==srs.staffInfo._id){
+                                       %>
+                                          <span class="staffName"><%= srs.staffInfo.businessName %></span>
+
+                                      <% }});%>
+                                    </div>
+
+                                  <% }else {%>
+
+                                    
+                                    <div class="usName">
+                                     <%  
+                                      
+                                     userData.forEach(function(srs) {
+                                        if(staffaId==srs._id){
+                                     %>
+                                        <span class="staffName"><%= srs.userName %></span>
+
+                                    <% }});%>
+
+                                  </div>
+                                  <% } }%>
+
+                                     <% if((bookingList[0].staff==0 && (staffId=='' || staffId=="myBooking")) || (staffId=="myBooking")){ %>
+                                          <div class="usName"> <span class="staffName">my booking</span> </div>
+                                         <% } %> 
+                                </div>
+                                 <% Edata1b = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                  var baTime = rs.bookingTime;  
+                                if(staffId!='' && session.fUser.businessType!="business"){
+
+                                  var picked = lodash.filter(rs.bookingData, { 'staff': session.fUser._id } );
+                                   if(picked.length>0){
+                                    
+                                    Edata1b = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                    var baTime = picked[0].startTime;
+                                  
+                                  }
+                                }
+                                 if(session.fUser.businessType=="business"){
+
+                                    if(staffId){
+
+                                      if(staffId=="myBooking"){
+                                        var picked = lodash.filter(rs.bookingData, { 'staff': 0 } );
+                                        if(picked.length>0){
+                                           Edata1b = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                           var baTime = picked[0].startTime;
+                                         }
+
+                                      }else{
+                                        
+
+                                        var picked = lodash.filter(rs.bookingData, { 'staff': Number(staffId) } );
+                                        if(picked.length>0){
+                                           Edata1b = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                           var baTime = picked[0].startTime;
+                                         }
+
+
+                                      }
+
+
+
+
+                                    }else{
+
+                                      Edata1b = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                      var baTime = rs.bookingTime;
+                                    }
+
+
+                                }
+                                %>
+
+
+                                <div class="col-md-4 text-right" style="cursor:pointer;" onclick=" window.location.href = '/bookingInfo/<%= cryptr.encrypt(rs._id) %>';">
+                                  <p class="paraText1"><%= Edata1b %></p>
+                                  <p class="paraText1"><%= baTime %></p>
+                                  
+                                <% if(rs.bookStatus==1){ %>
+                                  <p class="bookStatus confrm">Confirmed</p>
+                                  <% }else if(rs.bookStatus==3){%>
+                                   <p class="bookStatus confrm">Completed</p>
+                                  <% }else{ %>
+                                  <p class="bookStatus cancled">Cancelled</p>
+                                  <% } %>
+                                   
+                                </div>
+                              </div>
+                            </div>
+                           
+                          </div>
+                        </div>
+                      </div>
+
+                <%  });}else{ %>
+               <div  style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+                <% } %> 
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade " id="pendingBook">
+                    <div class="col-md-12">
+
+                      <%
+
+                  if(plistdata.length>0){
+                   plistdata.forEach(function(rs) { 
+
+                      var userId = rs.userId;                
+
+                   %>
+
+                    
+                      <div class="userListlead">
+                        <div class="userDetails">
+                          <div class="media">
+                            <div class="media-left">
+                              <div class="user-image">
+                                <a href="/profile?id=<%= cryptr.encrypt(userId); %>" target="_self">
+                                  <img src="<%= rs.userDetail[0].profileImage %>" class="img-responsive">
+                                </a>
+                              </div>
+                            </div>
+                            <div class="media-body">
+                              <div class="row">
+                                <div class="col-md-8">
+                                  <h4 class="media-heading">
+                                    <a href="/profile?id=<%= cryptr.encrypt(userId); %>"><%= rs.userDetail[0].userName %></a>
+                                  </h4>
+                                  <div class="serviseslead"  style="cursor:pointer;" onclick=" window.location.href = '/bookingInfo/<%= cryptr.encrypt(rs._id) %>';">
+                                    <%
+                                    s=0;
+                                    bookingList = rs.bookingData;
+                                     bookingList.forEach(function(brs) { 
+                                        if(brs.staff!='' && brs.staff!=session.fUser._id && staffId!='' && session.fUser.businessType!="business"){
+                                              delete bookingList[s];
+                                        }
+                                      s++;});
+                                      i=0;
+                                     bookingList.forEach(function(brs) { 
+
+                                      artistServicesData.forEach(function(ars) { 
+
+                                      if(ars._id==brs.artistServiceId ){
+
+                                     %>
+
+                                    <% if(i!=(bookingList.length-1)){%>
+                                 
+                                     <span><%= ars.title %>,</span>
+                                     <% }else{ %>
+                                     <span><%= ars.title %></span>
+                                     <% } %>
+
+                                    
+                                    <% } });i++;});%> 
+                                  </div>
+                                  <% 
+
+                                   if(staffId==''){
+
+                                        staffUId = bookingList[0].staff;
+
+                             
+                                      }else  if(staffId=='all'){
+
+                                        staffUId = rs.artistId;
+
+                                      }else{
+
+                                        staffUId = staffId;
+                                      }
+                                  if(staffUId){ %>
+
+                                  <% if(businessType=="independent"){%>
+
+                                    <div class="usName">
+                                       <%  
+                                        
+                                       stafData.forEach(function(srs) {
+                                          if(staffUId==srs.staffInfo._id){
+                                       %>
+                                          <span class="staffName"><%= srs.staffInfo.businessName %></span>
+
+                                      <% }});%>
+                                    </div>
+
+                                  <% }else {%>
+
+                                    <div class="usName">
+                                       <%  
+                                        
+                                       userData.forEach(function(srs) {
+                                          if(staffUId==srs._id){
+                                       %>
+                                          <span class="staffName"><%= srs.userName %></span>
+
+                                      <% }});%>
+                                    </div>
+
+
+                                  <% }}%>
+                                   <%  if(( bookingList[0].staff==0 && (staffId=='' || staffId=="myBooking")) || (staffId=="myBooking")){ %>
+                                          <div class="usName"> <span class="staffName">my booking</span> </div>
+                                         <% } %> 
+
+                                <%  if( (staffUId==0  && businessType=="independent")|| (businessType!="independent") || (session.fUser.businessType=="independent" && rs.artistId==session.fUser._id)){%>
+                                    <a class="btn btn-theme waves-effect waves-light m-t-10 m-btn" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs._id %>',1);">Accept</a>
+                                  <a class="btn btn-theme waves-effect waves-light m-t-10 m-btn" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs._id %>',2);">Reject</a>
+                                  <a class="btn btn-theme waves-effect waves-light m-t-10" href="#">Counter</a>
+                                <% } %>
+                                </div>
+                                <%
+
+                                 Edata1 = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                  var bTime = rs.bookingTime;
+
+                                if(staffId!='' && session.fUser.businessType!="business"){
+
+                                  var picked = lodash.filter(rs.bookingData, { 'staff': session.fUser._id } );
+                                  if(picked.length>0){
+                                     Edata1 = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                     var bTime = picked[0].startTime;
+                                   }
+                                }
+
+                                if(session.fUser.businessType=="business"){
+
+                                    if(staffId){
+
+                                      if(staffId=="myBooking"){
+                                        var picked = lodash.filter(rs.bookingData, { 'staff': 0 } );
+                                        if(picked.length>0){
+                                           Edata1 = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                           var bTime = picked[0].startTime;
+                                         }
+
+                                      }else{
+
+                                        var picked = lodash.filter(rs.bookingData, { 'staff': Number(staffId) } );
+                                        if(picked.length>0){
+                                           Edata1 = moment(picked[0].bookingDate).format('DD/MM/YYYY'); 
+                                           var bTime = picked[0].startTime;
+                                         }
+
+
+                                      }
+
+
+
+
+                                    }else{
+
+                                      Edata1 = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                      var bTime = rs.bookingTime;
+                                    }
+
+
+                                }
+                                %>
+                                <div class="col-md-4 text-right" style="cursor:pointer;" onclick=" window.location.href = '/bookingInfo/<%= cryptr.encrypt(rs._id); %>';">
+                                  <p class="paraText1"><%= Edata1 %></p>
+                                  <p class="paraText1"><%= bTime %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <%  });}else{ %>
+                   <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+                    <% } %> 
+                    </div>
+                </div>
+            </div>
+          </div>

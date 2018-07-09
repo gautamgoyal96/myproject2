@@ -1,0 +1,26 @@
+.month{padding:20px 25px;width:100%;background:#3f8efc;text-align:center;}
+.month ul{margin:0;padding:0;}
+.month ul li{color:white;font-size:20px;text-transform:capitalize;letter-spacing:1px;}
+.month .prev{float:left;padding-top:0px;}
+.month .prev a, .month .next a{color:#fff;}
+.month .next{float:right;padding-top:0px;}
+.weekdays{background-color:#f2f2f2;border-bottom:1px solid #ddd;margin:0;padding:15px 0;}
+.weekdays li{display:inline-block;width:13.6%;color:#f83272;text-align:center;}
+.days{padding:10px 0;margin:0;}
+.days li{list-style-type:none;display:inline-block;width:13.6%;text-align:center;margin:5px 0;font-size:16px;color:#777;padding:12px 0;}
+.days li .active{background:#f83272;color:white !important}
+.days span{border-radius:50%;display:inline-block;height:40px;line-height:40px;padding:0;text-align:center;width:40px;}
+.customMyCalender{background:#fff none repeat scroll 0 0;box-shadow:0 5px 5px #ccc;margin-bottom:30px;}
+.weeklydays{background-color:#f2f2f2;border-bottom:1px solid #ddd;margin:0;padding:15px 0;}
+.weeklydays li{display:inline-block;width:12.6%;color:#f83272;text-align:center;}
+.day-01{padding:10px 0;margin:0;}
+.day-01 li{list-style-type:none;display:inline-block;width:12.6%;text-align:center;font-size:16px;color:#777;padding:5px 0;}
+.day-01 li .active{background:#f83272;color:white !important}
+.day-01 span{border-radius:50%;display:inline-block;height:40px;line-height:40px;padding:0;text-align:center;width:40px;}
+@media only screen and (max-width:575px){.days li{width:12%;font-size:14px;padding:6px 0;}
+.days span{height:35px;line-height:35px;width:35px;}
+.day-01 li{width:13%;font-size:14px;padding:6px 0;}
+.day-01 span{height:35px;line-height:35px;width:35px;}
+.weekdays li{width:13%;}
+.weekdays li{width:12%;}
+}

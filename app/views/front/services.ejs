@@ -1,0 +1,232 @@
+<% include ./header %> 
+
+<!--model-->
+<a href="#" class="smooth-scroll back-to-top"><img src="img/scroll.png" alt="scroll"></a>
+<div class="modal fade csCicon" id="AddService" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header light-blue darken-3 white-text">
+        <h4 class="title">Add Service</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="AddSer">
+          <div class="text-center">
+          <h2>Enter price to add this service</h2>
+          </div>
+          <form class="">
+            
+			<input type="hidden" id="serVal" value="0">
+			<input type="hidden" id="subSererVal" value="0" >
+              
+            <div class="md-form form-sm mt-4">
+              <i class="fa fa-dollar prefix"></i>
+              <input type="text" id="form1" class="form-control" onkeyup=" $('#form1Err').html(''); if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+              <p id="form1Err" style="color:red;"></p>
+              <label for="form1" class="">Price</label>
+            </div>
+           
+            <div class="md-form form-sm mt-2">
+              <i class="fa fa-clock-o prefix"></i>
+              <input type="text" id="form2" class="form-control timepickTime" onchange=" $('#form2Err').html(''); ">
+              <p id="form2Err" style="color:red;"></p>
+              <label for="form2" class="">Estimate End Time</label>
+            </div>
+            
+          </form>
+          <div class="text-center mt-1-half">
+            <button onclick="updateSer()" class="btn blue-gradient mb-2">Add</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<script>
+function updateSer(){
+
+var serId = $('#serVal').val(); 
+var subSererId = $('#subSererVal').val(); 
+var price = $('#form1').val(); 
+var time = $('#form2').val(); 
+
+if(price == ''){
+	$('#form1Err').html('Price requerd.');
+}
+if(time == ''){
+	$('#form2Err').html('Estimate End Time requerd.');
+}
+
+if(serId != '' && subSererId != '' && price != '' && time != ''){
+	$('.close').click();
+	$('#form1').val(''); 
+	$('#form2').val('');
+	
+	
+	
+	var url = '/AddServices?serId='+serId+'&subSererId='+subSererId+'&price='+price+'&time='+time;
+	
+		$.ajax({
+			url: url,
+			type: "get",
+			data:{page: url},	             
+			cache: false,                      
+			success: function(data){
+      location.reload();
+				
+			}
+		});
+	}
+
+}
+</script>
+
+<!--model-->
+
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+<section class="banner">
+  <div class="bannerSec gradient banner-title">
+    <div class="container">
+        <h2>Services</h2>
+    </div>
+  </div>
+</section>
+<section class="ServiceSec sec-pad parallax parallexBg" >
+  <div class="container">
+    <div class="secTitle text-center sec-inner-pad-b">
+      <p class="Stitle gold-gradient-color">Our Services</p>
+      <div class="divderTitle">
+        <hr class="pr-bor-color"><img src="/front/img/loader.png"><hr class="sec-bor-color">
+      </div>
+      <p>All type of services that we have provide you</p>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tabbable tabTop">
+        <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+        
+         
+		<% for(var i=0; i< row.length; i++) {%>
+			<% if(i == 0) {%>
+				<li class="nav-item">
+					<a id="first" class="nav-link active" data-toggle="pill" href="javascript:void(0);" role="tab" onclick=" $('#serVal').val(<%= row[i]._id %>); getSerData(<%= row[i]._id %>) " ><span><%= row[i].title %></span></a>
+				</li>
+			<% }else{ %>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="pill" href="javascript:void(0);" role="tab" onclick=" $('#serVal').val(<%= row[i]._id %>); getSerData(<%= row[i]._id %>)" ><span><%= row[i].title %></span></a>
+				</li>
+			<% } %>
+		<% } %>
+          
+          
+          
+        </ul>
+        </div>
+        <div class="tab-content tabTopCnt" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+            <span id="loader"></span>
+            <div class="row" style="display:none;" id="data">
+              <div class="col-md-4">   
+                
+                
+                
+                <div id= "ajaxdata" class="tabbable tabs-left"></div>
+                
+                
+                
+
+              </div>
+              <div class="col-md-8">
+
+              <% if (error.length > 0) { %>
+                      <div class="alert alert-danger"><%- error %></div>
+             <% } %>
+
+             <% if (success.length > 0) { %>
+            <div class="alert alert-success"><%- success %></div>
+            <% } %>
+                <div class="tab-content" id="v-pills-tabContent">
+                  
+                  <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" >
+                    <div class="varietyContent">
+                        <img id="subImage" src="/front/img/s3.jpg" alt="Image Variety" class="img-responsive">
+                        <div class="SrNCnt">
+                        <h3 id="subTitle" >Braids &amp; Twist</h3>
+                        <h4 id="price"></h4>
+                        <p class="paraText"  id="subDesc" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+                       
+						<% if(userId){ %>
+						<div class="SrActionBtn">
+							<a href="javascript:void(0)" data-toggle="modal" data-target="#AddService"><span><i class="fa fa-plus"></i></span></a>
+						</div>
+						<% } %>
+						
+                        <div class="SelectCheck">
+                          <form class="form-light">
+                            <input type="checkbox" id="checkbox2" disabled>
+                            <label for="checkbox2" class="grey-text"></label>
+                          </form>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+
+<!--Footer-->
+
+<% include ./footer %> 
+
+<script>
+  function getSerData(serId){
+    var url = '/subservices?id='+serId;
+    $.ajax({
+      url: url,
+      type: "get",
+      data:{page: url},              
+      cache: false,
+     beforeSend: function() {
+                $("#loader").html("<img id='zlodaer' src='https://www.walshcreative.com/wp-content/plugins/smart-scroll-posts/images/smart_scroll-ajax_loader.gif' alt='' style='display: block;margin: 0 auto;'>");
+                $("#data").hide();
+      },                    
+      success: function(data){
+      if(data){
+          $("#loader").html('');
+           $("#data").show();
+            $("#ajaxdata").html(data);
+        var className = $('#SubFirst').attr('class');
+              if(className){
+                  $("#v-pills-tabContent").show();
+                  $("#v-pills-tab").show();
+                  setTimeout( function(){ 
+                    $( "#SubFirst" ).click();
+                  },10);
+              }else{
+
+                $("#v-pills-tabContent").hide();
+                $("#v-pills-tab").hide();
+
+              }
+
+          }  
+      }
+    });
+  }
+  $( "#first" ).click();
+</script>

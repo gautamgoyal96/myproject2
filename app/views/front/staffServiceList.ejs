@@ -1,0 +1,45 @@
+<% data.forEach(function(rs) { %>
+<input type="hidden" value="<%= rs.artistServiceId %>" id="staffServiceId" name="staffServiceId[]">
+    <div class="addedSerBlock">
+                      <div class="serLeft serleft_width">
+                         <%  categorydata.forEach(function(ars) { 
+                            if(ars.serviceId==rs.serviceId){
+                            %>
+
+                            <h2><%= ars.serviceName %></h2>                                                          
+
+                           <% }});%>
+                        <h3> <%  categorydata.forEach(function(brs) {
+                            subservice = brs.subcategory;
+                            subservice.forEach(function(ars) { 
+                              if(ars.subServiceId==rs.subserviceId && ars.artistId==rs.businessId){
+                            %>
+                          <b><%= ars.subServiceName %><% }});});%></b>,<span><%  artistServiceList.forEach(function(ars) { 
+                            if(ars._id==rs.artistServiceId){
+                            %><%= ars.title %> 
+                           <% }});%></span>
+                        </h3>
+                        <span class="priceAdd">In call - £<%= Number(rs.inCallPrice).toFixed(2) %></span>
+                        <span class="priceAdd">Out call - £<%= Number(rs.outCallPrice).toFixed(2) %></span>
+                        <%
+                          var time = rs.completionTime;
+                            var t = time.split(':');
+                            var h = t[0]!=0 ? t[0]+" hrs " : '';
+                            var m = t[1]+" min";
+                            var time = h+m; %>
+                        <p class="compTime">Completion time - <%= time %></p>
+                      </div>
+                      <div class="serRight serright_width">
+                        <!-- <a class="closeMoreTime">
+                            <i class="fa fa-edit"></i>
+                        </a> -->
+
+                        <% if(seession.fUser.businessType=="business") { %>
+                          <a class="closeMoreTime" href="javascript:void(0);" onclick="removestaffservice('<%= rs._id%>');">
+                              <i class="fa fa-close"></i>
+                          </a>
+                        <% } %>
+                      </div>
+                    </div>
+<%  });%>
+<input type="hidden" value="<%= data.length%>" id="serviceCount">

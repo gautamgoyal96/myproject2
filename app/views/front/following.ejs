@@ -1,0 +1,48 @@
+<% include ./header %> 
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+       
+<% include ./sub_header %> 
+
+
+
+                      <section class="Follwlist sec-pad">
+      <div class="container">
+        <div id="following_list_result">
+        
+        </div>
+      </div>
+  </div>
+  </section>
+</div>
+
+<% include ./footer %> 
+<script>
+
+following_List('1');
+
+function following_List(e)
+
+{
+
+ $.ajax({
+
+        url: '/following_list',
+        type: "get", 
+        data:{'page':e,'id':'<%= cryptr.encrypt(user._id) %>'} ,                 
+        cache: false,
+        beforeSend: function() {
+          $(".loading").show();
+
+        },
+        success: function(data){
+          $(".loading").hide();
+            $("#following_list_result").html(data);
+
+        }
+
+    });   
+
+}
+</script>

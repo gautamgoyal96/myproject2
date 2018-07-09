@@ -1,0 +1,41 @@
+<div class="nav nav-pills" id="v-pills-tab" role="tablist">
+	<% for(var i=0; i< row.length; i++) {
+	chekc = 0;
+	price ="";
+	time ="";
+	if(row[i].price!=''){
+		chekc = row[i].price.price; 
+		price  = '$'+row[i].price.price; 
+		time  = row[i].price.time; 
+	
+	}
+	%>
+		<% if(i == 0) {%>
+			<a id="SubFirst" class="nav-link" data-toggle="pill" href="javascript:void(0);" role="tab" onclick=" $('#subSererVal').val(<%= row[i]._id %>); setSubData('<%= row[i].title %>','<%= row[i].image %>','<%= row[i].description %>','<%= chekc %>','<%= time %>')" ><%= row[i].title %><span><%= price %></span></a>
+		<% }else{ %>
+			<a class="nav-link" data-toggle="pill" href="javascript:void(0);" role="tab" onclick=" $('#subSererVal').val(<%= row[i]._id %>); setSubData('<%= row[i].title %>','<%= row[i].image %>','<%= row[i].description %>','<%= chekc %>','<%= time %>')" ><%= row[i].title %><span><%= price %></span></a>
+		<% } %>
+	<% } %>
+</div>
+                
+              
+<script>
+function setSubData(title,img,subDesc,chekc,time){
+	$('#subImage').attr('src', '/uploads/subservice/'+img);
+	$('#subTitle').html(title);
+	$('#subDesc').html(subDesc);
+	if(chekc>0){
+		$('#form1').val(chekc);
+		$('#form2').val(time);
+		$('#price').html("$"+chekc);
+		$('#checkbox2').prop('checked', true);
+	}else{
+		
+		$('#checkbox2').prop('checked', false);
+		$('#form1').val('');
+		$('#form2').val('');
+		$('#price').html('');
+	
+	}
+}
+</script>

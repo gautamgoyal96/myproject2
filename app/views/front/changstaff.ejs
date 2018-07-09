@@ -1,0 +1,12 @@
+ <% if(stafData.length>0){ stafData.forEach(function(rs) { %>    
+              <div class="stffBox">
+                <input type="radio" class="staff" value="<%= rs.artistId %>" name="staffSelec" id="s1<%= rs.artistId %>">
+                <label for="s1<%= rs.artistId %>">
+                  <img src="<%= rs.staffInfo.profileImage %>" alt="<%= rs.staffInfo.userName %>" title="<%= rs.staffInfo.userName %>">
+
+                  <h2><%= rs.staffInfo.userName %></h2>
+                </label>
+              </div>
+             <% });}else{ %>
+               <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+                <% } %> 

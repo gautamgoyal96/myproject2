@@ -1,0 +1,264 @@
+
+<% include ./header %> 
+<style>
+.err{
+  color:red ;
+}
+.rating {
+    padding-left: 2px;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+.inline-ul > li {
+    display: inline;
+}
+.amber-text {
+    color: #ffc107 !important;
+}
+.rating li i {
+    color: #ccc;
+}
+</style>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Profile
+          </h1>
+        
+        </section>
+
+           <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+
+        <% if (error.length > 0) { %>
+                <div class="alert alert-danger"><%- error %></div>
+        <% } %>
+
+         <% if (success.length > 0) { %>
+                <div class="alert alert-success"><%- success %></div>
+        <% } %>
+
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="<%= data.profileImage%>" alt="<%= data.userName %>" title="<%= data.userName %>" style="width:150px !important;hight:150px !important;" >
+
+              <h3 class="profile-username text-center"><%= data.firstName%> <%= data.lastName%></h3>
+           
+               <div class="rating text-center">
+                  <ul class="inline-ul">
+                     <% count = data.ratingCount;
+                      for(i=1;i<=count;i++){ %>
+                      <li> <i class="fa fa-star amber-text"></i></li> 
+                    <% } minCount = 5-count; 
+                      for(j=1;j<=minCount;j++){ 
+                    %>
+                      <li> <i class="fa fa-star"></i></li> 
+                    <% } %>(<%= data.reviewCount%>)
+                  </ul>
+              </div>
+
+              <p class="text-muted text-center"><span class="label <%= data.status==1 ? 'label-success' : 'label-danger' %>"><%= data.status==1 ? 'Active' : 'Inactive' %></span></p>
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Followers</b> <a class="pull-right"><%= data.followersCount%></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Following</b> <a class="pull-right"><%= data.followingCount%></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Post</b> <a class="pull-right"><%= data.postCount%></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Booking</b> <a class="pull-right"><%= data.bookingCount%></a>
+                </li>
+              </ul>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">About Me</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                  <p class="text-muted"><%= data.bio  ? data.bio  : 'NA' %></p>
+
+                  <hr>
+
+                  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                  <p class="text-muted"><%= data.address ? data.address : 'NA' %></p>
+
+
+                </div>
+                <!-- /.box-body -->
+          </div>
+
+
+          <!-- About Me Box -->
+      
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+              <li><a href="#booking" data-toggle="tab">Booking</a></li>
+              <li><a href="#followers" data-toggle="tab">Followers</a></li>
+              <li><a href="#following" data-toggle="tab">Following</a></li>
+            </ul>
+            <div class="tab-content">
+             <div class="active tab-pane" id="profile">
+
+                <form class="form-horizontal" action="/admin_profile_update" method="post">
+            
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Name</label>
+
+                    <div class="col-sm-10"><%= data.firstName%> <%= data.lastName%></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">UserName</label>
+
+                    <div class="col-sm-10"><%= data.userName%></div>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Email</label>
+
+                    <div class="col-sm-10"><%= data.email%></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Contact Number</label>
+
+                    <div class="col-sm-10"><%= data.countryCode%> <%= data.contactNo%></div>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Date of birth</label>
+
+                    <div class="col-sm-10"><%= moment(data.dob).format( 'DD/MM/YYYY')%></div>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Gender</label>
+
+                    <div class="col-sm-10"><%= data.gender ? data.gender : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Country</label>
+
+                    <div class="col-sm-10"><%= data.country ? data.country : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">State</label>
+
+                    <div class="col-sm-10"><%= data.state ? data.state : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">City</label>
+
+                    <div class="col-sm-10"><%= data.city ? data.city : 'NA' %></div>
+                  </div>                 
+                 
+                 
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="booking"></div>
+              <div class="tab-pane" id="followers"></div>
+              <div class="tab-pane" id="following"></div>
+            
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <% include ./footer %> 
+
+  <script type="text/javascript">
+
+     booking_list('1');
+     followers_list('1');
+     following_list('1');
+function booking_list(e)
+
+    {
+       $.ajax({
+
+            url: '/admin_booking_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','userType':'<%= data.userType%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#booking").html(data);
+
+            }
+
+        });       
+
+    }
+
+    function followers_list(e){
+
+       $.ajax({
+
+            url: '/admin_followers_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#followers").html(data);
+
+            }
+
+        });       
+
+    }
+
+    function following_list(e){
+
+       $.ajax({
+
+            url: '/admin_following_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#following").html(data);
+
+            }
+
+        });       
+
+    }
+</script>

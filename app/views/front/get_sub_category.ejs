@@ -1,0 +1,12 @@
+<% if(categorydata.length>0){ %>
+<h2 class="head">Select Subcategories</h2>
+ <% categorydata.forEach(function(rs) { %>
+
+  <div class="form-group fltCheck">
+                      <label><%= rs.title %></label>
+                      <div class="SelectCheck form-light ">
+                        <input id="p1<%= rs._id %>" type="checkbox" value="<%= rs._id %>" class="getcat" checked onclick="ajax_fun();">
+                        <label for="p1<%= rs._id %>" class="grey-text"></label>
+                      </div>
+                    </div>
+   <% });} %>                    

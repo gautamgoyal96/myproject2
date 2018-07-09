@@ -1,0 +1,469 @@
+<% include ./header %>
+
+  <div class="header-margin"></div>
+  <div class="MainWrapper creambg">
+    <!---Artist Dashboard Start Here-->
+    <section class="full-booking-wrap">
+      <div class="container">
+        <!---full Booking start Here-->
+        <div class="full-booking">
+          <div class="filterBooling">
+            <div class="row">
+              <div class="col-md-4 col-sm-4">
+                <div class="form-group">
+                    <div class='input-group datepick' id="">
+                        <input type='text' class="form-control " id="datepick" readonly="true">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+              </div>
+             
+              <div class="col-md-12 col-xs-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div id="timeSlot">
+                        
+                    </div>
+                  </div>
+                  <div class="col-md-8 text-right mt-3">
+                   <% if(user.businessType=="business"){ %>                        
+                      <div class="form-group">
+                        <button type="button" data-toggle="modal" data-target="#selectStaff" class="btn btn-theme">Staff</button>
+                      </div>
+                    <% }else{%>
+                       <div class="form-group">
+                        <button type="button" data-toggle="modal" data-target="#selectCompany" class="btn btn-theme">Company</button>
+                      </div>
+                    <% }%>
+                  </div>
+                </div>              
+              </div>
+          </div>
+              <input type="hidden" id="staffUserName">   
+              <input type="hidden" id="staffUserId">   
+  
+          <div class="selectedStaff" id="selectStaffShow"> </div>
+          <div id="result"> </div>
+
+
+        </div>
+        <!---full Booking end Here-->
+      </div>
+    </div>
+    </section>
+</div>
+<% include ./footer %> 
+
+<!---Alternative Modal Start Here-->
+    <div class="modal fade csCicon staffModal" id="selectCompany" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+          <div class="modal-header light-blue darken-3 white-text">
+            <h4 class="title">Select Company</h4>
+            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mb-0">
+            <div class="staffSelection companySelect">
+			<div class="stffBox">
+                <input type="radio" name="selector" id="clr" onclick="staffFilter('');" class="allstaff"> 
+            		<label for="clr">
+             	<img src="<%= lUser.profileImage %>" alt="<%= lUser.userName %>" title="<%= lUser.userName %>">
+
+              <h2>My Booking</h2>
+            </label>
+          </div>
+              <% if(stafData.length>0){ stafData.forEach(function(rs) { %>    
+              <div class="stffBox">
+                <input type="radio" value="<%= rs.businessId %>" name="staffSelec" id="s1<%= rs.businessId %>" onclick="staffFilter(this.value,'<%= rs.staffInfo.businessName %>');" class="staff">
+                <label for="s1<%= rs.businessId %>">
+                  <img src="<%= rs.staffInfo.profileImage %>" alt="<%= rs.staffInfo.businessName %>" title="<%= rs.staffInfo.businessName %>">
+
+                  <h2><%= rs.staffInfo.businessName %></h2>
+                </label>
+              </div>
+             <% });} %> 
+            </div>
+
+           <!-- <div class="form-group text-center blockLevel">
+                <div class="allStaffcheck">
+                  <input type="radio" name="selector" id="clr" onclick="staffFilter('');" class="allstaff"> 
+                  <label for="clr">Clear</label>
+                  <input type="radio" name="selector" id="all" onclick="staffFilter('all');" class="allstaff"> 
+                  <label for="all">All</label>
+                </div>
+
+              </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!---Alternative Modal Start Here-->
+    <div class="modal fade csCicon staffModal" id="selectStaff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+          <div class="modal-header light-blue darken-3 white-text">
+            <h4 class="title">Select Staff</h4>
+            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body mb-0">
+            <div class="staffSelection">
+              <div class="stffBox">
+                <input type="radio" name="selector" id="Bclr" onclick="staffFilter('myBooking');" class="allstaff"> 
+                <label for="Bclr">
+                  <img src="<%= lUser.profileImage %>" alt="<%= lUser.userName %>" title="<%= lUser.userName %>">
+                  <h2>My Booking</h2>
+                </label>
+              </div>
+              <% if(stafData.length>0){ stafData.forEach(function(rs) { %>    
+              <div class="stffBox">
+                <input type="radio" value="<%= rs.artistId %>" name="staffSelec" id="s1<%= rs.artistId %>" onclick="staffFilter(this.value,'<%= rs.staffInfo.userName %>');" class="staff">
+                <label for="s1<%= rs.artistId %>">
+                  <img src="<%= rs.staffInfo.profileImage %>" alt="<%= rs.staffInfo.userName %>" title="<%= rs.staffInfo.userName %>">
+
+                  <h2><%= rs.staffInfo.userName %></h2>
+                </label>
+              </div>
+             <% });} %> 
+            </div>
+
+            <div class="form-group text-center blockLevel">
+                <div class="allStaffcheck">
+                  <input type="radio" name="selector" id="allSt" onclick="staffFilter('');" class="allstaff"> 
+                  <label for="allSt">Select All Staff</label>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if(success.length>0){ %>
+
+<script type="text/javascript">
+errorMsg('<%= success %>');
+</script>
+<% } %>
+
+
+<script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+
+<script type="text/javascript">
+
+
+      var date =   $("#datepick").val();
+             var d = date.split("/");
+        date = d[2]+"-"+d[1]+"-"+d[0];
+
+            var staffSelec = $("input[name='staffSelec']:checked").val();
+      if(staffSelec){
+
+        staffSelec = staffSelec;
+      
+      }else{
+
+            var staffSelec = '';  
+
+      }
+
+           data = {
+
+              'date':date,
+              'staffId': staffSelec
+
+           };
+
+   artistbookingHistory(data);
+
+
+
+
+date =      localStorage.getItem("date");
+
+if(date){
+  $("#datepick").val(date);
+  localStorage.removeItem("date");  
+}
+staffSelec = $("#staffUserId").val();
+if(staffSelec){
+  var staffUserName = $("#staffUserName").val();
+  staffFilter(staffSelec,staffUserName);
+}
+
+$(function(){
+
+  $('.datepick').datetimepicker({
+      format:'DD/MM/YYYY',
+      defaultDate: new Date(),
+      useCurrent: true,
+      showTodayButton: true ,
+      ignoreReadonly: true  
+    });
+
+}).on('dp.change', function(e) {
+
+    var date = e.date.format('YYYY-MM-DD');
+  
+    var date1 = e.date.format('DD/MM/YYYY');
+    var d = new Date(date);
+    var day = d.getDay();
+    var day =  day!=0 ? day - Number(1) : 6 ;
+    var staffSelec = $("input[name='staffSelec']:checked").val();
+    if(staffSelec){
+
+      staffSelec = staffSelec;
+      staffSelec12 = staffSelec;
+    
+    }else if($("#staffUserId").val()){
+
+      staffSelec =  $("#staffUserId").val();
+      staffSelec12 = "";
+    
+    }else{
+
+          var staffSelec = '';  
+          var staffSelec12 = '';  
+
+    }
+
+
+    
+    artistFreeSlot(day, date1,staffSelec12);
+
+   artistbookingHistory(date, staffSelec);
+
+});
+
+
+function artistFreeSlot(day, date,staff){
+
+      var curentTime = currentTime();
+      var url = '/artistFreeSlot?day='+day+"&date="+date+'&curentTime='+curentTime+'&staff='+staff;
+      $.ajax({
+        url: url,
+        type: "get",
+        data:{page: url},              
+        cache: false,   
+        beforeSend: function() {
+            $(".loading").show();
+        },               
+        success: function(data){
+
+           $(".loading").hide();
+
+            if(data.status=="fail"){
+
+              window.location.href = "/login";
+
+
+            }else{
+
+                $("#timeSlot").html(data);
+            }
+
+
+                  
+        }
+
+      });
+
+
+}
+
+
+function currentTime() {
+
+      var date    = new Date();
+      var hours   = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm    = hours >= 12 ? 'PM' : 'AM';
+      hours       = hours % 12;
+      hours       = hours ? hours : 12; // the hour '0' should be '12'
+      minutes     = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+   
+}
+
+
+function staffFilter(e,n){
+  // localStorage.setItem("staffUserName",n);
+ //  localStorage.setItem("staffUserId",e);
+
+$("#staffUserName").val(n);
+$("#staffUserId").val(e);
+
+      var date =   $("#datepick").val();
+      var d = date.split("/");
+      date = d[2]+"-"+d[1]+"-"+d[0];
+        var d = new Date(date);
+        var day = d.getDay();
+        var day =  day!=0 ? day - Number(1) : 6 ;
+        if(e=="all"){
+
+           artistFreeSlot(day,$("#datepick").val(),'');
+
+
+        }else if(e=="myBooking"){
+
+           artistFreeSlot(day,$("#datepick").val(),'');
+
+
+        }else{
+
+            artistFreeSlot(day,$("#datepick").val(),e);
+        }
+      artistbookingHistory(date,e);
+      if(e==''){
+        
+        $(".staff").prop('checked', false);
+        businessType = "<%= user.businessType%>";
+        if(businessType=="business"){
+
+          $("#selectStaffShow").html('<div class="usName"><span class="staffName">All Staff</span></div>');
+        
+        }else{
+
+           $("#selectStaffShow").html('<div class="usName"><span class="staffName">My Booking</span></div>');
+
+        }
+
+      }else{
+
+          if(e=='all'){
+
+
+              $("#selectStaffShow").html('<div class="usName"><span class="staffName">All</span></div>');
+              $(".staff").prop('checked', false);
+
+
+          }else if(e=='myBooking'){
+
+
+              $("#selectStaffShow").html('<div class="usName"><span class="staffName">My Booking</span></div>');
+              $(".staff").prop('checked', false);
+
+
+          }else{
+
+
+              $("#selectStaffShow").html('<div class="usName"><span class="staffName">'+n+'</span></div>');
+              $(".allstaff").prop('checked', false);
+
+
+          }
+
+      }
+      $("#selectStaff").modal('hide');
+      $("#selectCompany").modal('hide');
+}
+
+function artistbookingHistory(date,staffId=''){
+
+
+     var data = {date:date,staffId:staffId,currentTime:currentTime()};
+
+      var url = '/artistbookingHistory';
+      $.ajax({
+        url: url,
+        type: "Post",
+        data:data,              
+        cache: false,
+        beforeSend: function() {
+            $(".loading").show();
+        },                  
+        success: function(data){
+
+            $(".loading").hide();
+
+            if(data.status=="fail"){
+
+              window.location.href = "/login";
+
+
+            }else{
+
+                $("#result").html(data);
+
+
+
+
+                    var cdate=new Date();
+                    var m = (cdate.getMonth()+1);
+                    var s = m<10 ? '0'+m : m;
+                     var e = cdate.getDate();
+                     var d = e<10 ?'0'+e: e;
+                      var val = cdate.getFullYear()+"-"+s+"-"+d;
+
+
+
+                if(date==val){
+
+                  $("#today").html('Today Booking');
+
+                }else{
+
+                 $("#today").html('Confirmed Booking');
+               
+                }
+            }
+
+
+                  
+        }
+
+      });
+
+
+}
+
+
+
+
+
+
+    function bookingUpdate(id,bookStatus){
+
+           var data = {BookingId:id,bookStatus:bookStatus};
+
+              var url = '/bookingUpdate';
+              $.ajax({
+                  url: url,
+                  type: "post",
+                  data:data,              
+                  cache: false,
+                  beforeSend: function() {
+                          
+                    $('.m-btn').addClass('disabled');
+                    $(".loading").show();
+
+
+                  },                    
+                  success: function(data){
+                    
+                    $(".loading").hide();
+
+                   var date = $("#datepick").val();
+                   localStorage.setItem("date",date);
+                    $('.m-btn').removeClass('disabled');
+                   window.location.reload(); 
+
+                                
+                  }
+
+              });
+
+
+       
+    }
+
+
+</script>

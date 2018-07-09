@@ -1,0 +1,118 @@
+<% include ./header %> 
+
+
+  <div class="header-margin"></div>
+  <div class="MainWrapper creambg">
+    <section class="sec-pad staffManage">
+
+      <div class="container">
+      <% if(type){ %>
+             <a  class="btn btn-theme pull-right"  href="/artistDashboard">Skip</a>
+      <% } %>
+        <div class="row">
+          <div class="col-md-<%= (session.fUser.businessType=="business") ? 6 : 12 ; %>">
+            <div class="innerHeading">
+             <% if(session.fUser.businessType=="business"){ %>
+              <h2>Current Staff</h2>
+              <% }else { %>
+               <h2>Company</h2>
+              <% } %>
+            </div>
+            <div class="tab-content">
+              <div id="AverageLikes" class="tab-pane show active forAL" role="tabpanel" aria-labelledby="AverageLikes-tab">
+              <span id="staff_list_result"></span>
+              </div>
+            </div>
+          </div>
+          <style>
+          </style>
+           <% if(session.fUser.businessType=="business"){ %>
+                 <div class="col-md-6">
+                      <div class="innerHeading">
+                        <h2>Add New Staff</h2>
+                      </div>
+                      <div class="Feeds">
+                        <div class="FeedSearch">
+                          <input class="form-control" type="text" placeholder=" Search by username and email" id="searchUserName" oninput="ajax_fun('1');">
+                          <a class="searchIc">
+                            <i class="fa fa-search"></i>
+                          </a>
+                        </div>
+                        <div class="AddStaff" id="staff_result">
+                        
+                     
+                        </div>
+                      </div>
+                    </div>             
+              <% } %>
+   
+        </div>
+    </section>
+    </div>
+
+<% include ./footer %> 
+<% if(success.length>0){ %>
+
+<script type="text/javascript">
+errorMsg('<%= success %>');
+</script>
+<% } %>
+
+<script>
+
+
+ajax_fun('1');
+staff_List('1');
+
+function ajax_fun(e)
+
+{
+
+var userName = $.trim($("#searchUserName").val());
+
+ $.ajax({
+
+        url: '/staffArtistList',
+        type: "POST", 
+        data:{userName:userName,'page':e} ,                 
+        cache: false,
+        beforeSend: function() {
+          $(".loading").show();
+
+        },
+        success: function(data){
+            $(".loading").hide();
+            $("#staff_result").html(data);
+
+        }
+
+    });   
+
+}
+
+function staff_List(e)
+
+{
+
+ $.ajax({
+
+        url: '/staff_List',
+        type: "POST", 
+        data:{'page':e} ,                 
+        cache: false,
+        beforeSend: function() {
+          $(".loading").show();
+
+        },
+        success: function(data){
+            $(".loading").hide();
+            $("#staff_list_result").html(data);
+
+        }
+
+    });   
+
+}
+
+</script>
+

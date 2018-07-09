@@ -1,0 +1,268 @@
+<% include ./header %> 
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+       
+<% include ./sub_header %> 
+
+                       <div class="FeedTab">
+                       <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6"></div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="nav-item">
+                                    <a class="nav-link" id="image" href="javascript:void(0);" onclick="feed_image_List(0,'image');" >Image</a>
+                                    <a class="nav-link" id="video" href="javascript:void(0);"  onclick="feed_image_List(0,'video');">Video</a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                      </div>
+<section class="feeds sec-pad" >
+    <div class="container">     
+        <div class="feedCnt">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+
+                 <div id="feed_result"></div>
+                 <div id="feed_result_loader"></div>
+               
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="" id="Image" >
+                        <div class="list-group gallery">
+                          <div class="row"  id="feed_image_result">                          
+                          </div>
+                        <span id="feed_image_result_loader"></span>
+
+                        </div> 
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<% include ./footer %> 
+
+<!--Modal: video List-->
+ <div class="modal " id="videoplay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+              <video  controls>
+                <source src="/uploads/feeds/1526618830810.mp4"  id="videoTag" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Modal: Likes List-->
+ <div class="modalANimation">
+ <div class="modal fade csCicon" id="likesList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">400 Likes</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="LikeMember">
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">Isabella Smith</h5>
+                        <a href="#" class="btn btn-theme">Follow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">Emmay Robert</h5>
+                        <a href="#" class="btn btn-theme">Follow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">John Deo</h5>
+                        <a href="#" class="btn btn-theme">Unfollow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">Isabella Smith</h5>
+                        <a href="#" class="btn btn-theme">Follow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">Robert Smith</h5>
+                        <a href="#" class="btn btn-theme">Unfollow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">Isabella Smith</h5>
+                        <a href="#" class="btn btn-theme">Unfollow</a>
+                      </div>
+                    </div>
+              </div>
+              <div class="likeuser">
+                  <div class="media">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="Generic placeholder image">
+                      <div class="media-body">
+                        <h5 class="mt-0">David Johnson</h5>
+                        <a href="#" class="btn btn-theme">Follow</a>
+                      </div>
+                    </div>
+              </div>
+              <a href="#" class="linktext">See More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var DELAY = 700, clicks = 0, timer = null;
+function checkpost(e,type){
+  
+      clicks++;  //count clicks
+
+      if(clicks === 1) {
+
+          timer = setTimeout(function() {
+
+              clicks = 0; 
+              if(type=='video'){ 
+                
+                $("#playv"+e).show();
+                $("#playi"+e).hide();
+              
+              }
+
+          }, DELAY);
+
+      } else {
+
+          if('<%= session.fUser %>'){
+
+            $('#heart'+e).click();
+            clearTimeout(timer);
+            clicks = 0; 
+
+          }else{
+
+              window.location = "/login";
+
+          }          
+      }
+}
+
+
+function likeUnlike(e,animated){
+
+
+   if(!animated){
+      $("#heart"+e).addClass('happy').removeClass('broken');
+      animated = true;
+    }
+    else {
+      $("#heart"+e).removeClass('happy').addClass('broken');
+      animated = false;
+    }
+
+}
+
+
+function video_show(e){
+  $('#videoTag').attr('src','/uploads/feeds/1526618863177.mp4');
+  $('#videoplay').modal('show');
+
+}
+feed_List(0);
+
+function feed_List(e){
+
+
+ $.ajax({
+
+        url: '/feed_List',
+        type: "get", 
+        data:{'page':e,'id':'<%= cryptr.encrypt(user._id); %>'} ,                 
+        cache: false,
+        beforeSend: function() {
+                $("#feed_result_loader").html("<img id='zlodaer' src='https://www.walshcreative.com/wp-content/plugins/smart-scroll-posts/images/smart_scroll-ajax_loader.gif' alt='' style='display: block;margin: 0 auto;'>");
+        },
+        success: function(data){
+             $("#feed_result_loader").html('');
+            $("#feed_result").append(data);
+
+        }
+
+    });   
+
+}
+
+
+
+feed_image_List(0,'image');
+
+function feed_image_List(e,type,t=''){
+
+$(".nav-link").removeClass('active');
+$("#"+type).addClass('active');
+ $.ajax({
+
+        url: '/feed_image_List',
+        type: "get", 
+        data:{'page':e,'id':'<%= cryptr.encrypt(user._id); %>','type':type} ,                 
+        cache: false,
+        beforeSend: function() {
+                $("#feed_image_result_loader").html("<img id='zlodaer' src='https://www.walshcreative.com/wp-content/plugins/smart-scroll-posts/images/smart_scroll-ajax_loader.gif' alt='' style='display: block;margin: 0 auto;'>");
+        },
+        success: function(data){
+             $("#feed_image_result_loader").html('');
+             if(t==''){
+
+                $("#feed_image_result").html(data);
+
+             }else{
+
+                $("#feed_image_result").append(data);
+             }
+
+        }
+
+    });   
+
+}
+
+</script>

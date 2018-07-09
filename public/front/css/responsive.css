@@ -1,0 +1,344 @@
+@media only screen and (max-width:991px){.BannerCnt h1{font-size:36px;}
+.BannerCnt h5{font-size:24px;margin-bottom:10px;}
+.secInner{padding-bottom:130px;}
+.userDetails .media-heading a{font-size:22px;}
+.prLink .nav a{font-size:15px;padding:20px 12px;}
+.mobile-view{display:block;}
+.mainMenu li{display:block;width:100%;}
+.navbar-nav.mainMenu.ml-auto{margin-top:10px;}
+.csNav{padding:8px 15px !important;}
+.NotificationMenu{position:absolute;right:70px;top:16px;}
+.NotificationMenu .dropdown > a{margin-top:6px;padding:5px 10px;}
+.notifications{left:auto;min-width:420px;padding:0;right:0;top:70px;}
+.timeCheck > input{max-width:110px;}
+.navbar-brand.mx-auto {
+	position: relative;
+	left: -27px;
+}
+}
+@media only screen and (max-width:767px){.navbar-collapse{padding-bottom:20px;}
+.m-mrt{margin-top:20px;}
+.secTitle p.Stitle{font-size:38px;}
+.secTitle1{font-size:26px;line-height:40px;}
+.paraText{font-size:15px;line-height:25px;}
+.ListFilter .nav-tabs .nav-item a{font-size:15px;padding:12px 15px;}
+.dist{position:static;}
+.gallery figure{flex-basis:50%;}
+.filterFixed{position:static;}
+.leadList{padding-top:10px !important;}
+.frp{display:block;}
+.filterForm .frp select{height:50px;}
+.NoPad .filterForm{padding:15px 0;}
+.btnR{display:inline-block;float:left;}
+.navbar .collapse{max-height:250px;width:100%;overflow-y:auto;overflow-x:hidden;}
+.navbar .navbar-brand{float:none;display:inline-block;}
+.navbar .navbar-nav>.nav-item{float:none;margin-left:.1rem;}
+.navbar .navbar-nav{float:none !important;}
+.nav-item{width:100%;text-align:left;}
+.navbar .collapse .dropdown-menu{position:relative;float:none;background:none;border:none;}
+.EditProfile .col-lg-8 .card{margin-top:30px;}
+.card.CardHeight{min-height:auto;}
+.tabTopCnt .tab-content { margin-top: 20px;}
+.appServices {
+	margin-top: 30px;
+}
+.countryDropDown .dropdown-item {
+	white-space: normal;
+}
+}
+@media only screen and (max-width:639px){.secTitle p.Stitle{font-size:32px;}
+.secTitle1{font-size:22px;line-height:35px;}
+.btn-hover > img{max-width:130px;width:100%;}
+.appImg h2{color:#333;font-size:22px;}
+.BannerCnt h1{font-size:30px;margin-bottom:15px;}
+.BannerCnt h5{font-size:20px;margin-bottom:10px;}
+.RegPart .modal-footer {
+    padding: 0;
+}
+}
+@media only screen and (min-width:576px) and (max-width:767px){
+.usImg > img{height:130px;width:130px;}
+.counterData a{font-size:18px;}
+.userDetails .paraText1{font-size: 14px!important;}
+.userDetails .bookStatus{font-size: 16px!important;}
+.div_hidden1 .btn{padding: 10px 20px !important;}
+}
+@media only screen and (min-width:576px) and (max-width:991px){.counterData .col-lg-2:nth-child(4) a::after{border:medium none;}
+}
+@media only screen and (min-width:768px) and (max-width:991px){.mainMenu li a span{display:none;}
+}
+@media only screen and (max-width:575px){.counterrow{display:block;}
+.userright{text-align:left;}
+.timeMeta{position:static;right:15px;text-align:right;}
+.ListFilter{margin-bottom:20px;}
+.filtericon li span{height:60px;line-height:58px;width:60px;}
+.filtericon li span img{max-width:30px;}
+.modal.fixedModal .modal-full-height{width:100%;max-width:100%;}
+.modal.fixedModal .modal-dialog{margin-top:0 !important;}
+.modal-dialog{margin-top:20% !important;}
+.myImg{border:3px solid #fff;height:100px;width:100px;}
+.status{right:5px;}
+.MyInfo h4{font-size:22px;}
+.MyInfo p span{font-size:20px;}
+.MyInfo p{font-size:16px;}
+.MyInfo .media-body{margin-top:10px;}
+.btn-outline{font-size:14px !important;padding:10px 15px !important;}
+.actIcon{font-size:18px;height:45px;line-height:35px;width:45px;margin-left:5px;}
+.actIcon img{max-width:25px;width:100%;}
+.PrActionBtn{margin-top:15px !important;}
+.reviewsData{margin-top:8px;}
+.counterData span{font-size:20px;}
+.counterData a{font-size:16px;padding:5px 10px;}
+.URank{top:15px;}
+.PrActionBtn{text-align:center !important;}
+.notifications{min-width:320px;right::0px;top:64px;}
+.userDetails .media-left{padding-bottom:0;padding-right:0;}
+.PrActionBtn .btn{padding:10px 20px !important;width:100%;}
+.trCharge{font-size:20px !important;}
+#DivSec{margin-bottom:22px;}
+.prImgIc .col-6{margin-bottom:10px;}
+.leftbt{left:5px;}
+.rightbt{right:5px;}
+.leftbt, .rightbt{bottom:0;top:auto;transform:none;}
+.usImg > img{height:120px;width:120px;}
+.counterData{margin-top:0;}
+.countFollow > a{width:50% !important;border-top:1px solid #fff;}
+.countFollow > a:nth-child(2){border-right:medium none;}
+#DivFirst{order:2;}
+#DivSec{order:1;}
+#DivThird{order:3;}
+#c2 a::after{border:medium none;}
+.userDetails .media{display:block;width:100%;}
+.userDetails .media{text-align:center;}
+.userDetails .media-body .text-right{text-align:center !important;}
+#ChatBox{min-width:100%;}
+.UsPdata h2{color:#fff;font-size:22px;margin-bottom:0;}
+.RegPart .card-body.mx-4.pt-4{padding-left:0;padding-right:0;}
+.SrNCnt {  display: block;}
+.servicedataPrice {  width: 100%; text-align: left;  margin-top: 20px;}
+.countryCode .dropdown, .dropup {
+	position: static;
+}
+.countryDropDown {
+	width: 100%;
+	min-width: 100%;
+}
+.stffBox h2 {
+	font-size: 16px;
+}
+.stffBox img {
+	width: 70px;
+	height: 70px;
+}
+/*.stffBox {
+	width: 50%;
+}*/
+.historyTab li a {
+	font-size: 16px;
+	padding: 0.5rem 8px;
+}
+.sec-pad {
+	padding: 45px 0 !important;
+}
+.btnprc .btn {
+	margin: 0 0 10px 5px;
+	font-size: 15px !important;
+	padding: 10px 16px !important;
+}
+.bookCount {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+}
+.regCnt p {
+	float: none;
+	margin-left: 0;
+}
+.regCnt > span {
+	float: none; 
+}
+.regisHead .regCnt {
+	text-align: center;
+}
+.serRight {
+	float: right;
+	display: block;
+	width: 100%;
+	text-align: right;
+}
+.serright_width{
+	width: 15%!important;
+}
+}
+@media only screen and (max-width:359px){.timeCheck > input{max-width:45%;}
+.UsPdata {
+	margin-left: 0 !important;
+	margin-top: 20px !important;
+	width: 100%;
+}
+}
+@media only screen and (max-width:500px){.phoneField .md-form{width:62%;float:right;}
+.countryCode select{font-size:13px !important;}
+.countryCode{float:left;width:35%;}
+}
+@media only screen and (max-width:1366px){.filterForm{padding:20px 0;}
+.sec-pad1{padding:15px 0;}
+.leadList{padding-top:125px;}
+.userDetails{padding:10px;}
+.Leaderboard .tab-content .userListlead.mb-4{margin-bottom:15px !important;}
+.user-image img{height:110px;width:110px;}
+.URank{bottom:15px;height:35px;line-height:35px;right:15px;top:15px;width:35px;}
+.userDetails .media-heading a{font-family:ProximaNovaSemibold;font-size:22px;}
+.filterIcR{font-size:16px;height:40px;line-height:40px;}
+.ListFilter .nav-tabs .nav-item a{padding:8px 20px;}
+}
+
+@media only screen and (min-width:992px) and (max-width:1600px){.CalanderView1 .weekdays li{width:12.6%;font-size:14px;}
+.CalanderView1 .days li{width:12.6%;font-size:14px;padding:5px 0;}
+.days span{border-radius:50%;display:inline-block;height:28px;line-height:28px;padding:0;text-align:center;width:28px;}
+}
+@media(max-width:991px){
+.counterData .rating{text-align:left;}
+#DivSec{padding:0 30px;}
+.usImg{float:left;}
+.UsPdata{float:left;margin-left:15px;margin-top:0px;text-align:left;}
+.profileBg .PrSlider .UsInfo{background:rgba(0, 0, 0, 0) linear-gradient(-90deg, rgba(248, 50, 114, 1) 0%, rgba(63, 142, 252, 1) 100%) repeat scroll 0 0;background:rgba(0, 0, 0, 0) -moz-linear-gradient(-90deg, rgba(248, 50, 114, 1) 0%, rgba(63, 142, 252, 1) 100%) repeat scroll 0 0;background:rgba(0, 0, 0, 0) -webkit-linear-gradient(-90deg, rgba(248, 50, 114, 1) 0%, rgba(63, 142, 252, 1) 100%) repeat scroll 0 0;background:rgba(0, 0, 0, 0) -o-linear-gradient(-90deg, rgba(248, 50, 114, 1) 0%, rgba(63, 142, 252, 1) 100%) repeat scroll 0 0;padding:20px 0 30px;margin-bottom:20px;}
+.btnprc{padding:0 15px;text-align:right;}
+.blockCnt .col-md-6 {
+	-ms-flex: 0 0 100%;
+	flex: 0 0 100%;
+	max-width: 100%;
+}
+.leadList {
+	padding-top: 20px;
+}
+.filterFixed {
+	position: static;
+}
+.btn-groups {
+	position: static;
+	margin-top: 30px !important;
+}
+.BookInfo {
+	margin-top: 40px;
+}
+.align_book{
+	text-align: right;
+}
+.paymentOption {
+	margin-top: 40px;
+}
+}
+@media only screen and (min-width:768px) and (max-width:991px){
+.frp .form-group {
+	display: inline-flex;
+	width: 48%;
+}
+.frp {
+	display: block;
+}
+.btnR {
+	float: left;
+}
+}
+@media only screen and (min-width:768px) and (max-width:1199px){
+.SearchResult .userListlead [class*=col-]{
+	-ms-flex: 0 0 100%;
+	flex: 0 0 100%;
+	max-width: 100%;
+}
+}
+@media only screen and (max-width:430px){
+	.stffBox {
+	 width: 50%; 
+}
+}
+
+/* New Css */
+@media only screen and (max-width:390px){
+	.StaffChoose .pull-right{
+		float: left;
+	}
+}
+@media only screen and (min-width:768px) and (max-width:991px){
+	.StaffChoose .pull-right{
+		float: left;
+	}
+}
+@media only screen and (max-width:345px){
+	.notifications {
+    	min-width: 300px;
+	}
+}
+@media only screen and (max-width: 580px){
+	.NotificationMenu {
+	    right: 14px;
+	    top: 16px;
+	}
+}
+@media only screen and (max-width: 575px){
+	.service_box{
+		width: 100%;
+	}
+	.service_box label{
+    	display: block!important;
+    	max-width: 55%;
+    	margin: 10px auto!important;
+    	text-align: center;
+	}
+	.service_box .sermore{
+		text-align: center;
+		display: block;
+	}
+	.userDetails_min .bkBtn{
+		text-align: center;
+	}
+	.counterData .rating_center{
+		text-align: center;
+	}
+}
+@media only screen and (min-width: 768px){
+	.div_hidden1{
+		display: none;
+	}
+	.filter_btn{
+		display: none;
+	}
+	.btn-close{
+		display: none;
+	}
+}
+@media only screen and (max-width: 767px){
+	.div_hidden{
+		display: none;
+	}
+	.SearchResult .filterSide{
+		display: none;
+	}
+	.btn-close{
+		padding: 0px 5px!important;
+    	background: transparent;
+    	box-shadow: none;
+	}
+	.btn-close:active, .btn-close:focus, .btn-close:hover{
+		box-shadow: none;
+	}
+}
+@media only screen and (max-width: 991px){
+	.SaloonName .BookInfo a.waves-effect, a.waves-light{
+		margin:5px 0px;
+	}
+}
+@media only screen and (min-width:320px) and (max-width:344px){
+	.appDetails .BookInfo .inBox p{
+		font-size: 16px;
+	}
+}
+@media only screen and (min-width:320px) and (max-width:353px){
+	.btnprc {
+    	padding: 0 4px;
+	}
+	.btnprc .btn {
+    	margin: 0 0 10px 0px;
+	}
+}

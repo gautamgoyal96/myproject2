@@ -1,0 +1,18 @@
+<% if(slot.length){ %>
+<div class="timeSlot timeslotBook text-left" id="timeSlot">
+<%
+i=0;
+slot.forEach(function(rs) {
+
+ %>
+
+  <span>
+    <input id="<%= i %>" type="radio" name="timeslot" class="timeslot" disabled>
+    <label for="<%= i %>" style="cursor:default !important;"><%= rs %></label>
+  </span>
+
+
+<% i++;}); %>
+</div>
+<% }%> 
+

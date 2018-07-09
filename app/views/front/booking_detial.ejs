@@ -1,0 +1,1171 @@
+<% include ./header %> 
+<div class="header-margin"></div>
+
+<div class="MainWrapper">
+    <section class="booksec sec-pad">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="booking_bg">
+              <div class="userListlead">
+                <div class="userDetails">
+                  <div class="media">
+                    <div class="media-left">
+                      <div class="user-image">
+                        <a href="/profile?id=<%= cryptr.encrypt(artist._id); %>" target="_self">
+                          <img src="<%= artist.profileImage %>" class="img-responsive">
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-body">
+                      <div class="row vertical-align">
+                        <div class="col-md-12">
+                          <h4 class="media-heading">
+                            <a href="/profile?id=<%= cryptr.encrypt(artist._id); %>"><%= artist.userName %></a>
+                          </h4>
+                          <div class="ratingBox">
+                            <ul class="rating inline-ul">
+                                    <% count = artist.ratingCount;
+                            for(i=1;i<=count;i++){ %>
+                            <li> <i class="fa fa-star amber-text"></i></li> 
+                          <% } minCount = 5-count; 
+                            for(j=1;j<=minCount;j++){ 
+                          %>
+                            <li> <i class="fa fa-star"></i></li> 
+                          <% } %>
+                            </ul>
+                          </div>
+                          <p class="paraText">
+                            <span>
+                              <i class="fa fa-map-pin"></i>
+                            </span>  <%= artist.distance %> Miles</p>
+                        </div>
+                       <!-- <div class="col-md-4 text-right">
+                          <a class="btn btn-theme btn-maxWidth">Follow</a>
+                          <a class="btn btn-theme btn-maxWidth">Message</a>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="book_information">
+                <form>
+                  <div class="callBlock">
+                    <div class="outcalloption form-lights">
+                    <% if(serviceType!=1){ %>
+                      <div class="Check">
+                        <input type="checkbox" id="outcall" value="outCallPrice" onclick="mainServiceGet('');" name="serviceType" <%= checkServiceType ? 'checked' : '' %>  <%= serviceType ? 'checked disabled' : '' %>>
+                        <label for="outcall">Outcall</label>
+                      </div>
+                    <% } %>  
+                    </div>
+
+                    <input class="form-control" type="hidden" id="dt_due" value="<%= bookingDate%>">
+
+                   
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                      <div class="TimeSl" id="accordion" role="tablist" aria-multiselectable="true">
+                       
+                        <%
+                              i = 1;
+                               categorydata.forEach(function(rs) { %>
+
+                                <div class="card hidden" id="<%= i %>">
+                                  <div class="card-header" role="tab">
+                                    <h5 class="mb-0">
+                                      <a data-toggle="collapse"  href="#collapseOne<%= i %>" aria-expanded="true" aria-controls="collapseOne">
+                                        <%= rs.serviceName %>
+                                      </a>
+                                    </h5>
+                                  </div>
+                                      <div id="collapseOne<%= i %>" class="collapse <% if((rs.serviceId==category) || (i==1) ){ %>show <% }%>" role="tabpanel">
+                                        <%a = 1;rs.subcategory.forEach(function(res) { 
+                                           if(artist._id==res.artistId && res.status==1 && res.deleteStatus==1){
+                                        %>
+                                            <div class="acclist hidden" id="<%= rs.serviceId %><%= a %>">
+                                              <div class="acclist-box">
+                                                <div class="">
+                                                    <input type="radio" id="checkbox<%= res.subServiceId %><%= rs.serviceId %>" name="servicselect">
+                                                    <label for="checkbox<%= res.subServiceId %><%= rs.serviceId %>" class="checkbox<%= res._id %><%= rs._id %> <% if(i==1 && a==1){ %>first <% }%> acc_headding check<%= res.subServiceId %><%= rs.serviceId %>" onclick="subservices('<%= res.subServiceId %>','<%= rs.serviceId %>');">
+                                                     <%= res.subServiceName %>
+                                                    </label>
+                                                </div>
+                                              </div>
+                                            </div> 
+
+                                                <% 
+                                                  var e= 1;
+                                                service = rs.artistServices; 
+                                                   for (s = 0 ; s < service.length ; s++) { 
+                                                   if(res.subServiceId==service[s].subserviceId && service[s].artistId == res.artistId){
+                                                   if(checkServiceType!="2"){
+                                                      
+                                                      var  priceCheck = service[s].inCallPrice;
+
+                                                   }else{
+
+                                                    var  priceCheck = service[s].outCallPrice;
+
+                                                   } %>
+
+                                                       <%
+                                                      if(priceCheck!="" & priceCheck!='0' & priceCheck!='00' & priceCheck!="0.0" & priceCheck!="0.00"){ 
+                                                        var e = 0;
+                                                      %>
+
+                                                    <script>
+                                                    $("#<%= rs.serviceId %><%= a %>").show();
+                                                  </script> 
+                                                   <% } %>  
+
+                                                     <%
+                                                      if(e==0){ 
+                                                      %>
+                                                    <script>
+                                                    $("#<%= i %>").show();
+                                                  </script> 
+                                                 <% } %> 
+
+                                             <% }} %>
+                                        <% a++;}}); %>  
+                             
+                                      </div>
+                                </div>
+
+                               
+                              <% i++;}); %>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 ">
+                      <div class="SelectSubItem stffSelection  csSelect">
+                       <label>Select services</label>
+                        <select  id="result" onchange="artiststaff(this.value);">
+                          <option value="" >Select services</option>
+                        </select>
+                      </div>
+                      <% if(artist.businessType=="business"){ %>
+
+                        <div class="SelectSubItem stffSelection  csSelect">
+                          <label>Select Staff</label>
+                          <select id="staff" onchange="timeSlot1();" disabled>
+                           <option value="" >Select Services First</option>
+                          </select>
+                        </div>
+                        
+                      <% } %>
+
+                      <input type="hidden" id="category" value="<%= category %>">             
+                      <input type="hidden" id="subcategory" value="<%= subcategory %>">
+                      <input type="hidden" id="serviceTime" value="<%= completionTime %>">
+                      <input type="hidden" id="currentSlot">
+                      <input type="hidden" id="endSlot">
+                      <input type="hidden" id="serviceTypeCheck" value="<%= serviceType %>">
+                      <input type="hidden" id="isBooking" value="<%= isBooking %>">
+
+
+                      <input type="hidden" id="BookingId" value="<%= BookingId %>">
+                      <input type="hidden" id="BookingStime" value="<%= BookingTime %>">
+                      <input type="hidden" id="BookingEtime" value="">
+                      <input type="hidden" id="BookingService" value="<%= artistServiceId %>">
+                      <input type="hidden" id="BookingStaff" value="<%= staff %>">
+                      <input type="hidden" id="BookingDate" value="<%= bookingDate %>">
+                      <input type="hidden" id="BookingCount" value="<%= bookingCount %>">
+                      <input type="hidden" id="bookingPrice">
+                      <input type="hidden" id="bookingServiceTitle">
+                      <input type="hidden" id="bookingServiceTime">
+                      <div class="customMyCalender">
+                        <div class="" id="datetimepicker12">
+                        </div>
+                       
+                      </div>
+                      <div class="timeSlot" id="timeSlot">
+
+                     </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                      <div class="BookInfo align_book">
+                        <div class="inBox">
+                          <h2>Booking Date and Time :</h2>
+                          <p id="bookingDate"></p>
+                        </div>
+                        <div class="inBox">
+                          <h2>Location :</h2>
+                          <p><%= artist.address %></p>
+                        </div>
+                        <div class="inBox">
+                          <h2>Services :</h2>
+                          <p id="select_service">
+                          </p>
+                        </div>
+                      </div>
+                      <div class="btn-groups mt-5 serviceData">
+                      <a href="JavaScript:void(0);" class="btn btn-back btn-maxWidth waves-effect waves-light" id ="m-btn" onclick="serviceBookingAdd(2);">Add</a>
+
+                      <a href="JavaScript:void(0);" class="btn btn-back btn-maxWidth waves-effect waves-light" id="next" onclick="serviceBookingAdd(1);">Next</a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <% include ./footer %> 
+
+      <div class="modal fade" id="messageconf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header light-blue darken-3 white-text p-2" style=" margin: -1rem 1rem 1rem !important;">
+                    <h4 class="title">Alert</h4>
+                   
+                </div>
+                <div class="modal-body mb-0">
+                
+
+                    <div class="md-form form-sm ">
+                          <p style="text-align: center;font-size: 18px;font-weight: normal;" id="messageconsfirm"></p>
+                    </div>
+                   <div class="text-center mt-1-half">
+                        <button class="btn btn-theme mb-1"  type="button" data-dismiss="modal" aria-label="Close">Add more</button>
+                        <a class="btn btn-theme mb-1"  href="/booking/<%= cryptr.encrypt(artist._id) %>/<%= cryptr.encrypt(artist.distance) %>">Next</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   <script type="text/javascript">
+
+     function serviceBookingAdd(btnType){
+
+        var outcall = $('input[name="serviceType"]:checked').val();
+        var staff = $("#staff").val();
+        var category = $("#category").val();
+        var subcategory = $("#subcategory").val();
+        var artistServices = $("#result").val();
+        var serviceTime = $("#serviceTime").val();
+        var bookingDate = $("#dt_due").val();
+        var timeSlot = $('#currentSlot').val();
+        var endSlot = $('#endSlot').val();
+        var rew = bookingDate.split("/");
+        var newDate = rew[2]+'-'+rew[1]+'-'+rew[0];
+        var type = outcall ? 2 : 1;
+        var message = outcall ? "You already selected incall services, that's why you can't select outcall service" : "You already selected outcall services, that's why you can't select incall service";
+        var sType = $("#serviceTypeCheck").val();
+        var isBooking = $("#isBooking").val();
+        var bookingPrice = $("#bookingPrice").val();
+
+        if((btnType==1) && (isBooking==1) && (artistServices=='' || timeSlot=='')){
+
+            var message = "Do you want to add more services?";
+
+             confirmBox(message)
+
+
+        }else{
+
+
+            var artistServiceId = $("#BookingService").val();
+            var BookingId = '';
+           if(artistServiceId==artistServices){
+
+               var BookingId = $("#BookingId").val();
+
+
+            }
+                var isDisabled = $('#staff').prop('disabled');
+            if(sType==0){
+
+                $("#serviceTypeCheck").val(type);
+            }
+            var sType = $("#serviceTypeCheck").val();
+            if(artistServices==''){
+
+               errorMsg("Please Select Service");
+
+            }else if(isDisabled==false && staff==''){
+
+
+                errorMsg("Please Select staff");
+
+
+            }else if(timeSlot==''){
+
+
+                errorMsg("Please Select Time slot");
+
+
+            }else if(sType!=type){
+
+               errorMsg(message);
+            
+            }else{ 
+
+
+                $("#serviceTypeCheck").val(type);
+
+                var artistId = '<%= artist._id %>';
+                var businessType = '<%= artist.businessType %>';
+
+                if(staff==artistId && businessType=="business"){
+
+                  staff = '0';
+                }
+
+                var data = {
+                outcall:outcall ? 2 : 1,
+                staff:staff,
+                category:category,
+                subcategory:subcategory,
+                artistServices:artistServices,
+                serviceTime:serviceTime,
+                bookingDate:newDate,
+                timeSlot:timeSlot,
+                endSlot:endSlot,
+                artistId:'<%= artist._id %>',
+                BookingId: BookingId,
+                bookingPrice: bookingPrice
+                }
+
+                var url = '/serviceBookingAdd';
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data:data,              
+                  cache: false,
+                  beforeSend: function() {
+                          
+                    $('#m-btn').addClass('disabled');
+                    $('#next').addClass('disabled');
+                    $(".loading").show();
+
+
+                  },                    
+                  success: function(data){
+                    $(".loading").hide();
+                    localStorage.setItem("bookingExpireTime",addMinutes(timeConvert(formatAMPM()),5));
+
+
+                   $('#m-btn').removeClass('disabled');
+                   $('#next').removeClass('disabled');
+
+                   if(btnType==1 && (data.status=="success" || data.status=="updated")){
+
+                        window.location.href = '/booking/<%= cryptr.encrypt(artist._id) %>/<%= cryptr.encrypt(artist.distance) %>';
+                    }
+
+                    if(outcall!='outCallPrice'){
+
+                        $(".Check").hide();
+
+                    }else{
+
+                      $("#outcall").attr('checked','checked');
+                      $("#outcall").attr('disabled',true);
+
+                    }
+
+                     
+                      $("#result").val('');
+                      $("#isBooking").val(1);
+                      $("#staff").html('');
+                      $("#staff").attr("disabled","disabled");
+                      $("#timeSlot").html('');
+                      $('#currentSlot').val('');
+                      $('#endSlot').val('');
+                      $('#select_service').html("");
+
+
+                    if(data.status=="success"){
+                        
+
+                    }else if(data.status=="updated"){
+
+                       // window.location.href = '/booking?id=<%= artist._id %>&distance=<%= artist.distance %>';
+                    }
+
+                    if(data.message && btnType!=1){
+
+                      errorMsg(data.message);
+
+                    }
+
+     
+
+                            
+                  }
+                });
+            }
+      }
+
+    }
+
+
+function confirmBox(message){
+
+    $("#messageconf").modal({backdrop: 'static'});  
+    $("#messageconsfirm").html(message);
+}
+
+
+function currentTime() {
+
+      var date    = new Date();
+      var hours   = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm    = hours >= 12 ? 'PM' : 'AM';
+      hours       = hours % 12;
+      hours       = hours ? hours : 12; // the hour '0' should be '12'
+      minutes     = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+   
+}
+
+
+
+    function setServices(t){
+
+
+
+      if(t.value){
+
+
+      var price = $(t).find("option:selected").text();
+      var pr = price.split("£");
+      $("#bookingPrice").val(pr[1]);
+      $('#select_service').html(pr[0]+'<span>&#163;'+pr[1]+'</span>');
+
+      }else{
+
+        $('#select_service').html("");
+
+      }
+
+    }
+        $(function () {
+
+          var bDate = '<%= bookingDate %>';
+          var BookingTime = '<%= BookingTime %>';
+  if(bDate){
+
+      var d = new Date(bDate+" 23:49:34");
+
+  }else{
+
+      var d = new Date();
+
+  }
+            $('#datetimepicker12').datetimepicker({
+                inline: true,
+                format: 'DD/MM/YYYY',
+                minDate: '<%= currentDate %>',
+                defaultDate: new Date(d),
+                showTodayButton: true
+
+            }).on('dp.change', function(e) {
+
+           $('#dt_due').val(e.date.format('DD/MM/YYYY'));
+          var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+
+var dda = new Date(e.date.format('YYYY-MM-DD'));
+
+           var d = e.date.format('DD');
+           var m = monthNames[dda.getMonth()];
+           var y = e.date.format('YYYY');
+           $("#bookingDate").html(e.date.format('DD/MM/YYYY'));
+
+         var isDisabled = $('#staff').prop('disabled');
+
+         var service = $("#result").val();
+         var staff = $("#staff").val();
+
+          if(service){
+
+          if(isDisabled!=false){
+
+              timeSlot();
+
+          }else{
+
+            if(staff){
+
+               timeSlot();
+
+            }else{
+
+                errorMsg("Please Select Staff");
+
+
+            }
+
+          }
+            
+            
+          
+          }else{
+
+          errorMsg("Please Select Service");
+
+
+          }
+ 
+          });
+   });
+
+   $("#today").click(function(){
+  
+    $(".today").click();
+});
+
+selectedDate();
+function selectedDate(){
+
+  var bDate = '<%= bookingDate %>';
+  var BookingTime = '<%= BookingTime %>';
+
+  if(bDate){
+
+      var d = new Date(bDate);
+
+  }else{
+
+      var d = new Date();
+
+  }
+
+
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+
+    var output = (day<10 ? '0' : '') + day + '/' +  (month<10 ? '0' : '') + month + '/' + d.getFullYear();
+     $('#dt_due').val(output);
+
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+   var m = monthNames[d.getMonth()];
+   var y = d.getFullYear();
+   if(BookingTime){
+
+
+        var da = output+", "+BookingTime;
+       $("#bookingDate").html(da);
+
+  }else{
+
+      $("#bookingDate").html(output);
+
+  }
+
+}
+</script>
+  <script type="text/javascript">
+
+  function timeSlot1(){
+
+   var staff = $("#staff").val();
+
+    if(staff==""){
+
+      $("#timeSlot").html('');
+
+    }else{
+
+           var t = $("#result").val();
+          var artistId = '<%= artist._id %>';
+
+           var outcall = $("#outcall:checked").val();
+      var call = 'inCallPrice';
+      if(outcall){
+
+        var call = outcall;
+        
+      }
+
+        var url = '/staffdetail?staff='+staff+'&artistId='+artistId+'&artistServiceId='+t+'&call='+call;
+          $.ajax({
+            url: url,
+            type: "get",
+            data:{page: url},              
+            cache: false,   
+            beforeSend: function() {
+              $(".loading").show();
+            },              
+            success: function(data){
+
+              $(".loading").hide();
+
+            if(data.data){
+
+                    var rs = data.data;  
+                     var price = Number(rs.outCallPrice).toFixed(2);
+                    if(call=='inCallPrice'){
+
+                      var price = Number(rs.inCallPrice).toFixed(2);
+
+                    }
+                    $("#serviceTime").val(rs.completionTime);
+                     var serviceTime = parseTime($("#serviceTime").val());
+                      var preprationTime = parseTime("<%= artist.inCallpreprationTime %>");
+
+                        if($("#outcall:checked").val()){
+
+                            var preprationTime = parseTime("<%= artist.outCallpreprationTime %>");
+
+                      }
+
+                      var newSTime = Number(preprationTime)+ Number(serviceTime);
+                     var newSTime = Number(preprationTime)+ Number(serviceTime);
+                    var time = rs.completionTime;
+                    var t = time.split(':');
+                    var h = t[0]!=0 ? t[0]+" hrs " : '';
+                    var m = t[1]+" min";
+                    var title =  $("#bookingServiceTitle").val();
+                    var time = h+m;
+                    $('#select_service').html(title+'<span>&#163;'+price+ ' ('+time+')</span>');
+                   $("#bookingPrice").val(price);
+              }
+
+
+               timeSlot();
+
+
+
+
+            }
+          });
+
+    }
+
+
+  }
+
+  setInterval(function(){ 
+
+   var service = $("#result").val();
+   var staff = $("#staff").val();
+   var isDisabled = $('#staff').prop('disabled');
+   var time =  $("#timeSlot").html();
+   
+   if(time){
+
+        if(service){
+
+        if(isDisabled!=false){
+
+            timeSlot();
+
+        }else{
+
+          if(staff){
+
+            timeSlot();
+
+          }
+        }          
+          
+        
+        }
+    }
+
+   }, 40000);
+
+  function timeSlot(){
+
+
+        var date = $("#dt_due").val();
+        var rew = date.split("/");
+        var newDate = rew[1]+'/'+rew[0]+'/'+rew[2];
+        var d = new Date(newDate);
+        var day = d.getDay();
+        var day =  day!=0 ? day - Number(1) : 6 ; 
+        var curentTime = currentTime();
+        var serviceTime = parseTime($("#serviceTime").val());
+        var preprationTime = parseTime("<%= artist.inCallpreprationTime %>");
+        var artistServiceId = $("#BookingService").val();
+        var BookingTime =    $("#BookingStime").val();
+        var bookingDate = $("#BookingDate").val();
+        var BookingId =   $("#BookingId").val();
+        var bookingCount =  $("#BookingCount").val();
+        var staff =  $("#staff").val() ? $("#staff").val() : '';
+        var BookingStaff =  $("#BookingStaff").val() ? $("#BookingStaff").val() : '';
+        var t = $("#result").val();
+        var artistId = '<%= artist._id %>';
+        var businessType = '<%= artist.businessType %>';
+
+        if(staff==artistId && businessType=="business"){
+
+          staff = 0;
+        }
+       var type = 'edit';
+        if(artistServiceId!=t && t!=''){
+
+                var type = 'add';
+
+        }
+
+        if($("#outcall:checked").val()){
+
+              var preprationTime = parseTime("<%= artist.outCallpreprationTime %>");
+
+        }
+
+        var newSTime = Number(preprationTime)+ Number(serviceTime);
+        console.log($("#serviceTime").val());
+        var url = '/artistslot?day='+day+"&date="+date+"&curentTime="+curentTime+"&serviceTime="+newSTime+'&type='+type+'&BookingTime='+BookingTime+'&bookingDate='+bookingDate+'&BookingId='+BookingId+'&bookingCount='+bookingCount+'&artistId=<%= artist._id %>'+'&artistType=<%= artist.businessType %>&staffId='+staff+'&BookingStaff='+BookingStaff;
+          $.ajax({
+            url: url,
+            type: "get",
+            data:{page: url},              
+            cache: false, 
+            beforeSend: function() {
+              $(".loading").show();
+            },                
+            success: function(data){
+
+                $(".loading").hide();
+
+                if(data.status=="fail"){
+
+                  window.location.href = "/login";
+
+
+                }else{
+
+                    $('#currentSlot').val('');
+                    $('#endSlot').val('');
+                    $("#timeSlot").html(data);
+                }
+
+
+                      
+            }
+          });
+
+  }
+  function artiststaff(t){
+
+  if(t){
+
+          var artistId = '<%= artist._id %>';
+     var url = '/bookingServiceDetail?id='+t+'&artistId='+artistId;
+     $.ajax({
+        url: url,
+        type: "get",
+        data:{page: url},              
+        cache: false,                 
+        success: function(data){
+
+
+            if(data.data){
+
+              var rd = data.data;
+              $("#BookingId").val(rd._id);
+              $("#BookingStime").val(rd.startTime);
+              $("#BookingEtime").val(rd.endTime);
+              $("#BookingService").val(rd.artistServiceId);
+              $("#BookingStaff").val(rd.staff);
+              $("#BookingDate").val(rd.bookingDate);
+              $("#BookingCount").val(data.count);
+
+            }else{
+
+              $("#BookingId").val('');
+              $("#BookingStime").val('');
+              $("#BookingEtime").val('');
+              $("#BookingService").val('');
+              $("#BookingStaff").val('');
+              $("#BookingDate").val('');
+              $("#BookingCount").val('');
+            }
+
+        }
+      });
+
+
+
+
+      var outcall = $("#outcall:checked").val();
+      var call = 'inCallPrice';
+      if(outcall){
+
+        var call = outcall;
+        
+      }
+
+      var url = '/ArtistServiceDetail?id='+t;
+     $.ajax({
+        url: url,
+        type: "get",
+        data:{page: url},              
+        cache: false, 
+        beforeSend: function() {
+            $(".loading").show();
+        },                
+        success: function(data){
+          $(".loading").hide();
+          var rs = data.data;
+          $("#serviceTime").val(rs.completionTime);
+            var price = Number(rs.outCallPrice).toFixed(2);
+
+
+              if(call=='inCallPrice'){
+
+                var price = Number(rs.inCallPrice).toFixed(2);
+
+
+              }
+
+              var time = rs.completionTime;
+              var t = time.split(':');
+              var h = t[0]!=0 ? t[0]+" hrs " : '';
+              var m = t[1]+" min";
+            $('#select_service').html(rs.title+'<span>&#163;'+price+ ' ('+h+m +')</span>');
+            $("#bookingPrice").val(price);
+            $("#bookingServiceTitle").val(rs.title);
+            $("#bookingServiceTime").val(h+m);
+
+              var businessType = "<%= artist.businessType %>";
+              if(businessType!="business"){
+
+                  timeSlot();
+              
+              }
+        }
+      });
+
+  
+
+
+      var businessType = "<%= artist.businessType %>";
+          if(businessType=="business"){
+
+              var catId = $("#category").val();
+              var id = $("#subcategory").val();
+              $("#staff").removeAttr("disabled");
+              var artistServiceId =  $("#BookingService").val();
+              var staff = '';
+              if(artistServiceId==t){
+
+                  var staff =  $("#BookingStaff").val();
+
+
+              }
+
+               var type = 'edit';
+                if(artistServiceId!=t && t!=''){
+
+                        var type = 'add';
+
+                }
+
+                var url = '/artistStaff?id='+id+'&catId='+catId+'&call='+call+'&staff='+staff+'&artistId='+artistId+'&artistServiceId='+t+'&type='+type+'&businessType='+businessType;
+                $.ajax({
+                  url: url,
+                  type: "get",
+                  data:{page: url},              
+                  cache: false,
+                  beforeSend: function() {
+                      $(".loading").show();
+                  },                 
+                  success: function(data){
+                      $(".loading").hide();
+                      $("#staff").html(data);
+                      $('#currentSlot').val('');
+                      $('#endSlot').val('');
+                      $("#timeSlot").html('');
+
+                      if(artistServiceId==t){
+
+                                 var url = '/staffdetail?staff='+staff+'&artistId='+artistId+'&artistServiceId='+t+'&call='+call;
+                                      $.ajax({
+                                        url: url,
+                                        type: "get",
+                                        data:{page: url},              
+                                        cache: false,                 
+                                        success: function(data){
+
+                                            var rs = data.data;  
+                                            var price = rs.outCallPrice;
+                                            if(call=='inCallPrice'){
+
+                                              var price = rs.inCallPrice;
+
+                                            }
+
+                                            if(rs){
+
+                                                $("#serviceTime").val(rs.completionTime);
+                                                 var serviceTime = parseTime($("#serviceTime").val());
+                                                  var preprationTime = parseTime("<%= artist.inCallpreprationTime %>");
+
+                                                    if($("#outcall:checked").val()){
+
+                                                        var preprationTime = parseTime("<%= artist.outCallpreprationTime %>");
+
+                                                  }
+
+                                                  var newSTime = Number(preprationTime)+ Number(serviceTime);
+                                                 var newSTime = Number(preprationTime)+ Number(serviceTime);
+                                                var time = rs.completionTime;
+                                                var t = time.split(':');
+                                                var h = t[0]!=0 ? t[0]+" hrs " : '';
+                                                var m = t[1]+" min";
+                                                var title =  $("#bookingServiceTitle").val();
+                                                var time = h+m;
+                                                $('#select_service').html(title+'<span>&#163;'+price+ ' ('+time+')</span>');
+                                               $("#bookingPrice").val(price);
+
+
+                                                 timeSlot();
+                                        }
+
+
+
+                                        }
+                               });
+
+
+
+                      }
+
+
+                            
+                  }
+                });
+          
+          }
+  }else{
+
+ $("#staff").html('');
+ $("#staff").attr("disabled","disabled");
+ $("#timeSlot").html('');
+$('#select_service').html("");
+
+
+  }
+
+
+  }
+
+
+      var cat  = '<%= category %>';
+      var subcategory  = '<%= subcategory %>';
+      if(cat==''){
+       $( ".first" ).click();
+
+      }else{
+
+          $(".check"+subcategory+cat).click();
+
+      }
+
+
+function subservices(id="",catId=""){
+
+
+
+if(id==""){
+
+  var catId = $("#category").val();
+  var id = $("#subcategory").val();
+}
+
+$('#select_service').html('');
+var outcall = $("#outcall:checked").val();
+var call = 'inCallPrice';
+var artistServiceId = '<%= artistServiceId %>';
+if(outcall){
+
+var call = outcall;
+  
+}
+
+    var url = '/artistsubservices?id='+id+'&catId='+catId+'&call='+call+'&artistServiceId='+artistServiceId;
+    $.ajax({
+      url: url,
+      type: "get",
+      data:{page: url},              
+      cache: false,  
+      beforeSend: function() {
+            $(".loading").show();
+      },               
+      success: function(data){
+       
+        $(".loading").hide();
+        $("#result").html(data);
+        $("#category").val(catId);
+        $("#subcategory").val(id);
+        $("#staff").html('');
+        $("#staff").attr("disabled","disabled");
+        $("#timeSlot").html('');
+        var bookingDate = $("#bookingDate").html();
+        b = bookingDate.split(",");
+        $("#bookingDate").html(b[0]);
+        $('#currentSlot').val('');
+        $('#endSlot').val('');
+        $("#timeSlot").html('');
+       var BookingService = $("#BookingService").val();
+       var service = $("#result").val();
+       if(BookingService!='' && service!=''){
+          $("#BookingService").val(artistServiceId);
+          artiststaff(artistServiceId);
+       }
+
+      }
+    });
+
+}
+
+
+
+function selectslot(e){
+var currentSlot = e.value;
+$("#currentSlot").val(currentSlot);
+var currentId = $(e).data('vali');
+
+ var serviceTime = parseTime($("#serviceTime").val());
+var preprationTime = parseTime("<%= artist.inCallpreprationTime %>");
+
+      if($("#outcall:checked").val()){
+
+            var preprationTime = parseTime("<%= artist.outCallpreprationTime %>");
+
+      }
+var serviceTime = Number(preprationTime)+ Number(serviceTime);
+
+ var c = Number(currentId)+1;
+ var end = Number(currentId)+serviceTime;
+
+
+
+ var end_time = $("#"+end).val();
+
+ var s = serviceTime*10;
+
+var endDataTime = moment.utc(currentSlot,'hh:mm A').add(s,'minutes').format('hh:mm A');
+
+$("#endSlot").val(endDataTime);
+
+
+
+
+ var end = timeDiffrence(currentSlot,end_time); 
+
+    var bookingDate = $("#bookingDate").html();
+
+     b = bookingDate.split(",");
+
+     $("#bookingDate").html(b[0]+", "+currentSlot);
+
+
+}
+
+function parseTime(s) {
+
+  var c = s.split(':');
+  return parseInt(c[0]) * 60/10 + parseInt(c[1])/10;
+
+}
+
+function timeConvert(otime){
+  
+      var ohours = Number(otime.match(/^(\d+)/)[1]);
+      var ominutes = Number(otime.match(/:(\d+)/)[1]);
+      var AMPM = otime.match(/\s(.*)$/)[1];
+      if(AMPM == "PM" && ohours<12) ohours = ohours+12;
+      if(AMPM == "AM" && ohours==12) ohours = ohours-12;
+      var osHours = ohours.toString();
+      var osMinutes = ominutes.toString();
+      if(ohours<10) osHours = "0" + osHours;
+      if(ominutes<10) osMinutes = "0" + osMinutes;
+     return osHours + ":" + osMinutes;
+}
+
+function timeDiffrence(start,end){
+
+    var day = '1 1 1970 '
+    diff_in_min = ( Date.parse(day + end) - Date.parse(day + start) )/ 1000 / 60;
+    return diff_in_min;
+
+
+}
+
+
+
+   function formatAMPM() {
+          var date    = new Date();
+          var hours   = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm    = hours >= 12 ? 'PM' : 'AM';
+          hours       = hours % 12;
+          hours       = hours ? hours : 12; // the hour '0' should be '12'
+          minutes     = minutes < 10 ? '0'+minutes : minutes;
+          var strTime = hours + ':' + minutes + ' ' + ampm;
+          return strTime;
+   
+    }
+
+
+ function addMinutes(time, minsToAdd) {
+
+  function D(J){ return (J<10? '0':'') + J;};
+  var piece = time.split(':');
+  var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+
+  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);  
+
+}  
+
+function mainServiceGet(){
+  
+    var outcall = $("#outcall:checked").val();
+    var category = $("#category").val();
+    var subcategory = $("#subcategory").val();
+    var type = outcall ? 2 : 1;
+     var url = '/artistmainsubservices?checkServiceType='+type+'&category='+category+'&subcategory='+subcategory;
+    $.ajax({
+      url: url,
+      type: "get",
+      data:{page: url},              
+      cache: false, 
+      beforeSend: function() {
+        $(".loading").show();
+      },                
+      success: function(data){
+          $(".loading").hide(); 
+          $("#accordion").html(data);
+          subservices();
+
+      }
+
+    });
+
+}
+
+</script>
+
+<% if(artistServiceId){ %>
+   <script type="text/javascript">
+artiststaff('<%= artistServiceId %>');
+</script>
+<% if(staff){ %>
+   <script type="text/javascript">
+
+       setTimeout(function(){ timeSlot(); }, 500);
+</script>
+<% } %> 
+
+<% } %> 
+

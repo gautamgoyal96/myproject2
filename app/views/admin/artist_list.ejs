@@ -1,0 +1,90 @@
+ <div class="box-body table-responsive no-padding" id="ajaxdata">  
+ <table class="table table-hover">
+                            <tr>
+                                <th>S.no</th>
+                                <th>Profile Image</th>
+                                <th>Name</th>
+                                <th>Business Name</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Location</th>
+                                <th>Business Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                            <% 
+                            
+                             var startTime = (Number(currentPage)-1)*10;
+                             i=1+startTime;
+                             if(categorydata){
+                             categorydata.forEach(function(rs) { %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td>  <img src="<%= rs.profileImage %>" class="img-circle" width="60" height="60" alt="<%= rs.userName %>" title="<%= rs.userName %>"></td>
+                                <td><%= rs.firstName %> <%= rs.lastName %></td>
+                                <td><%= rs.businessName %></td>
+                                <td><%= rs.email %></td>
+                                <td><%= rs.gender ? rs.gender : 'NA' %></td>
+                                <td><%= rs.address ? rs.address : 'NA' %></td>   
+                                <td><span class="label <%= rs.businessType=='business' ? 'label-info' : 'label-warning' %>"><%= rs.businessType=='business' ? 'Business' : 'Independent' %></span></td>
+
+                                <td><span class="label <%= rs.status==1 ? 'label-success' : 'label-danger' %>"><%= rs.status==1 ? 'Active' : 'Inactive' %></span></td>
+
+                                <td>
+                                <% if(rs.status==1){  %>
+                                    <a href="/artistStatus/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(0) %>" class="btn btn-info" title="Inactive"  onclick="$(this).attr('disabled','true');"><span class="glyphicon glyphicon-remove"></span></a>
+
+
+                                <% }else{ %>
+
+                                    <a href="/artistStatus/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(1) %>" class="btn btn-info" title="Active"  onclick="$(this).attr('disabled','true');"><span class="glyphicon glyphicon-ok"></span></a>
+
+                                <% } %>
+
+                                   <a href="/artistview/<%= cryptr.encrypt(rs._id) %>" class="btn artist-btn btn-success" title="view"><span class="fa fa-eye"></span></a>
+
+                        
+                                </td>
+                            </tr>
+                            <% i++; });}else{ %>
+                             <tr><td colspan="10" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="ajax_fun('<%= pageCount %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+
+    

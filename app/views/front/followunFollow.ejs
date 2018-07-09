@@ -1,0 +1,5 @@
+      <%  if(status==true){ %>
+          <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= id %>','0','<%= rId %>');" title="Unfollow">Unfollow</button>
+          <% }else{ %>
+           <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= id %>','1','<%= rId %>');" title="follow">Follow</button>
+          <% } %>

@@ -1,0 +1,572 @@
+<% include ./header %>
+<link href="/front/js/lib/css/emoji.css" rel="stylesheet">
+
+  <%  
+
+  if(user.userType=="artist"){
+
+       buser = rs[0].userDetail[0];
+   
+   }else{
+
+       buser = rs[0].artistDetail[0];
+
+   }
+%>
+<script type="text/javascript">
+  $("#complete_booking").hide();
+</script>
+ <div class="header-margin"></div>
+  <div class="MainWrapper">
+    <section class="booksec sec-pad">
+      <div class="container">
+            <div class="booking_bg">
+              <div class="book_information">
+                <form>
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                      <div class="appDetails">
+                      <div class="SaloonName appiomInfo">
+                        <a href="/profile?id=<%= cryptr.encrypt(buser._id); %>" target="_self">
+                          <img src="<%= buser.profileImage %>" class="img-responsive">
+                          <span><%= buser.userName %></span>
+                        </a>
+                      </div>
+                      <%
+                      var today = new Date(rs[0].bookingDate);
+                    var bookingDate = moment(rs[0].bookingDate).format("DD/MM/YYYY")+", "+rs[0].bookingTime;
+                    var totalPrice = Number(rs[0].totalPrice);
+                      %>
+                      <div class="BookInfo">
+                        <div class="inBox">
+                          <h2>Appointment Date and Time :</h2>
+                          <p id="bookingDate"><%= bookingDate %></p>
+                        </div>
+                        <div class="inBox">
+                          <h2>Location :</h2>
+                          <p><%= rs[0].location %></p>
+                        </div>
+                        <% if(rs[0].paymentStatus==1){ %>
+                          <div class="inBox">
+                            <h2>Transaction Id :</h2>
+                            <p><%= rs[0].transjectionId %></p>
+                          </div>
+                        <% } %>
+                          <div class="inBox">
+                            <h2>Payment Type :</h2>
+                            <p><%= (rs[0].paymentType=='3') ? 'Cash' : 'Online' %></p>
+                          </div>
+                          <div class="inBox">
+                          <h2>Booking Status :</h2>
+                          <% if(user.userType=="user"){ %>
+                            <p><%= (rs[0].bookStatus==0) ? 'Awaiting confirmation' : (rs[0].bookStatus==1) ? 'Booking confirmed' : (rs[0].bookStatus==3 && rs[0].paymentStatus=='1') ? 'Booking completed' : (rs[0].bookStatus==2) ? 'Booking cancelled' : 'Payment pending' %></p>
+                          <% }else{ %>
+                            <p><%= (rs[0].bookStatus==3 && rs[0].paymentStatus=='0' && user.userType=="artist") ? 'Payment Pending' : (rs[0].bookStatus==2 && rs[0].paymentStatus=='0' && rs[0].userRating=='0' &&  user.userType=="artist") ? 'Booking cancelled' : (rs[0].bookStatus==1 && rs[0].paymentStatus=='0' && rs[0].userRating=='0' &&  user.userType=="artist") ? 'Booking confirmed' : (rs[0].bookStatus==0 && rs[0].paymentStatus=='0' && rs[0].userRating=='0' &&  user.userType=="artist") ? 'Booking Pending' : 'Booking Completed' %></p>
+
+                          <% } %>
+                        </div>
+                        <div class="detail-chaticon">
+
+                           <a href="#" class="apic" title="chat"><i class="fa fa-comment"></i></a>
+                            <a href="#" class="apic" title="phone"><i class="fa fa-phone"></i></a>
+                            <a href="#" class="apic1" title="location"><i class="fa fa-map-marker"></i></a>
+                            <% if(rs[0].bookStatus!=='0'){ %>
+                           
+
+                            
+                            
+
+                           <% }else if(user.userType=="artist" && (user.businessType!="business" && rs[0].bookingData[0].staff==0) || (user.businessType=="business")){%>
+                              <a class="apic3" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs[0]._id %>',1);" title="Accept"><i class="fa fa-check"></i></a>
+                              <a class="apic2" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs[0]._id %>',2);" title="Reject"><i class="fa fa-close"></i></a>
+                             <a class="apic1"  href="#" title="counter"><i class="fa fa-hourglass"></i></a>
+
+                           <% }%>
+                          
+                          </div>
+
+                         <a class="btn btn-theme hidden" href="JavaScript:void(0);" id="complete_booking" onclick="bookingUpdate('<%= rs[0]._id %>',4,<%= rs[0].paymentType %>);" title="Complete" style="display: none !important;">Complete Booking</a>
+
+                         <% if(rs[0].bookStatus=='0' && user.userType=='user'){ %>
+
+                            <a class="btn btn-theme" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs[0]._id %>',3);" title="Cancel">Cancel Booking</a>
+                         <% } %>
+
+                         <% if(rs[0].bookStatus!=='0'){ if((rs[0].bookStatus!=='2' && rs[0].bookStatus!='3') && ((user.businessType!="business" && rs[0].bookingData[0].staff==0) || (user.businessType=="business"))){ %>
+                             <a class="btn btn-theme" href="JavaScript:void(0);" onclick="bookingUpdate('<%= rs[0]._id %>',3);" title="Cancel">Cancel Booking</a>
+                           <% }}%>
+
+                          <% if(rs[0].bookStatus=='3' && user.userType=="user" && rs[0].paymentStatus=='0') { %>  
+                              <a class="btn btn-theme" href="/payment?id=<%= cryptr.encrypt(rs[0]._id); %>"> Pay</a>
+                            <% } %>  
+
+                              <% if(user.userType=="user" && rs[0].userRating==0 && rs[0].paymentStatus==1) { %>
+                                  <a class="btn btn-theme" href="javascript:void();" onclick="review('<%= cryptr.encrypt(rs[0]._id) %>');">Leave Review</a>                                               
+                              <% }else if(user.userType=="artist" && rs[0].artistRating==0 && rs[0].paymentStatus==1){ %>
+                                <a class="btn btn-theme" href="javascript:void();" onclick="review('<%= cryptr.encrypt(rs[0]._id) %>');">Leave Review</a>  
+                              <% } %>  
+                      </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                      <div class="appServices">
+                        <div class="inBox">
+                          <h2>Services :</h2>
+                        </div>
+
+                          <%
+
+
+                          t = 0;
+
+                          i=0;
+                          j=0;
+                          bookingList = rs[0].bookingData;
+                           bookingList.forEach(function(brs) { 
+
+
+                            artistServicesData.forEach(function(ars) { 
+
+                            if(ars._id==brs.artistServiceId){
+                            var bookingDate = moment(brs.bookingDate).format("DD/MM/YYYY")+", "+brs.startTime;
+                           %>
+
+                        <div class="ServiceApp inBox"  id="book<%= brs._id%>">
+                          <p><%= ars.title %> <span>&#163;<%= Number(brs.bookingPrice).toFixed(2) %></span></p>
+                          <p><%= bookingDate %></p>
+                           <% if(user.businessType=="business"){ %>                                
+                            <div class="StaffChoose">
+                              <div class="pull-left">
+                                <div class="col-md-12">
+                                <p>Assign Staff</p>
+                                <%  
+                                      
+                                     userData.forEach(function(srs) {
+                                        if(brs.staff==srs._id){
+                                     %>
+                                        <span class="staffName"><%= srs.userName %></span>
+
+                                    <% }});%>
+                               <% if(brs.staff==0){ %>
+                                 <span class="staffName">my booking</span>
+                               <% } %>
+                               </div>     
+                              </div>
+                              <% if(rs[0].bookStatus==='0' || rs[0].bookStatus=='1'){ %> 
+                              <div class="pull-right">
+                                <div class="col-md-12">
+                                <a href="JavaScript:void(0);" class="btn btn-theme mt-3" onclick="change('<%= brs._id %>','<%= brs.staff %>','<%= brs.bookingDate %>','<%= brs.startTime %>','<%= brs.artistServiceId %>','<%= ars.completionTime %>','<%= brs.serviceType %>');">Change Staff</a>
+                              </div>
+                              </div>
+                              <% }%> 
+                            </div>
+                          <% }else if(user.businessType!="business"){%>
+                            <div class="StaffChoose">
+                              <div class="pull-left">
+                               <p>Assign Staff</p>
+
+
+                                    <%  iData.forEach(function(srs) {
+                                        if(brs.staff==srs._id){
+                                     %>
+                                        <span class="staffName"><%= srs.userName %></span>
+
+                                <% }});%>
+                                 <% if(brs.staff==0 && user.userType=="artist"){ %>
+                                 <span class="staffName">my booking</span>
+                               <% }else if(brs.staff==0 && user.userType=="user"){ %>
+                                <span class="staffName"><%= buser.userName %></span>
+                               <% } %>   
+                             </div>
+                             </div>
+                          <% } %>
+                        </div>
+                          <% 
+                           if(brs.staff!='' && brs.staff!=session.fUser._id && session.fUser.businessType!='business' && session.fUser.userType!='user'){	 %>
+                               <script>
+                                $("#book<%= brs._id %>").hide();
+                               </script>
+                            <% }else if(brs.staff==session.fUser._id && session.fUser.businessType!='business'){
+                               t = t+Number(brs.bookingPrice);
+                                if(j==0){
+                            %>
+                               <script>
+                                $("#bookingDate").html('<%= bookingDate %>');
+                              </script>
+                            <% }j++;}else{
+                              t = t+Number(brs.bookingPrice);
+
+                            }%>
+
+                         <% } });i++;});%> 
+                        <div class="totalAmount">
+                          <h2>Total
+                            <span>&#163;<%= t.toFixed(2) %></span>
+                          </h2>
+
+                        </div>
+                      </div>
+                      <!-- <div class="btn-groups mt-6 mb-3">
+                        <a href="#" class="btn btn-back">Cancle</a>
+                        <a href="#" class="btn btn-back">Confirm Booking</a> -->
+                      </div>
+                    </div>
+                </form>
+              </div>
+          </div>
+      </div>
+    </section>
+  </div>
+
+<% include ./footer %> 
+
+<!---Alternative Modal Start Here-->
+    <div class="modal fade csCicon staffModal" id="selectStaff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+          <div class="modal-header light-blue darken-3 white-text">
+            <h4 class="title">Select Staff</h4>
+            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mb-0">
+                <div class="staffSelection" id="staff_result">
+              <% if(stafData.length>0){ stafData.forEach(function(rs) { %>    
+              <div class="stffBox">
+                <input type="radio" class="staff" value="<%= rs.artistId %>" name="staffSelec" id="s1<%= rs.artistId %>">
+                <label for="s1<%= rs.artistId %>">
+                  <img src="<%= rs.staffInfo.profileImage %>" alt="<%= rs.staffInfo.userName %>" title="<%= rs.staffInfo.userName %>">
+
+                  <h2><%= rs.staffInfo.userName %></h2>
+                </label>
+              </div>
+             <% });}else{ %>
+               <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+                <% } %> 
+            </div>
+            <input type="hidden" id="bookingId">
+            <div class="form-group text-center blockLevel">
+               <a href="javascript:void(0);" class="btn btn-theme mt-3 m-btn" onclick="changeStaff();">Change Staff</a>
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!--Modal: counter offer-->
+    <div class="modal fade csCicon" id="review" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header light-blue darken-3 white-text">
+                    <h4 class="title">Leave Your Review</h4>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-0">
+                    <div class="reviewSec">
+                            <div class="ratingBox">
+                                <ul class="rating inline-ul">
+                            <% for(i=1;i<=5;i++){ %>        
+                            <li  onclick="rate('<%= i%>');$('#rate_error').html('');"><i id="rate_<%= i%>" class="fa fa-star"></i></li> 
+                           <% } %>
+                            <input type="hidden" id="rate_value" name="rate_value" value="" />
+                                </ul>
+                               <div class="err_msg" id="rate_error"></div>
+
+                            </div>
+                            <div class="md-form">
+                                <textarea type="text" id="review_comment" class="md-textarea copy" maxlength="200" oninput="$('#review_error').html('');" data-emojiable="true" placeholder="Write Review"></textarea>
+                                <!-- <label class="active" for="review">Write Review</label> -->
+                               <div class="err_msg" id="review_error"></div>
+
+                            </div>
+                    </div>
+                    <div class="text-center mt-1-half">
+                     <button type="button" class="btn btn-theme cs-btn review-submit" id="review_post">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/front/js/lib/js/config.js" defer="defer"></script>
+<script src="/front/js/lib/js/util.js" defer="defer"></script>
+<script src="/front/js/lib/js/jquery.emojiarea.js" defer="defer"></script>
+<script src="/front/js/lib/js/emoji-picker.js" defer="defer"></script>
+<script type="text/javascript">
+
+function review(e){
+     $("#review").modal({backdrop: 'static'});  
+    $("#review_post").val(e);
+
+}
+
+  $(".review-submit").click(function(){
+       var requestID = this.value;
+       var rate_value = $("#rate_value").val();
+       var review_comment = $.trim($("#review_comment").val());
+
+        $('#rate_error').html("");
+        $('#review_error').html("");
+        if(rate_value==""){
+
+                $('#rate_error').html("Rating is required");
+
+        }else if(review_comment==""){
+
+                $('#review_error').html("Review is required");
+
+        }else if(review_comment.length>200){
+
+                $('#review_error').html("You can't enter more than 200 characters");
+
+        }else{
+              var url = "/postRatingReview";
+                $.ajax({
+                  
+                    url: url,
+                    type: "get",
+                    data:{stars : rate_value,comment:review_comment,id:requestID},      
+                    cache: false,
+                    beforeSend: function() {
+                      $("#review_post").attr("disabled","disabled"); 
+                    },
+                    success: function(data){
+                      $("#review_post").removeAttr("disabled"); 
+                     window.location.reload();
+
+                    }
+                }); 
+
+
+        }
+
+    });
+
+
+function rate(no)
+{
+    for(var i=1;i<=5;i++)
+    {
+        if(i<=no)
+        {
+            $("#rate_"+i).attr('class','amber-text fa fa-star');
+        }
+        else
+        {
+            $("#rate_"+i).attr('class','fa fa-star');
+        }
+    }
+    $("#rate_value").val(no);
+}
+
+</script>
+<script>
+var path = '/front/js/lib/img/';
+      $(function() {
+        // Initializes and creates emoji set from sprite sheet
+        window.emojiPicker = new EmojiPicker({
+          emojiable_selector: '[data-emojiable=true]',
+          assetsPath: path,
+          popupButtonClasses: 'fa fa-smile-o'
+        });
+        // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+        // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+        // It can be called as many times as necessary; previously converted input fields will not be converted again
+        window.emojiPicker.discover();
+      });
+    </script>
+    <script>
+      // Google Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-49610253-3', 'auto');
+      ga('send', 'pageview');
+    </script>
+      <% if(success.length>0){ %>
+
+<script type="text/javascript">
+errorMsg('<%= success %>');
+</script>
+<% } %>
+
+<script type="text/javascript">
+
+
+function timeConvert12(otime){
+  
+      var ohours = Number(otime.match(/^(\d+)/)[1]);
+      var ominutes = Number(otime.match(/:(\d+)/)[1]);
+      var AMPM = otime.match(/\s(.*)$/)[1];
+      if(AMPM == "PM" && ohours<12) ohours = ohours+12;
+      if(AMPM == "AM" && ohours==12) ohours = ohours-12;
+      var osHours = ohours.toString();
+      var osMinutes = ominutes.toString();
+      if(ohours<10) osHours = "0" + osHours;
+      if(ominutes<10) osMinutes = "0" + osMinutes;
+     return osHours + ":" + osMinutes;
+}
+function parseTime12(s) {
+
+ var c = s.split(':');
+
+ return parseInt(c[0]) * 60 + parseInt(c[1]);
+
+ }
+    function currentTime() {
+
+      var date    = new Date();
+      var hours   = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm    = hours >= 12 ? 'PM' : 'AM';
+      hours       = hours % 12;
+      hours       = hours ? hours : 12; // the hour '0' should be '12'
+      minutes     = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+   
+}
+
+
+ var  userType = "<%=  user.userType %>";
+ var  bookStatus = "<%=  rs[0].bookStatus %>";
+ var  bookingDate = "<%=  rs[0].bookingDate %>";
+ var  bookingTimeE = "<%=  bookingTimeE %>";
+ var  currentDate = "<%=  currentDate %>";
+ var  currentTime = parseTime12(timeConvert12(currentTime()));
+
+if(userType=="artist" && bookStatus!=3 && bookStatus==1  && ( (currentDate > bookingDate) || (currentDate == bookingDate && currentTime > bookingTimeE))){
+
+    $("#complete_booking").show();
+}
+
+    function change(e,staff,bookingDate,bookingTime,artistServiceId,serviceTime,serviceType){
+
+                    $("#selectStaff").modal('show');
+
+        if(serviceType==2){
+
+          var preprationTime = parseTime("<%= user.outCallpreprationTime %>");
+
+        }else{
+
+          var preprationTime = parseTime("<%= user.inCallpreprationTime %>");
+
+        }
+
+
+
+        var newSTime = Number(preprationTime)+ Number(parseTime(serviceTime));
+
+
+
+
+    var d = new Date(bookingDate);
+    var day = d.getDay();
+    var day =  day!=0 ? day - Number(1) : 6 ; 
+      var data = {artistServiceId:artistServiceId,bookingDate:bookingDate,bookingTime:bookingTime,day:day,serviceTime:newSTime,staff:staff};
+       var url = '/changstaff';
+              $.ajax({
+            url: url,
+            type: "post",
+            data:data,              
+            cache: false,
+            beforeSend: function() {
+               $(".loading").show();
+
+            },                
+            success: function(data){
+
+                $(".loading").hide();
+                $("#staff_result").html(data);
+                $("#bookingId").val(e);
+                $("#s1"+staff).attr('checked','checked');
+                          
+            }
+
+        });
+
+
+
+    }
+
+
+    function parseTime(s) {
+
+  var c = s.split(':');
+  return parseInt(c[0]) * 60/10 + parseInt(c[1])/10;
+
+}
+
+    function changeStaff(){
+
+       var bookingId = $("#bookingId").val();
+       var staff = $('input[class=staff]:checked').val();
+       staff = staff ? staff : 0;
+      var data = {BookingId:bookingId,staff:staff};
+       var url = '/staffUpdate';
+              $.ajax({
+                  url: url,
+                  type: "post",
+                  data:data,              
+                  cache: false,
+                  beforeSend: function() {
+                          
+                    $('.m-btn').addClass('disabled');
+                    $(".loading").show();
+
+
+                  },                    
+                  success: function(data){
+
+                    $('.m-btn').removeClass('disabled');
+                    $(".loading").hide();
+
+                   window.location.reload(); 
+
+                                
+                  }
+
+              });
+
+
+    }
+
+    function bookingUpdate(id,bookStatus,pType=''){
+
+          var data = {BookingId:id,bookStatus:bookStatus,pType:pType};
+
+              var url = '/bookingUpdate';
+              $.ajax({
+                  url: url,
+                  type: "post",
+                  data:data,              
+                  cache: false,
+                  beforeSend: function() {
+                          
+                    $('.m-btn').addClass('disabled');
+                    $(".loading").show();
+
+
+                  },                    
+                  success: function(data){
+
+                    $('.m-btn').removeClass('disabled');
+                    $(".loading").hide();
+
+                   window.location.reload(); 
+
+                                
+                  }
+
+              });
+
+    }
+
+
+</script>

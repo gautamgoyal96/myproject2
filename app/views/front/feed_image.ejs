@@ -1,0 +1,45 @@
+      <%
+
+  if(feedData.length>0){
+   feedData.forEach(function(rs) { %>
+   
+              <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                     <% if(rs.feedType=="video"){ %>
+
+                     <a class="thumbnail fancybox" rel="ligthbox" href="/uploads/feeds/<%= rs.feedData[0].feedPost %>">
+                        <img class="img-responsive" alt="" src="/uploads/feeds/<%= rs.feedData[0].videoThumb %>" />
+                    </a>
+
+                <% }else{ %>
+
+                     <a class="thumbnail fancybox" rel="ligthbox" href="/uploads/feeds/<%= rs.feedData[0].feedPost %>">
+                        <img class="img-responsive" alt="" src="/uploads/feeds/<%= rs.feedData[0].feedPost %>" />
+                    </a>
+
+                <% } %>
+                   
+                </div>
+  <% });}else if(page==0){ %>
+ <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+  <% } %>    
+
+   <% if(feedData.length>0){ %>
+
+
+     <script>
+
+     var a = '<%= Number(page)+Number(1) %>';
+     var type = '<%= type %>';
+
+     $(window).scroll(function() {
+        if($(window).scrollTop() == $(document).height() - $(window).height()) {
+            feed_image_List(a,type,'test');
+           feed_List(a);
+
+        }
+    });
+   
+</script>
+
+
+   <% } %>

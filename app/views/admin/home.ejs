@@ -1,0 +1,155 @@
+
+<% include ./header %> 
+
+<style>
+.dx-export-menu-button{
+  display:none;
+}
+.page-content {
+  padding: 90px 30px 30px;
+}
+.animsition, .animsition-overlay { 
+ animation-fill-mode: both;
+ opacity: 10 !important; 
+ position: relative;}
+ .canvasjs-chart-credit{
+  display: none !important;
+ }
+</style>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Dashboard
+          </h1>
+         
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3><%= categoryCount%></h3>
+                      <p>Services</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-cog"></i>
+                    </div>
+                    <a href="/listCategory" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-green">
+                    <div class="inner">
+                      <h3><%= subcategoryCount%></h3>
+                      <p>Sub services</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/listSubCategory" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-yellow">
+                    <div class="inner">
+                      <h3><%= userCount%></h3>
+                      <p>Users</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-users"></i>
+                    </div>
+                    <a href="/customer" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-red">
+                    <div class="inner">
+                      <h3><%= artistCount%></h3>
+                      <p>Artist</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-users"></i>
+                    </div>
+                    <a href="/artist" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-maroon">
+                    <div class="inner">
+                      <h3><%= totalOrder%>
+                        <sup>%</sup>
+                      </h3>
+                      <p>Avarage order</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <a href="/total_services" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div><!-- ./col -->
+            </div>
+
+             <div class="col-md-6">
+                  <div class="box">
+                       <div id="chart"></div>
+                  </div>
+               </div>
+                <div class="col-md-6">
+                  <div class="box">
+                       <div id="artistchart"></div>
+                  </div>
+               </div>
+
+                <div class="col-md-6">
+                  <div class="box">
+                       <div id="booking"></div>
+                  </div>
+               </div>
+
+                 <div class="col-md-6">
+                  <div class="box">
+                       <div id="chartContainer"></div>
+                  </div>
+               </div>
+
+             </div>  
+
+
+             </div>  
+             
+
+          </div><!-- /.row -->
+          <!-- Main row -->
+  
+
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+<input type="hidden" id="ggg" value="<%= (uGRaph); %>" name="">
+<input type="hidden" id="sGRaph" value="<%= (sGRaph); %>" name="">
+<input type="hidden" id="bGRaph" value="<%= (bGRaph); %>" name="">
+<input type="hidden" id="bchart" value="<%= (bchart); %>" name="">
+      
+
+      <% include ./footer %> 
+      <script type="text/javascript">
+
+        uGRaph = JSON.parse($('#ggg').val());
+        sGRaph = JSON.parse($('#sGRaph').val());
+        bGRaph = JSON.parse($('#bGRaph').val());
+        bchart = JSON.parse($('#bchart').val());
+    </script>
+    <script src="/admin/js/dx.all.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script> 
+    <script src="/admin/js/index.js"></script>
+

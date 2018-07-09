@@ -1,0 +1,241 @@
+                     <%  if(type=="future") { %>
+                   
+                                    <%
+
+                                      if(pending.length>0){
+                                       pending.forEach(function(rs) {
+
+                                       if(user.userType=="artist"){
+
+                                          buser = rs.userDetail[0];
+                                       
+                                       }else{
+
+                                          buser = rs.artistDetail[0];
+
+                                       }
+                                       Edata1b = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                      %>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="userListlead mb-4">
+                                            <div class="userDetails userDetails_min">
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <div class="user-image">
+                                                            <a href="/profile?id=<%= cryptr.encrypt(buser._id); %>" target="_self">
+                                                              <img src="<%= buser.profileImage %>" class="img-responsive">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-5 col-md-6 col-sm-6">
+                                                                <h4 class="media-heading">
+                                                                    <a href="/profile?id=<%= cryptr.encrypt(buser._id); %>"><%= buser.userName %></a>
+                                                                </h4>
+                                                                <div class="daterow">
+                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                    <small><%= Edata1b %></small>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-lg-7 col-md-6 col-sm-6">
+                                                                <div class="btnrow">
+                                                                    <div class="serviseslead servicesSerch service_box">
+                                                                        <% i=0;
+                                                                          bookingList = rs.bookingData;
+                                                                           bookingList.forEach(function(brs) { 
+                                                                            artistServicesData.forEach(function(ars) { 
+
+                                                                            if(ars._id==brs.artistServiceId && i<2){
+                                                                         %>   
+
+                                                                        <label><%= ars.title %>
+                                                                            <span>£<%= Number(brs.bookingPrice).toFixed(2) %></span>
+                                                                        </label>
+                                                                        <% 
+                                                                        i++;} });});%> 
+
+                                                                            <a class="moreSr sermore" href="/bookingInfo/<%= cryptr.encrypt(rs._id) %>">View more</a>
+  
+                                                                       
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bkBtn">
+                                                 <% if(rs.bookStatus=='0' && user.userType=="user") { %>
+                                                    <button class="btn btn-theme" type="button" style="cursor:default !important;">Awaiting Confirmation</button>
+                                                <% }else if(rs.bookStatus=='3' && user.userType=="user" && rs.paymentStatus=='0') { %>  
+                                                  <a class="btn btn-theme" href="/payment?id=<%= cryptr.encrypt(rs._id); %>"> Pay</a>
+                                                <% } %>  
+                                                    <% if(user.userType=="artist") { %>  
+                                                    <% if(rs.bookStatus=='3' && rs.paymentStatus=='0') { %>
+                                                            <a class="btn btn-theme" >Payment Pending</a>
+                                                        <% }else if(rs.bookStatus=='3' && rs.paymentStatus=='1' && rs.reviewStatus=='0') { %>
+                                                            <a class="btn btn-theme" >Review Pending</a>
+                                                    <% }} %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% });}else if(page==0){ %>
+
+                                      <div  class="col-md-12"  style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+
+                                    <% } %>
+                          
+                     <% }else{ %>   
+                                    <%
+
+                                      if(complete.length>0){
+                                       complete.forEach(function(rs) {
+
+                                       if(user.userType=="artist"){
+
+                                          buser = rs.userDetail[0];
+                                          count = rs.artistRating;
+                                          review1 = rs.reviewByArtist ? rs.reviewByArtist : 'NA';
+                                          review2 = rs.reviewByUser ? rs.reviewByUser : 'NA';
+                                       
+                                       }else{
+
+                                          buser = rs.artistDetail[0];
+                                          count = rs.userRating;
+                                          review1 = rs.reviewByUser ? rs.reviewByUser : 'NA';
+                                          review2 = rs.reviewByArtist ? rs.reviewByArtist : 'NA';
+
+                                       }
+                                       Edata1b = moment(rs.bookingDate).format('DD/MM/YYYY'); 
+                                      %>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="userListlead mb-4">
+                                            <div class="userDetails userDetails_min">
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <div class="user-image">
+                                                            <a href="/profile?id=<%= cryptr.encrypt(buser._id); %>" target="_self">
+                                                              <img src="<%= buser.profileImage %>" class="img-responsive">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-5 col-md-6 col-sm-6 ">
+                                                                <h4 class="media-heading">
+                                                                    <a href="/profile?id=<%= cryptr.encrypt(buser._id); %>"><%= buser.userName %></a>
+                                                                </h4>
+                                                                <div class="daterow">
+                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                    <small><%= Edata1b %></small>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col-lg-7 col-md-6 col-sm-6">
+                                                                <div class="btnrow">
+                                                                    <div class="serviseslead servicesSerch service_box">
+                                                                        <% i=0;
+                                                                          bookingList = rs.bookingData;
+                                                                           bookingList.forEach(function(brs) { 
+                                                                            artistServicesData.forEach(function(ars) { 
+
+                                                                            if(ars._id==brs.artistServiceId && i<2){
+                                                                         %>   
+
+                                                                        <label><%= ars.title %>
+                                                                            <span>£<%= Number(brs.bookingPrice).toFixed(2) %></span>
+                                                                        </label>
+                                                                        <% 
+                                                                        i++;} });});%> 
+                                                                        
+                                                                        <a class="moreSr sermore" href="/bookingInfo/<%= cryptr.encrypt(rs._id) %>">View more</a>
+                                                                       
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12">
+                                                              <% if(count){ %>
+                                                              <div class="counterData">
+                                                                  <div class="rating rating_center">
+                                                                    <ul class="inline-ul">
+                                                                         <%
+                                                                          for(i=1;i<=count;i++){ %>
+                                                                          <li> <i class="fa fa-star amber-text"></i></li> 
+                                                                        <% } minCount = 5-count; 
+                                                                          for(j=1;j<=minCount;j++){ 
+                                                                        %>
+                                                                          <li> <i class="fa fa-star icon_clr"></i></li> 
+                                                                        <% } %>
+                                                                    </ul>
+                                                                    <button type="button" class="btn r-btn" onclick="$('.review12<%= rs._id %>').slideToggle();"><i class="fa fa-angle-down"></i></button>
+                                                                    <div id="dis_review" class="hidden review12<%= rs._id %>">
+                                                                        <div class="review1">
+                                                                           <p><%= review1 %></p> 
+                                                                        </div>
+                                                                        <div class="review2">
+                                                                          <p><%= review2 %></p>
+                                                                        </div>
+                                                                    </div>
+                                                                  </div>
+                                                              </div>
+                                                              <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bkBtn">
+                                                <% if(user.userType=="user" && rs.userRating==0 && rs.paymentStatus==1) { %>
+                                                    <a class="btn btn-theme" href="javascript:void();" onclick="review('<%= cryptr.encrypt(rs._id) %>');">Leave Review</a>                                               
+                                                <% }else if(user.userType=="artist" && rs.artistRating==0 && rs.paymentStatus==1){ %>
+                                                  <a class="btn btn-theme" href="javascript:void();" onclick="review('<%= cryptr.encrypt(rs._id) %>');">Leave Review</a>  
+                                                <% } %>  
+                                                  <%
+                                                      var  checkServiceType = '';
+                                                       if(bookingList[0].serviceType=="2"){
+                                                                
+                                                          var  checkServiceType = 2;
+
+                                                       }
+                                                       var url = '/booking_detial/'+cryptr.encrypt(rs.artistId)+'/'+cryptr.encrypt(0.00)+'?checkServiceType='+cryptr.encrypt(checkServiceType); %>
+
+                                                <% if(user.userType=="user" && rs.paymentStatus==1) { %>
+                                                    <a class="btn btn-theme" href="<%= url %>">Rebook </a>                                               
+                                                <% } %> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% });}else if(page==0){ %>
+
+                                      <div class="col-md-12" style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+
+                                    <% } %>
+                    <% } %>    
+                  
+
+
+                    <% 
+
+                      data = (type=="past") ? complete : pending;
+     if(data.length>0){ %>
+
+
+     <script>
+
+     var a = '<%= Number(page)+Number(1) %>';
+     var type = '<%= type %>';
+
+     $(window).scroll(function() {
+
+        if($(window).scrollTop() == $(document).height() - $(window).height()) {
+          artistbookingHistory(a,type);
+
+        }
+    });
+   
+</script>
+
+
+   <% } %>

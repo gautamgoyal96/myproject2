@@ -1,0 +1,278 @@
+
+<% include ./header %> 
+<style>
+.err{
+  color:red ;
+}
+</style>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Profile
+          </h1>
+        <!--   <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Profile</li>
+          </ol> -->
+        </section>
+
+           <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="/admin/dist/img/user2-160x160.jpg" alt="User profile picture">
+
+              <h3 class="profile-username text-center">Admin</h3>
+
+              <p class="text-muted text-center"><%= data.mail%></p>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <!-- About Me Box -->
+      
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+              <li><a href="#settings" data-toggle="tab">Settings</a></li>
+            </ul>
+            <div class="tab-content">
+             <div class="active tab-pane" id="profile">
+
+                 <% if (error.length > 0) { %>
+                <div class="alert alert-danger"><%- error %></div>
+                <% } %>
+
+                 <% if (success.length > 0) { %>
+                <div class="alert alert-success"><%- success %></div>
+                <% } %>
+                <form class="form-horizontal" action="/admin_profile_update" method="post">
+            
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="email" placeholder="Email" value="<%= data.mail%>" name="email" required>
+                      <div id="email-err" class="err"></div>
+                    </div>
+                  </div>
+                 
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger" id="step1Form">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="settings">
+
+                  <div class="alert alert-success" id="sucess-msg" style="display: none;"></div>
+                  <div class="alert alert-danger" id="error-msg" style="display: none;"></div>
+                  <span  id="changepassword">
+                <form class="form-horizontal" action="#">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Old password</label>
+
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="oldpassword">
+                      <div id="oldpassword-err" class="err"></div>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">New Password</label>
+
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="newpassword">
+                       <div id="newpassword-err" class="err"></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Confirm password</label>
+
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="confirmpassword">
+                       <div id="confirmpassword-err" class="err"></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger" id="step2Form">Submit</button>
+                    </div>
+                  </div>
+                </form>
+                </span>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <% include ./footer %> 
+<script>
+
+
+function isValidEmailAddress(emailAddress) {
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        return pattern.test(emailAddress);
+    }
+
+
+
+$('#step1Form').click(function() {
+    
+        var flag = 0;
+        $("#email-err").html("");
+        var email = $.trim(jQuery("#email").val());
+        if (email == '' || email == '') {
+            flag = 1;
+            jQuery("#email").parent("div").addClass("has-error");
+            jQuery("#email").val('');
+            $('#email-err').html("<p class='err_msg'> Please enter your email address</p>");
+        } else {
+
+            if (!isValidEmailAddress(email)) {
+
+                flag = 1;
+                $('#email-err').html("<p class='err_msg'> Please enter a valid email address</p>");
+
+            }else{
+
+                var email = $("#email").val();
+                jQuery("#email").parent("div").removeClass("has-error");
+                $('#email-err').html("");
+
+            }
+        }
+        if (flag) {
+            return false;
+        } else {
+         return true;
+        }
+
+});
+
+
+$('#step2Form').click(function() {
+    
+        var flag = 0;
+        $("#email-err").html("");
+        var oldpassword = $.trim(jQuery("#oldpassword").val());
+        var newpassword = $.trim(jQuery("#newpassword").val());
+        var confirmpassword = $.trim(jQuery("#confirmpassword").val());
+        if (oldpassword == '' || oldpassword == '') {
+            flag = 1;
+            jQuery("#oldpassword").parent("div").addClass("has-error");
+            jQuery("#oldpassword").val('');
+            $('#oldpassword-err').html("<p class='err_msg'> Please enter your old passsword</p>");
+        } else {
+
+                jQuery("#oldpassword").parent("div").removeClass("has-error");
+                $('#oldpassword-err').html("");
+        }
+        if (newpassword == '' || newpassword == '') {
+            flag = 1;
+            jQuery("#newpassword").parent("div").addClass("has-error");
+            jQuery("#newpassword").val('');
+            $('#newpassword-err').html("<p class='err_msg'> Please enter your New passsword</p>");
+        } else {
+
+                jQuery("#newpassword").parent("div").removeClass("has-error");
+                $('#newpassword-err').html("");
+        }
+        if (confirmpassword == '' || confirmpassword == '') {
+            flag = 1;
+            jQuery("#confirmpassword").parent("div").addClass("has-error");
+            jQuery("#confirmpassword").val('');
+            $('#confirmpassword-err').html("<p class='err_msg'> Please enter your confirm passsword</p>");
+
+        }else if(newpassword!=confirmpassword){
+
+            flag = 1;
+            $('#confirmpassword-err').html("Password and confirm password do not match");
+
+        }  else {
+
+                jQuery("#confirmpassword").parent("div").removeClass("has-error");
+                $('#confirmpassword-err').html("");
+        }
+        if (flag) {
+            return false;
+        } else {
+                
+                var form_data = {
+                      'oldpassword': oldpassword,
+                      'password' : newpassword,
+                 };
+              url = "/admin_changepassword";
+              $.ajax({
+                  url: url,
+                  type: "POST",
+                  data: form_data,
+                  dataType: 'json',
+                  cache: false,
+                  beforeSend: function() {
+
+                      $("#step2Form").attr("disabled","disabled"); 
+
+                  },
+                  success: function(data) {
+                       $("#step2Form").removeAttr("disabled"); 
+                       $("#oldpassword").val('');
+                       $("#newpassword").val('');
+                       $("#confirmpassword").val('');
+                      if(data.status=='1'){
+                        $("#sucess-msg").show();
+                        $("#sucess-msg").html(data.msg);
+                      
+                      }else{
+
+                        $("#error-msg").show();
+                        $("#error-msg").html(data.msg);
+
+                      }
+
+                      //$("#changepassword").load(" #changepassword");
+
+                      setTimeout(function() {
+                          $('.alert-danger').fadeOut('fast');
+                          $('.alert-success').fadeOut('fast');
+                          $('.alert-warning').fadeOut('fast');
+                      }, 5000);
+
+                  }
+              });
+              return true;
+
+
+        }
+
+});
+
+
+
+</script>

@@ -1,0 +1,76 @@
+ <div class="box-body table-responsive no-padding" id="ajaxdata">  
+ <table class="table table-hover">
+                            <tr>
+                                <th>S.no</th>
+                                <th>Service Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                            <%  
+                              var startTime = (Number(currentPage)-1)*10;
+                             i=1+startTime;
+                             if(categorydata){
+                             categorydata.forEach(function(rs) { %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td><%= rs.title %></td>
+                                <td><span class="label <%= rs.status==1 ? 'label-success' : 'label-danger' %>"><%= rs.status==1 ? 'Active' : 'Inactive' %></span></td>
+
+                                <td>
+                                <% if(rs.status==1){  %>
+                                    <a href="/categoryStatus/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(0) %>" class="btn btn-info" title="Inactive"  onclick="$(this).attr('disabled','true');"><span class="glyphicon glyphicon-remove"></span></a>
+
+
+                                <% }else{ %>
+
+                                    <a href="/categoryStatus/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(1) %>" class="btn btn-info" title="Active"  onclick="$(this).attr('disabled','true');"><span class="glyphicon glyphicon-ok"></span></a>
+
+                                <% } %>
+
+                                    <a href="/categoryEdit/<%= cryptr.encrypt(rs._id) %>" class="btn btn-primary" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="/categoryDelete/<%= cryptr.encrypt(rs._id) %>" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure , you want to delete this?');
+"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            </tr>
+                            <% i++;});}else{ %>
+                             <tr><td colspan="5" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="ajax_fun('<%= i %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+
+    

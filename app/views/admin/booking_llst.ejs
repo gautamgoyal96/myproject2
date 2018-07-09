@@ -1,0 +1,102 @@
+
+ <div class="box-body table-responsive no-padding" id="ajaxdata">    <table class="table table-hover">
+                            <tr>
+                                <th>ID</th>
+                                <th><%= ((userType=="user") ? 'Artist Name' : 'Customer Name' ); %></th>
+                                <th>Booking Date/Time</th>
+                                <th>Price</th>
+<!--                                 <th>Location</th>
+ -->                                <th>Rating</th>
+<!--                                 <th>Review</th>
+ -->                                <th>Payment Type</th>
+                                <th>Payment Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                            <%   var startTime = (Number(currentPage)-1)*10;
+                             s=1+startTime;
+                            if(staff.length>0){
+                            staff.forEach(function(rs) { %>
+                            <tr>
+                                <td><%= s %></td>
+                                <td> <% if(userType=="artist"){ %>
+                                        <a href="/customerview/<%=  cryptr.encrypt(rs.userId) %>" class="black" target="_self">
+                                          <%= rs.userDetail[0].userName %></h4>
+                                        </a>
+                                    <% }else { %>
+                                        <a href="/artistview/<%=  cryptr.encrypt(rs.artistId) %>" class="black" target="_self">
+                                         <h4><%= rs.artistDetail[0].userName %></h4>
+                                        </a>
+                                    <% } %>
+                                </td>
+                                <td><%= moment(rs.bookingDate).format("DD/MM/YYYY")+', '+rs.bookingTime;%></td>
+                                <td>£<%=rs.totalPrice%></td>
+<!--                                 <td><%= rs.location.substring(0,60) %></td>
+ -->                                <td>
+                                    <div class="rating">
+                                        <ul class="inline-ul">
+                                           <% count = (userType=='artist') ? rs.userRating : rs.artistRating ;
+                                           if(count){
+
+                                            for(i=1;i<=count;i++){ %>
+                                            <li> <i class="fa fa-star amber-text"></i></li> 
+                                          <% } minCount = 5-count; 
+                                            for(j=1;j<=minCount;j++){ 
+                                          %>
+                                            <li> <i class="fa fa-star"></i></li> 
+                                          <% } }else{%>
+                                          <li>NA</li> 
+                                          <% } %>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <% var review = (userType=='artist') ? rs.reviewByUser : rs.reviewByArtist %>
+<!--                                 <td> <%= review.substring(0,60) %> </td>
+ -->                            <td><span class="label <%=(rs.paymentType==2) ? 'label-info' : 'label-warning' %>"><%=(rs.paymentType==2) ? 'Online' : 'Cash' %></span></td>
+                                <td><span class="label <%=(rs.paymentStatus==1) ? 'label-success' : 'label-danger' %>"><%=(rs.paymentStatus==1) ? 'Paid' : 'Pending' %></span></td>
+                                <td><a href="/bookingview/<%= cryptr.encrypt(rs._id) %>" class="btn btn-primary" title="view"><span class="fa fa-eye"></span></a></td>
+
+
+                            </tr>
+                            <% s++;}); }else{ %>
+
+                             <tr><td colspan="8" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="booking_list(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="booking_list('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="booking_list('<%= i %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+
+    

@@ -1,0 +1,127 @@
+<% include ./header %> 
+<link href="/front/css/payment.css" rel="stylesheet">
+<link href="/front/css/buttonLoader.css" rel="stylesheet">
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+	<div class="paymentMain">
+    <div class="content content_bg">
+      <div class="sap_tabs">
+        <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+          <div class="pay-tabs box_shw">
+            <h2>Select Payment Method</h2>
+              <ul class="resp-tabs-list">
+                <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span><label><img src="/front/img/pic2.png"></label>Credit/Debit Card</span></li>
+                <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span><label><img src="/front/img/bank_pic.png"></label>Bank Account</span></li>
+                <div class="clear"></div>
+              </ul> 
+          </div>
+          <input type="hidden" value="<%= bookingData[0]._id %>" id="requestId">
+          <div class="resp-tabs-container box_shw">
+            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+              <div class="payment-info">
+                <form action="JavaScript:void(0);" method="post">
+                  <input type="hidden" value="" id="holderName" class="copy" oninput="$('#holderName_error').html('');">
+
+                    <div class="tab-for">  
+                    <h5>Card Number</h5>                          
+                      <input class="pay-logo copy" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" id="cardNumber" onkeypress="return isNumberKey(event);" oninput="$('#cardNumber_error').html('');" maxlength="19">
+                      <div class="error"  id="cardNumber_error"></div>
+                    </div>
+                  
+                  <div class="transaction">
+                    <div class="tab-form-left user-form">
+                      <h5>Expiry Date</h5>
+                        <ul>
+                          <li>
+                  
+                            <select id="expiryMonth" minlength="2" class="text_box " onchange="$('#expiryMonth_error').html('');">
+                              <option value="">XX</option>
+                              <% for(i=1;i<=12;i++){ %>
+                              <option value="<%= (i<10) ? '0'+i : i %>"><%= (i<10) ? '0'+i : i %></option>
+                              <% }%>
+                            </select>
+                          </li>
+                          <li>
+
+                             <select id="expiryYear" minlength="2" class="text_box" onchange="$('#expiryYear_error').html('');">
+                              <option value="">XXXX</option>
+                              <% for(i=2018;i<=2050;i++){%>
+                              <option value="<%= i %>"><%= i %></option>
+                              <% }%>
+                            </select>
+
+                            
+                          </li>
+                          <div class="error"  id="expiryMonth_error"></div> 
+                          <div class="error"  id="expiryYear_error"></div>
+                        </ul>
+                    </div>
+                    <div class="tab-form-right user-form-rt">
+                      <h5>CVV Number</h5>                         
+                      <input type="text" placeholder="XXX" id="cvvNumber" onkeypress="return isNumberKey(event);" maxlength="4" class="copy" oninput="$('#cvvNumberr_error').html('');">
+                      <div class="error"  id="cvvNumberr_error"></div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                  <div class="payment-btn">
+                    <button type="submit" id="cardPayment" class="btn-theme has-spinner">Pay &#163;<%=bookingData[0].totalPrice%></button> 
+                  </div>         
+                </form>
+              </div>
+            </div>
+            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+              <div class="payment-info">
+                <form action="JavaScript:void(0);" method="post">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="tab-for">       
+                      <h5>Holder Name</h5>
+                      <input type="text" class="copy" value="" id="firstName" oninput="$('#firstName_error').html('');">
+                      <div class="error"  id="firstName_error"></div>
+                    </div>
+                  </div>              
+                  <div class="col-md-12">
+                    <div class="tab-for">       
+                      <h5>Account Number</h5>
+                      <input type="text" value="" class="copy" placeholder="XXXX-XXXX-XXXX-XXXX" id="accountNumber" oninput="$('#accountNumber_error').html('');">
+                      <div class="error"  id="accountNumber_error"></div>
+                    </div>
+                  </div>
+
+                 
+                 <div class="col-md-12">
+                    <div class="tab-for">       
+                      <h5>Routing Number</h5>
+                      <input type="text" class="copy" id="routingnumber" oninput="$('#routingnumber_error').html('');">
+                      <div  class="error"  id="routingnumber_error"></div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" id="bankPayment" class="btn-theme has-spinner">Pay &#163;<%=bookingData[0].totalPrice%></button>          
+                <div class="clear"></div>
+                </form>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+<% include ./footer %> 
+<script src="/front/js/easyResponsiveTabs.js" defer="defer"></script>
+<script src="/front/js/payment.js" defer="defer"></script>
+<script src="/front/js/jquery.buttonLoader.js" defer="defer"></script>
+  <script type="application/x-javascript">
+addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+  function hideURLbar(){ window.scrollTo(0,1); } 
+    $(document).ready(function () {
+    $('#horizontalTab').easyResponsiveTabs({
+      type: 'default',         
+      width: 'auto', 
+      fit: true 
+    });
+  });   
+</script>

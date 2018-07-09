@@ -1,0 +1,5 @@
+      <%  if(status==true){ %>
+          <button type="button" class="btn btn btn-theme fav waves-effect waves-light" onclick="artistFavorite('<%= id %>','0','<%= rId %>');" title="Unfavorite"><i class="fa fa-heart"></i></button>
+          <% }else{ %>
+           <button type="button"  class="btn btn btn-theme fav waves-effect waves-light"  onclick="artistFavorite('<%= id %>','1','<%= rId %>');" title="Favorite"><i class="fa fa-heart-o"></i></button>
+          <% } %>

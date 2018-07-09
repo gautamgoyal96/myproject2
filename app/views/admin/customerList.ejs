@@ -1,0 +1,107 @@
+<% include ./header %> 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+     
+        
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        
+        <div class="row">
+            <div class="col-xs-12">
+                <% if (error.length > 0) { %>
+                <div class="alert alert-danger"><%- error %></div>
+                <% } %>
+
+                 <% if (success.length > 0) { %>
+                <div class="alert alert-success"><%- success %></div>
+                <% } %>
+                <div class="box">
+                    <div class="box-header">
+                         <h3 class="box-title">User List</h3>
+                        
+                        <div class="box-tools">
+
+
+                            <div class="input-group" style="width: 210px;display: inline-block !important;">
+                                <select class="form-control form-title" id="gender" onchange="ajax_fun('1');" />
+                                    <option value="">-- select gender --</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group" style="width: 210px; display: inline-block !important;">
+                               
+                                <input type="text" id="location" name="table_search" class="form-control input-sm pull-right" placeholder="Search by location....">
+                                <input type="hidden" id="latitude">
+                                <input type="hidden" id="longitude">
+                               <!--  <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div id="ajaxdata">                            
+                    </div>
+                </div><!-- /.box -->
+            </div>
+        </div>
+    </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+     <% include ./footer %> 
+
+
+
+<script type="text/javascript">
+
+        function initialize() {
+    autocompletee = new google.maps.places.Autocomplete(document.getElementById("location"), {
+        types: []
+    }), autocompletee.addListener("place_changed",function(){
+
+        var place = this.getPlace();
+        var latitude  = place.geometry.location.lat();
+        var longitude = place.geometry.location.lng();
+        $('#latitude').val(latitude);
+        $('#longitude').val(longitude);
+        ajax_fun('1');
+
+    });
+}
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+ajax_fun('1');
+
+function ajax_fun(e)
+
+{
+   $.ajax({
+
+        url: '/listcutomer',
+        type: "GET", 
+        data:{'location':$('#location').val(),'latitude':$('#latitude').val(),'longitude':$('#longitude').val(),'gender':$('#gender').val(),'page':e} ,                 
+        cache: false,
+        beforeSend: function() {
+            $("#ajaxdata").html('<div class="overlay" style="padding-top:150px"><i class="fa fa-refresh fa-spin"></i></div>');
+        },  
+        success: function(data){
+
+           $("#ajaxdata").html(data);
+
+
+        }
+
+    });
+
+   
+
+}
+
+</script>
+
+

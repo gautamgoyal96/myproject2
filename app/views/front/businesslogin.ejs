@@ -1,0 +1,79 @@
+<% include ./header %> 
+<div class="header-margin"></div>
+<div class="MainWrapper">
+    <section class="Register sec-pad">
+        <div class="container">
+            <div class="RegPart">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-10">
+                            <div class="form-elegant m-mrt">
+                                <div class="card">
+                                    <div class="regisHead gradient-bg">
+                                        <div id="RegcntOne" class="text-center p-4">
+                                            <div class="regCnt">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                </span>
+                                                <p>Login as a Business</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                      <div class="card-body mx-4">
+
+                                        <% if (error.length > 0) { %>
+                                          <div class="alert alert-danger"><%- error %></div>
+                                          <% } %>
+                                          
+                                           <% if (success.length > 0) { %>
+                                          <div class="alert alert-success"><%- success %></div>
+                                          <% } %>
+
+                                      <form action="/userLogin" method="post" onsubmit="$('.loading').show();" >
+
+                                          <input type="hidden" name="userType" value="artist">
+                                          <div class="md-form">
+                                            <input type="text" name="userName" id="emailLogin" class="form-control" oninput="$('#login-email-err').html('');">
+                                              <label for="emailLogin">Your username or email id</label>
+                                            <div class="err_msg" id="login-email-err"></div>
+
+                                          </div>
+                                          <div class="md-form">
+                                              <input type="password" name="password" id="passwordLogin" class="form-control" oninput="$('#login-password-err').html('');">
+                                              <label for="passwordLogin">Your password</label>
+                                              <div class="err_msg" id="login-password-err"></div>
+                                              <p class="blue-text d-flex justify-content-end">
+                                                  <a class="blue-text ml-1" data-toggle="modal" data-target="#modalSubscription" onclick="$('#type').val('artist');">Forgot Password?</a>
+                                               </p>
+                                          </div>
+                                          <div class="formbtn text-center mb-2">
+                                           <button type="submit" class="btn btn-theme btn-block" onclick="return loginValidation();">Sign in</button>
+
+                                          </div>
+                                        </form>
+
+                                         <!-- <p class="dark-grey-text text-right d-flex justify-content-center mb-3 pt-2"> Or Sign in with:</p>
+                                          <div class="row my-3 d-flex justify-content-center facebookBtn">
+                                              <button type="button" onclick="fbLogin()" class="btn btn-white btn-rounded mr-md-3">
+                                                  <i class="fa fa-facebook blue-text text-center"></i>
+                                              </button>
+                                          </div>-->
+                                      </div>
+
+                                    <div class="modal-footer mx-5 pt-3 mb-1">
+                                        <p class="grey-text d-flex justify-content-center">Not a member?
+                                            <a href="/businessRegister" class="blue-text ml-1"> Sign Up</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               
+            </div>
+        </div>
+    </section>
+</div>
+<!--Footer-->
+
+<% include ./footer %> 

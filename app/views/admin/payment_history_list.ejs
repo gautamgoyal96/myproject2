@@ -1,0 +1,82 @@
+ <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Invoice No</th>
+                  <th>CustomerName</th>
+                  <th>Artist Name</th>
+                  <th>Booking Date/Time</th>
+                  <th>Transaction Id</th>
+                  <th>Price</th>
+                  <th>Payment Mode</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% 
+ var startTime = (Number(currentPage)-1)*10;
+   i=1+startTime;
+                  if(listdata.length>0){
+   listdata.forEach(function(rs) { %>
+                <tr>
+                  <td><%= i %></td>
+                  <td>
+                   <% var img = rs.userDetail[0].profileImage ;
+                      var name = rs.userDetail[0].userName ;
+                      var id  = rs.userDetail[0]._id ;
+                      %>
+                  <a href="/customerview/<%=  cryptr.encrypt(id) %>" class="black" target="_self"><h4><%= name %></h4>
+                  </a>
+                  </td>
+                  <td>
+                     <% var img =  rs.artistDetail[0].profileImage ;
+                      var name =  rs.artistDetail[0].userName ;
+                      var id  = rs.artistDetail[0]._id ; 
+                      %>
+                       <a href="/artistview/<%=  cryptr.encrypt(id) %>"  class="black" target="_self"><h4><%= name %></h4>
+                        </a>
+                  </td>
+                  <td><%= moment(rs.bookingDate).format("DD/MM/YYYY")+', '+rs.bookingTime;%></td>
+                  <td><%= rs.transjectionId %></td>
+
+                  <td>£<%=rs.totalPrice; %></td>
+                  <td><span class="label <%=(rs.paymentType==2) ? 'label-info' : 'label-warning' %>"><%=(rs.paymentType==2) ? 'Online' : 'Cash' %></span></td>
+                    <td><a href="/bookingview/<%= cryptr.encrypt(rs._id) %>" class="btn btn-info" title="view"><span class="fa fa-eye"></span></a></td>
+                </tr>
+              <% i++; });}else{ %>
+                <tr><td colspan="8"  align="center">No Record Found </td></tr>
+              <% } %> 
+              </tbody>
+            </table>
+          </div>
+
+           
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="ajax_fun(1);"><span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span></a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="ajax_fun('<%= pageCount %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>

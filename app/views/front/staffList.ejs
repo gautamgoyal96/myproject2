@@ -1,0 +1,82 @@
+    <%
+
+  if(staff.length>0){
+   staff.forEach(function(rs) { %>
+  <div class="userListlead">
+                  <div class="userDetails">
+                    <div class="media">
+                      <div class="media-left">
+                        <div class="user-image">
+                          <a href="/profile?id=<%= cryptr.encrypt((session.fUser.businessType=="business") ? rs.artistId : rs.businessId ); %>" target="_self">
+                            <img src="<%= rs.staffInfo.profileImage %>" class="img-responsive" alt="<%= rs.staffInfo.userName %>" title="<%= rs.staffInfo.userName %>">
+                          </a>
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <div class="row">
+                          <div class="col-lg-<%= (session.fUser.businessType=="business") ? 8 : 11 ; %>" <% if(session.fUser.businessType!="business") { %>style="cursor:pointer;" onclick=" window.location.href = '/add_staff?id=<%= rs.businessId %>&staffId=<%= rs._id %>';" <% } %>>
+                            <h4 class="media-heading">
+                              <a href="/profile?id=<%= cryptr.encrypt((session.fUser.businessType=="business") ? rs.artistId : rs.businessId ); %>"><%= (session.fUser.businessType=="business") ? rs.staffInfo.userName : rs.staffInfo.businessName ;   %> </a>
+                            </h4>
+                            <div class="serviseslead">
+
+                              <span><%= rs.job %></span>
+                            </div>
+                          </div>
+                          <div class="col-lg-<%= (session.fUser.businessType=="business") ? 4 : 1 ; %> text-right">
+                          <% 
+                            var msg = 'Are you sure want to remove this company?';
+                           if(session.fUser.businessType=="business"){ 
+
+                            var msg = 'Are you sure want to remove this staff?';
+
+                            %>
+                            <a class="btn btn-theme btn-circle" href="/add_staff/<%= cryptr.encrypt(rs.artistId) %>?staffId=<%= cryptr.encrypt(rs._id) %>" title="Edit"><i class="fa fa-edit"></i></a>
+                          <% } %>  
+                            <a class="btn btn-theme btn-circle" href="/delete_staff?id=<%= (session.fUser.businessType=="business") ? rs.artistId : rs.businessId ; %> &staffId=<%= rs._id %>" title="Delete" onclick = "return confirm('<%= msg %>');"><i class="fa fa-trash"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+  <% });}else{ %>
+ <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+  <% } %> 
+
+  <% if (pageCount > 1) { %>
+       <nav class="my-4 mr-auto text-center">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+                <% if (currentPage > 1) { %>
+
+                    <li class="page-item "><a class="page-link" aria-label="Previous" href="#" onclick="staff_List(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="page-item active"> <a class="page-link" href="#"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="#" onclick="staff_List('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li class="page-item" ><a class="page-link" aria-label="Next" href="#" onclick="staff_List('<%= i-1 %>');"> <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span></a></li>
+                <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+               

@@ -1,0 +1,384 @@
+
+<!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"> -->
+<% include ./header %> 
+<link href="/front/css/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Profile
+          </h1>
+        
+        </section>
+
+           <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+
+
+                 <% if (error.length > 0) { %>
+                <div class="alert alert-danger"><%- error %></div>
+                <% } %>
+
+                 <% if (success.length > 0) { %>
+                <div class="alert alert-success"><%- success %></div>
+                <% } %>
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <img class="profile-user-img img-responsive img-circle" src="<%= data.profileImage%>" alt="<%= data.userName %>" title="<%= data.userName %>" style="width:150px !important;hight:150px !important;">
+
+                  <h3 class="profile-username text-center"><%= data.firstName%> <%= data.lastName%></h3>
+                    
+                     <div class="rating text-center">
+                          <ul class="inline-ul">
+                             <% count = data.ratingCount;
+                              for(i=1;i<=count;i++){ %>
+                              <li> <i class="fa fa-star amber-text"></i></li> 
+                            <% } minCount = 5-count; 
+                              for(j=1;j<=minCount;j++){ 
+                            %>
+                              <li> <i class="fa fa-star"></i></li> 
+                            <% } %>(<%= data.reviewCount%>)
+                          </ul>
+                      </div>
+
+                  <p class="text-muted text-center"><span class="label <%= data.status==1 ? 'label-success' : 'label-danger' %>"><%= data.status==1 ? 'Active' : 'Inactive' %></span></p>
+                  <p class="text-muted text-center"> <span class="label <%= data.businessType=='business' ? 'label-info' : 'label-warning' %>"><%= data.businessType=='business' ? 'Business' : 'Independent' %></span></p>
+                   <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Followers</b> <a class="pull-right"><%= data.followersCount%></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Following</b> <a class="pull-right"><%= data.followingCount%></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Post</b> <a class="pull-right"><%= data.postCount%></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Booking</b> <a class="pull-right"><%= data.bookingCount%></a>
+                    </li>
+                     <li class="list-group-item">
+                      <b>Services</b> <a class="pull-right"><%= data.serviceCount%></a>
+                    </li>
+                     <li class="list-group-item">
+                      <b>Certificate</b> <a class="pull-right"><%= data.certificateCount%></a>
+                    </li>
+                  </ul>
+
+                </div>
+                <!-- /.box-body -->
+
+          </div>
+          <!-- /.box -->
+
+          <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">About Me</h3>
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body">
+
+                    <p class="text-muted"><%= data.bio ? data.bio : 'NA' %></p>
+
+                    <hr>
+
+                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                    <p class="text-muted"><%= data.address ? data.address : 'NA' %></p>
+
+
+                  </div>
+                  <!-- /.box-body -->
+          </div>
+
+          <!-- About Me Box -->
+      
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+        
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+              <li><a href="#services" data-toggle="tab">Services</a></li>
+              <li><a href="#hours" data-toggle="tab">Business Hours</a></li>
+              <li><a href="#booking" data-toggle="tab">Booking</a></li>
+              <li><a href="#staff" data-toggle="tab"><%= ((data.businessType=="business") ? 'Staff' : 'Company' ); %></a></li>
+              <li><a href="#certificate" data-toggle="tab">Certificate</a></li>
+              <li><a href="#followers" data-toggle="tab">Followers</a></li>
+              <li><a href="#following" data-toggle="tab">Following</a></li>
+             
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane" id="hours">
+
+                  <div>
+                      
+                    <%
+                      var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+                      for(i=0; i<days.length;i++) {  %>
+                      <div class="ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed business_brdr"  style="display:none;" id="<%= i%>"> 
+                        <h4 class ="ui-collapsible-heading-collapsed">
+                        <b><%-  days[i] %></b>
+                        </h4>
+                        <div class="ui-collapsible-content ui-body-inherit">
+                        <ul class="business-ul">
+                               <%
+                                   d=0; for(s=0; s<hours.length;s++) {
+
+                                  if(hours[s].day==i){
+                               %> 
+                              <li>
+                                <span><i class="fa fa-clock-o"></i> <%= hours[s].startTime%>  </span>
+                                 <span> <i class="fa fa-clock-o"></i>  <%= hours[s].endTime%></span>
+                              </li>
+                                <script>
+                           $("#<%= i%>").show();
+                           </script>
+                       <% } } %>
+                        </ul>
+                        </div>
+                      </div>
+                    <% }%>
+                  </div>
+              </div>
+             <div class="active tab-pane" id="profile">
+
+                <form class="form-horizontal" action="/admin_profile_update" method="post">
+            
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Name</label>
+
+                    <div class="col-sm-10"><%= data.firstName%> <%= data.lastName%></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">User Name</label>
+
+                    <div class="col-sm-10"><%= data.userName%></div>
+                  </div>
+
+                    <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Business Name</label>
+
+                    <div class="col-sm-10"><%= data.businessName%></div>
+                  </div>
+
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Email</label>
+
+                    <div class="col-sm-10"><%= data.email%></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Contact Number</label>
+
+                    <div class="col-sm-10"><%= data.countryCode%> <%= data.contactNo%></div>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Date of birth</label>
+
+                    <div class="col-sm-10"><%= moment(data.dob).format( 'DD/MM/YYYY')%></div>
+                  </div>
+
+
+
+                   <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Gender</label>
+
+                    <div class="col-sm-10"><%= data.gender ? data.gender : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Country</label>
+
+                    <div class="col-sm-10"><%= data.country ? data.country : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">State</label>
+
+                    <div class="col-sm-10"><%= data.state ? data.state : 'NA' %></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">City</label>
+
+                    <div class="col-sm-10"><%= data.city ? data.city : 'NA' %></div>
+                  </div>
+
+                
+
+                 
+                 
+                 
+                </form>
+              </div>
+
+              <div class="tab-pane" id="services"></div>
+              <div class="tab-pane" id="booking"></div>
+               <div class="tab-pane" id="staff"></div>
+               <div class="tab-pane" id="followers"></div>
+               <div class="tab-pane" id="following"></div>
+
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="certificate">
+
+                <!-- Post -->
+                <div class="post">
+                  
+                  <!-- /.user-block -->
+                  <div class="row margin-bottom">
+                    <%   certificate.forEach(function(rs) { %>
+                      <div class="col-sm-3 margin-bottom">
+                        <a class="thumbnail fancybox" rel="ligthbox" href="<%= '/uploads/certificateImage/'+rs.certificateImage %>">
+                        <img class="img-responsive" alt="" src="<%= '/uploads/certificateImage/'+rs.certificateImage %>"  style="width: 250px !important;height: 200px !important;" width="250"/>
+                        </a>
+                          <center><label><%= (rs.status==1) ? 'Verified' : (rs.status==2) ? 'Unverified' : 'Pending' %></label></center>
+                          <div class="col-sm-6"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(1) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn artist-btn btn-success">Verified</a></div>
+                          <div class="col-sm-6"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(2) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn artist-btn btn-danger">Unverified</a></div>
+                      </div>
+                    <%  }); %>
+
+                    <!-- /.col -->
+                
+
+                  </div>
+                  <!-- /.row -->
+                </div>
+                <!-- /.post -->
+              </div>
+
+            
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <% include ./footer %> 
+<script src="/front/js/jquery.fancybox.min.js" defer="defer"></script>
+
+        <script type="text/javascript">
+
+          $(document).ready(function(){$(".fancybox").fancybox({openEffect:"none",closeEffect:"none"});});
+      ajax_fun('1');
+      staff_list('1');
+      booking_list('1');
+      followers_list('1');
+      following_list('1');
+
+    function ajax_fun(e)
+
+    {
+       $.ajax({
+
+            url: '/artistServicesList',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#services").html(data);
+
+            }
+
+        });       
+
+    }
+
+  function staff_list(e)
+
+    {
+       $.ajax({
+
+            url: '/admin_staff_List',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','businessType':'<%= data.businessType%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#staff").html(data);
+
+            }
+
+        });       
+
+    }
+
+
+  function booking_list(e){
+
+       $.ajax({
+
+            url: '/admin_booking_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','userType':'<%= data.userType%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#booking").html(data);
+
+            }
+
+        });       
+
+    }
+
+    function followers_list(e){
+
+       $.ajax({
+
+            url: '/admin_followers_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#followers").html(data);
+
+            }
+
+        });       
+
+    }
+
+    function following_list(e){
+
+       $.ajax({
+
+            url: '/admin_following_list',
+            type: "GET", 
+            data:{'id':'<%= data._id%>','page':e} ,                 
+            cache: false,
+            success: function(data){
+
+                $("#following").html(data);
+
+            }
+
+        });       
+
+    }
+
+</script>

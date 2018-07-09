@@ -1,0 +1,324 @@
+<% include ./header %> 
+<link href="/front/css/croppie.css" rel="stylesheet">
+<div class="header-margin"></div>
+       <div class="MainWrapper">
+        <section class="Register sec-pad">
+            <div class="container">
+                <div class="RegPart">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-4 col-md-12 vertical-align">
+                                <div class="lsCnt">
+                                    <img src="/front/img/logo.png">
+                                    <h2>Lorem ipsum dolor sit amet</h2>
+                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-8 col-md-12">
+                                <div class="card">
+                                    <div class="regisHead gradient-bg">
+                                        <div id="RegcntOne" class="text-center p-4">
+                                            <div class="regCnt">
+                                                <span>
+                                                    <i class="fa fa-phone"></i>
+                                                </span>
+                                                <p id="r_data">Enter Your Email & Phone Number</p>
+                                            </div>
+                                        </div>
+                                        <div id="RegcntTwo" class="text-center p-4">
+                                            <div class="regCnt">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                </span>
+                                                <p>Complete Your Profile</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body mx-4 pt-4">
+                                       <div style="display:none;" class="alert alert-danger hideDiv" role="alert" id="err-invalid">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        </button>
+                                        <strong>Oh snap!</strong> <span id="error-invalid"></span>
+                                    </div>
+                                    <div style="display:none;" class="alert alert-success hideDiv" role="alert" id="err-sucess">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            
+                                        </button>
+                                        <strong>Success!</strong> <span id="error-sucess"></span>
+                                    </div>
+                                         <div id="RegisOne">
+                                            <form  action="JavaScript:void(0);" id="step1Form" autocomplete="off" method="post">
+
+                                               <div class="md-form">
+                                                    <input type="email" class="form-control" id="email" oninput="emailCheck(this.value,'artist');">
+                                                    <div id="email-err"> </div>           
+                                               <label for="email">Email</label>
+                                               </div>
+                                            <input type="hidden" id="Countrycode" value='+44'>
+                                             <div class="phoneField">
+                                              <div class="countryCode">
+                                                     <div class="dropdown">
+                                                      <button class="codeValue dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="ccode">GB (+44)
+                                                      </button>
+                                                      <div class="dropdown-menu countryDropDown" aria-labelledby="ccode">
+                                                         <% con.forEach(function (item) { %>
+                                                                             
+
+                                                       <a class="dropdown-item" href="javascript:void(0);" data-id="<%= item.dial_code %>" data-code="<%= item.code %>" onclick="changecountrycode(this);"><%= item.name %> (<%= item.dial_code %>)</a>
+
+                                                       <% }) %>
+                                                      </div>
+                                                    </div>
+                                              </div>
+
+                                            <div class="md-form">
+                                      
+                                                  <input type="hidden" name="fName" id="fName" >
+                                                  <input type="hidden" name="lName" id="lName" >
+                                                  <input type="hidden" name="socialId" id="socialId" >
+                                                  <input type="hidden" name="image" id="image" >
+                                                  <input type="hidden" name="socialType" id="socialType" >
+                                              <input type="number" class="form-control"  id="phone" name="phone" min="1" onkeypress="return isNumberKey(event);" oninput="$('#phone-err').html('');">
+                                                <div  id="phone-err" ></div>
+                                                <label for="phone">Phone Number</label>
+                                            </div>
+                                            </div>
+                                        
+                                            <div class="formbtn mb-4">
+                                              <button type="submit" class="btn btn-theme" id="changeText">Continue</button>
+                                            </div>
+                                            </form>
+                                          </div>
+                                          <div id="RegisTwo">
+
+                                              <form autocomplete="off" action="JavaScript:void(0)" method="post" onsubmit="contactVerification();">
+
+                                                <div class="md-form pb-3">
+                                                    <input type="hidden" name="otpOld" id="otpOld"> 
+                                                    <input type="number" class="form-control" id="code"  onkeypress="return isNumberKey(event);" maxlength="4" size='4' oninput="$('#otp-err').html('');">
+                                                    <label for="Form-pass2">Enter OTP</label>
+                                                    <div class="err_msg"  id="otp-err" ></div>      
+                                                </div>
+                                                <div class="formbtn mb-4">
+                                                  <button  type="submit" class="btn btn-theme">Continue</button>
+                                                </div>
+                                                   <div class="pt-3 mb-1">
+                                                    <p class="grey-text d-flex justify-content-center"><a href="JavaScript:void(0);" class="blue-text ml-1" onclick="Previous1();"> Resend OTP?</a></p>
+                                              </div>
+                                              </form>
+                                          </div>
+                                        <div id="RegisThree" class="hidden">
+                                          <form autocomplete="off" action="/businessRegister" class="form-light" method="post" enctype= "multipart/form-data" onsubmit="$('#m-btn').attr('disabled','disabled');$('.loading').show();">
+                                            <div class="prImgAdd">
+                                                <div class="text-center">
+                                                  <div class="uplod_pr_img">
+                                                    <div class="log_div">
+                                                        <img src="http://www.cubaselecttravel.com/Content/images/default_user.png" id="pImg">
+                                                        <div class="text-center upload_pic_in_album">
+                                                          <input accept="image/*" class="inputfile hideDiv" id="recImage" name="profileImage" style="opacity: 0; position: absolute; height: 100%; width: 100%;" type="file" title="Please select profile image">
+                                                            <label for="file-1" class="upload_pic">
+                                                                <span class="fa fa-camera"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="err_msg" id="profileImage-err"> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" name="recImageData" id="recImageData">
+
+
+                                                <input type="hidden" name="image" id="image2">
+                                                <input type="hidden" name="socialId" id="socialId2">
+                                                <input type="hidden" name="socialType" id="socialType2">
+                                                <input type="hidden" name="userId" id="userId2">
+                                                <input type="hidden" name="contactNo" id="phone2">
+                                                <input type="hidden" name="email" id="email2">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                      <div class="md-form">
+                                                        <input type="text" class="form-control" name="firstName" id="fName2" title="Please enter first name"  oninput="$('#fname-err').html('');" required >
+                                                          <label for="fName2">First Name</label>
+                                                        <div class="err_msg" id="fname-err"> </div>
+
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" name="lastName" id="lastName2" title="Please enter last name" oninput="$('#lname-err').html('');" required >
+                                                          <label for="lastName2">Last Name</label>
+                                                          <div class="err_msg" id="lname-err"> </div>            
+
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" id="userName" name="userName" title="Please enter user name"  oninput="usernameCheck(this.value,'artist');$('#username-err').html('');" required>
+                                                          <label for="userName">Choose a Username</label>
+                                                          <div class="err_msg" id="username-err"> </div> 
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" name="businessName"  title="Please enter business name" id="businessName" oninput="$('#businessName-err').html('');" required>
+                                                          <label for="businessName">Business Name</label>
+                                                          <div class="err_msg" id="businessName-err"> </div>
+
+                                                      </div>
+                                                  </div>
+                                                  <input type="hidden" class="form-control"  name="businesspostalCode" title="Please enter business postal code">
+
+                                                  <div class="col-md-6">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" name="buildingNumber" title="Please enter building number" id="buildingNumber"  oninput="$('#buildingNumber-err').html('');" >
+                                                          <label for="buildingNumber">Building Number</label>
+                                                          <div class="err_msg" id="buildingNumber-err"> </div>
+
+                                                      </div>
+                                                  </div>
+                                              
+                                                  <div class="col-md-6">
+                                                          <div class="md-form">
+                                                            <input type="password" class="form-control" name="password" id="passwrd2"  title="Please enter password" oninput="$('#passwrd-err').html('');" required>
+                                                              <label for="passwrd2">Password</label>
+                                                             <div class="err_msg" id="passwrd-err"> </div> 
+                                                          </div>
+                                                 <p style="font-size: 12px;">Use at least 8 characters, include both one uppercase letter and one number.</p>
+        
+                                                      </div>
+                                                      <div class="col-md-6">
+
+                                                          <div class="md-form">
+                                                              <input type="password" class="form-control" id="cpassword" name="cpassword" title="Please enter confirm password" oninput="$('#confirm-err').html('');" required>
+                                                              <label for="cpassword">Confirm Password</label>
+                                                              <div class="err_msg" id="confirm-err"> </div>
+
+                                                          </div>
+                                                      </div>
+
+                                                    <div class="col-md-6">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" id="dob"  name="dob" title="Please enter date of birth" onchange="$('#dob-err').html('');" readonly required>
+                                                          <label for="dob"  class="label">Date of birth</label>
+                                                          <div class="err_msg" id="dob-err"> </div> 
+                                                      </div>
+                                                     
+                                                  </div> 
+
+
+                                                        <div class="col-md-6">
+
+                                                          <div class="md-form">
+                                                              <input type="text" class="form-control" name="address" title="Please enter address" id="address" oninput="$('#address-err').html('');" onblur="addresscheck(this.value);" required>
+                                                              <label for="address">Address</label>
+                                                              <div class="err_msg" id="address-err"> </div>
+
+                                                          </div>
+                                                      </div>
+                                                           <div class="col-md-6">
+
+                                                             <div class="form-inline">
+                                                                <div class="radio">
+                                                                   <input type="radio" id="radio11" checked="checked"  name="businessType" value="independent">
+                                                                <label for="radio11" class="radio-label">Independent</label>
+                                                                </div>
+                                                                <div class="radio">
+                                                                  <input type="radio" id="radio21" name="businessType" value="business" >
+                                                                <label for="radio21" class="radio-label">Business</label>
+                                                                </div>
+                                                         
+                                                              </div>
+                                                             
+
+                                                  </div>
+
+                                                 
+
+                                                <div class="col-md-12">
+                                                    <div class="md-form">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="checkbox" name="check" title="Please accept terms and conditions" onclick="$('#condition-err').html('');" required>
+                                                            <label for="checkbox" class="grey-text">Accept the
+                                                                <a href="#" class="blue-text"> Terms and Conditions</a>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="err_msg" id="condition-err"> </div>
+                                                </div>
+                                            <div class="formbtn mb-4 pt-3">
+                                              <button type="submit" id="m-btn" class="btn btn-theme" onclick="return registerValidation('business');">Register</button>
+
+                                            </div>
+                                          </form>  
+                                        </div>
+                                        <div class="pt-3 mb-1">
+                                            <p class="grey-text d-flex justify-content-center">Already have a member?
+                                                <a href="/businessLogin" class="blue-text ml-1"> Log in</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!--Footer-->
+<% include ./footer %> 
+
+
+
+ <script  type="text/javascript" src="/front/js/croppie.js"></script>
+
+ <script type="text/javascript">
+
+
+  $uploadCrop = $('#upload-demo').croppie({
+    enableExif: true,
+    viewport: {
+        width: 300,
+        height: 300,
+        type: 'square'
+    },
+    boundary: {
+        width: 500,
+        height: 300
+    }
+});
+
+$('#recImage').on('change', function () { 
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $uploadCrop.croppie('bind', {
+        url: e.target.result
+      }).then(function(){
+        console.log('jQuery bind complete');
+      });
+      
+    }
+    reader.readAsDataURL(this.files[0]);
+    $('#imgConfirm').modal({ backdrop: 'static',keyboard: false});
+      
+  
+});
+
+
+$('#save').on('click', function (ev) {
+  
+  $uploadCrop.croppie('result', {
+    type: 'canvas',
+    size: 'viewport'
+  }).then(function (resp) {
+       $('#recImageData').val(resp);
+       document.getElementById('pImg').src = resp;
+       html = '<img src="' + resp + '" style="width:180px;height:100px;" />';
+
+      $('#imgConfirm').modal('hide');
+  });
+
+ 
+});
+</script>

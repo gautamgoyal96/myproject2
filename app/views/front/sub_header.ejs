@@ -1,0 +1,191 @@
+ <section class="ProfilePart profileBg">
+                <div class="container">
+                  <div class="PrSlider">
+                    <div id="FirstPr">
+                      <div class="profilePartInner">
+                        <div class="card ">
+                          <div class="UsInfo text-center">             
+                            <div class="PrActionBtn prImgIc">
+                            <div class="row ">
+                              <div id="DivSec" class="col-lg-4 col-md-12">
+                              <div class="usImg">
+                                <img src="<%= user.profileImage %>">
+                                <% if(user.userType=="artist" && isVerified==1){ %>
+
+                                  <span class="crt"><i class="fa fa-check"></i></span>
+                                <% } %>
+                              </div>
+                              <div class="UsPdata">
+                                   <h2><%= user.firstName %> <%= user.lastName %></h2>
+
+                                  <p>@<%= user.userName %></p>     
+                                  <div class="counterData">
+                                  <div class="rating">
+                                    <ul class="inline-ul">
+                                       <% count = user.ratingCount;
+                                        for(i=1;i<=count;i++){ %>
+                                        <li> <i class="fa fa-star amber-text"></i></li> 
+                                      <% } minCount = 5-count; 
+                                        for(j=1;j<=minCount;j++){ 
+                                      %>
+                                        <li> <i class="fa fa-star"></i></li> 
+                                      <% } %>
+                                    </ul>
+                                    <span>(<%= user.reviewCount %>)</span>
+                                  </div>
+                                  </div>
+                                  <p><span><%= (user.serviceType==3 || user.serviceType==2) ?  user.radius+' Miles' : ''; %> </span> </p>
+                                  <span class="msg"><i class="fa fa-send"></i></span>
+                                </div>
+                              </div>
+                              <div id="DivThird" class="col-lg-8 col-md-12 text-md-left">
+                                      <div class="counterData">
+                                              <div class="row">
+
+                                                <%
+                                                    id='';
+                                                    if(session.fUser){
+                                                      id = session.fUser._id;
+                                                    }
+                                                 %>
+                                                  <div class="col-lg-<%= (user.userType!="artist" && id!=user._id) ? '6' : (user.userType!="artist" && id==user._id) ? '3' : '' %>"></div>
+                                                  <% if(session.fUser){%>
+                                                        
+
+                                                       <% if (user.userType=="artist" && session.fUser._id!=user._id) {%>
+                                                        <div class="col-lg-1"></div>
+                                                      <div id="c1" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                          <a href="/my_services?id=<%= cryptr.encrypt(user._id); %>" id="s1" class="common"><p><%= user.serviceCount %></p><p>Services</p></a>
+                                                      </div> 
+
+                                                  <% }if(session.fUser._id==user._id){%>
+
+                                                    <div id="c1" class="col-lg-3 col-md-4 col-sm-4 col-6">
+                                                      <a href="/allBookinghistory" id="s1" class="common"><p><%= bData %></p><p>Booking History</p></a>
+                                                    </div>
+
+                                                  <% }%> 
+
+                                                  <% } else{ %>
+
+                                                      <% if (user.userType=="artist") {%>
+              
+                                                      <div id="c1" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                          <a href="/my_services?id=<%= cryptr.encrypt(user._id); %>" id="s1" class="common"><p><%= user.serviceCount %></p><p>Services</p></a>
+                                                      </div> 
+
+                                                  <% }  } %>
+
+                                                 
+                                                             
+                                             
+                                                
+                                                <div id="F3" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/followers?id=<%= cryptr.encrypt(user._id); %>" id="FD1" class="common"><p><%= user.followersCount %></p><p>Followers</p></a>
+                                                </div>
+                                                <div id="F4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/following?id=<%= cryptr.encrypt(user._id); %>"  id="FD2" class="common"><p><%= user.followingCount %></p><p>Following</p></a>
+                                                </div>
+                                                <div id="c4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                    <a href="/profile?id=<%= cryptr.encrypt(user._id); %>" id="p1" class="common"><p><%= user.postCount %></p><p>Post</p></a>
+                                                  </div>
+
+                                                 <% if (user.userType=="artist") {%>
+              
+                                                      <div id="c2" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                          <a href="/aboutUs?id=<%= cryptr.encrypt(user._id); %>" id="a1" class="common"><p><i class="fa  fa-info-circle"></i></p><p>About me</p></a>
+                                                        </div> 
+                                                <% }%>   
+                                                 
+                                              </div>
+                                              </div>
+                              </div>
+                            </div>
+                            </div>
+                   <div class="btnprc">
+                                      <% if(session.fUser){%>
+                            
+                                         <%  if (session.fUser._id!=user._id){
+                                             var rId = 'M'+session.fUser._id+user._id;
+                                         %>
+                                          <span id="<%= rId %>">
+                                            <% if(follo!='' && follo.status==1){ %>
+                                            <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= user._id %>','0','<%= rId %>');" title="Unfollow">Unfollow</button>
+                                            <% }else{ %>
+                                             <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= user._id %>','1','<%= rId %>');" title="follow">Follow</button>
+                                            <% } %>
+                                           </span> 
+
+                                        <% if (user.userType=="artist" && session.fUser.userType!='artist') {
+                                            var fId = 'F'+session.fUser._id+user._id;
+                                        %>
+
+                                             <span id="<%= fId %>">
+
+                                                 <%  if(fav){  %>
+
+                                                   <button type="button" class="btn btn btn-theme fav waves-effect waves-light" onclick="artistFavorite('<%= user._id %>','0','<%= fId %>');" title="Unfavourite"><i class="fa fa-heart"></i></button>
+
+                                                  <% }else{ %>
+
+                                                    <button type="button"  class="btn btn btn-theme fav waves-effect waves-light"  onclick="artistFavorite('<%= user._id %>','1','<%= fId %>');" title="Favourite"><i class="fa fa-heart-o"></i></button>
+
+                                                <% } %>
+                                            </span>    
+                                           <a href="booking_detial/<%= cryptr.encrypt(user._id); %>/<%= cryptr.encrypt(0); %>" class="btn btn btn-theme waves-effect waves-light" title="Book Now"><span>Book Now</span></a>
+                                        <% } %>
+
+                                      <%}}else { %>
+                                        <a href="/login" class="btn btn btn-theme waves-effect waves-light"  title="Follow"><span>Follow</span></a>
+                                         <% if (user.userType=="artist") { %>
+                                       <a href="/login" class="btn btn btn-theme fav waves-effect waves-light"  title="Favourite"><i class="fa fa-heart-o"></i></a>
+                                        <a href="booking_detial/<%= cryptr.encrypt(user._id); %>/<%= cryptr.encrypt(0); %>" class="btn btn btn-theme waves-effect waves-light"  title="Book Now"><span>Book Now</span></a>
+                                      <% } } %> 
+                                    </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+           
+                  </div>
+                </div>
+              </section>
+
+<script type="text/javascript">
+        
+        var pathname = window.location.pathname;
+        var res = pathname.replace("/", "");
+        var res = res.split("/");
+        var res = res[0];
+          $('.common').removeClass("active");
+        if(res){
+
+           switch(res) {
+                case 'bookinghistory':
+                    $('#s1').addClass("active");
+                    break;
+                case 'my_services':
+                    $('#s1').addClass("active");
+                    break;    
+                case 'followers':
+                    $('#FD1').addClass("active");
+                    break;
+                case 'following':
+                    $('#FD2').addClass("active");
+                    break; 
+                case 'profile':
+                    $('#p1').addClass("active");
+                    break;        
+                case 'aboutUs':
+                    $('#a1').addClass("active");
+                    break;              
+                default:
+                    $('#p1').addClass("active");
+            } 
+
+          $('#'+res).addClass("active");
+        
+        }
+
+    </script>

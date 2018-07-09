@@ -1,0 +1,9 @@
+
+<option value="" >Select Staff</option>
+<option value="<%= artistData._id %>"  <% if(0==staff && type=="edit"){%>selected<%}%>><%= artistData.userName %> (Business)</option>
+
+ <%
+
+   staffData.forEach(function(rs) { %>
+<option value="<%= rs.artistId %>" <% if(rs.artistId==staff){%>selected<%}%>><%= rs.staffInfo.userName %> (<%= rs.job %>)</option>
+<% });%>

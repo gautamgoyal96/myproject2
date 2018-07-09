@@ -1,0 +1,241 @@
+<% include ./header %> 
+    <link href="/front/css/jquery.fancybox.min.css" rel="stylesheet" >
+
+
+<div class="header-margin"></div>
+<div class="MainWrapper parallax parallexBg">
+    <section class="ProfilePart profileBg">
+                <div class="container">
+                  <div class="PrSlider">
+                    <div id="FirstPr">
+                      <div class="profilePartInner">
+                        <div class="card ">
+                          <div class="UsInfo text-center">             
+                            <div class="PrActionBtn prImgIc">
+                            <div class="row ">
+                              <div id="DivSec" class="col-lg-4 col-md-12">
+                              <div class="usImg">
+                                <img src="<%= user.profileImage %>">
+                                <span class="crt"><i class="fa fa-check"></i></span>
+                              </div>
+                              <div class="UsPdata">
+                                  <h2><%= user.fullName %></h2>
+                                  <p>@<%= user.userName %></p>     
+                                  <div class="counterData">
+                                  <div class="rating">
+                                    <ul class="inline-ul">
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star"></i></li>
+                                      <li><i class="fa fa-star"></i></li>
+                                    </ul>
+                                    <span>(150)</span>
+                                  </div>
+                                  </div>
+                                  <p><span>30 Miles</span> </p>
+                                  <span class="msg"><i class="fa fa-send"></i></span>
+                                </div>
+                              </div>
+                              <div id="DivThird" class="col-lg-8 col-md-12 text-md-left">
+                                      <div class="counterData">
+                                              <div class="row">
+                                                  <div class="col-lg-1"></div>
+                                                <div id="c1" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/my_services"><p><%= user.serviceCount %></p><p>Services</p></a>
+                                                </div>              
+                                                <!-- <div id="c3" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                    <a href="certificate.html"><p>02</p><p>Certificate</p></a>
+                                                  </div> -->
+                                                
+                                                <div id="c3" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/myProfile"><p>02</p><p>Followers</p></a>
+                                                </div>
+                                                <div id="c4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/myProfile"><p>10</p><p>Following</p></a>
+                                                </div>
+                                                <div id="c4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                    <a href="/myProfile"><p>10</p><p>Post</p></a>
+                                                  </div>
+                                                  <div id="c2" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                          <a href="/myProfile"><p><i class="fa  fa-info-circle"></i></p><p>About Us</p></a>
+                                                        </div>
+                                              </div>
+                                              </div>
+                              </div>
+                            </div>
+                            </div>
+                       <!--      <div class="btnprc">
+                                  <a href="#" class="btn btn btn-theme"><i class="fa fa-comment"></i> <span>Follow</span></a>
+                                  <a href="#" class="btn btn btn-theme"><i class="fa fa-user-plus"></i> <span>Book Now</span></a>
+                            </div> -->
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+              </section>
+
+<section class="Certificate sec-pad parallax parallexBg" >
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="addCert">
+          <a class="btn blue-gradient" href="javascript:void(0)" data-toggle="modal" data-target="#AddCert">Add New Certificate</a>
+        </div>
+        <% if (error.length > 0) { %>
+                              <div class="alert alert-danger"><%- error %></div>
+                     <% } %>
+
+                     <% if (success.length > 0) { %>
+                    <div class="alert alert-success"><%- success %></div>
+                    <% } %>
+        <div class="certBox mt-3">
+          <div class="row">
+           
+          <% certificate.forEach(function(rs) { %>
+
+            <div class="col-md-4 col-sm-6">
+              <div class="CrBox">
+                <div class="cricon">
+                  <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#DelService" onclick=" $('#id').val('<%= rs._id %>');"><span><i class="fa fa-trash"></i></span></a> -->
+                </div>
+
+                 <a class="fancybox" rel="ligthbox" href="<%= '/uploads/certificate/'+rs.file %>"><img src="<%= '/uploads/certificate/'+rs.file %>" alt="" /></a>
+                <h2><%= rs.title %></h2>
+               <!-- <p class="cr-status">Status: 
+                      <%  if(rs.status == '0'){ %>
+                         <span class="pend">Pending</span>
+                      <% } else if(rs.status == '1'){ %>
+
+                         <span class="Acc">Approved</span>
+
+
+                      <% }else if(rs.status == '2'){ %>
+
+                          <span class="Acc">Reject</span>
+
+                      <% } %>
+                       
+                </p> -->
+              </div>
+            </div>
+          <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<% include ./footer %> 
+
+
+<section class="modal fade right refineModal fixedModal" id="MenuSlide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-right" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Menu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="MenuBody">
+          <ul class="list-unstyled">
+            <li><a class="active" href="/myProfile"><span><img src="/front/img/menu_ic1.png"></span> My services <span class="badgLable"><%= user.serviceCount %></span></a></li>
+            <li><a href="#"><span><img src="/front/img/menu_ic2.png"></span> Booking Diary</a></li>
+            <li><a href="#"><span><img src="/front/img/menu_ic3.png"></span> Sent Request</a></li>
+            <li><a href="#"><span><img src="/front/img/menu_ic4.png"></span> Set Availability</a></li>
+            <li><a href="#"><span><img src="/front/img/menu_ic5.png"></span> Payment Info</a></li>
+            <li><a href="/my_certificate"><span><img src="/front/img/menu_ic6.png"></span> Certificate <span class="badgLable"><%= certificateCount %></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="modal fade csCicon" id="AddCert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header light-blue darken-3 white-text">
+        <h4 class="title">Add Certificate</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="AddSer">
+          <div class="text-center">
+          <h2>Add your certificate</h2>
+          </div>
+          <form autocomplete="off" id="certificate" action="/certificate_upload" method="post" enctype= "multipart/form-data">
+            <div class="md-form form-sm mt-4">
+              <i class="fa fa-certificate prefix"></i>
+              <input type="text" id="cr" class="form-control" name="title" required>
+              <label for="cr" class="">Certificate Title</label>
+            </div>
+            <div class="error" id="title-err"></div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Add Certificate Image</label>
+              <input type="file" class="form-control-file" name="file" required>
+              <div class="error" id="file-err"></div>
+
+            </div>
+            <div class="text-center mt-4">
+              <button class="btn blue-gradient mb-2" type="submit">Add</button>
+            </div>
+         </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+<div class="modal fade csCicon" id="DelService" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header light-blue darken-3 white-text">
+        <h4 class="title">Delete Certificate</h4>
+      </div>
+      <div class="modal-body">
+        <div class="AddSer">
+          <div class="text-center">
+          <h2>Are you sure want to delete this certificate</h2>
+          </div>
+                        <input type="hidden" id="id" class="form-control">
+          <div class="text-center mt-1-half">
+            <button class="btn blue-gradient mb-2" onclick="removecertificate();">Yes</button>
+            <button class="btn blue-gradient mb-2" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$("#certificate").validate({
+    errorPlacement: function(error, element) {
+
+      if(element.attr("name") == "title"){
+          error.appendTo('#title-err');
+          return;
+      }
+
+      if(element.attr("name") == "file"){
+          error.appendTo('#file-err');
+          return;
+      }
+
+  }
+
+});
+</script>
+
+<script src="/front/js/jquery.fancybox.min.js"></script>

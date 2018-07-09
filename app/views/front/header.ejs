@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Mualab</title>
+    <link rel="icon" type="image/png" href="/front/img/loader.png" />
+
+    <!-- css File -->
+    <link href="/front/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/front/css/mdb.min.css" rel="stylesheet">
+    <link href="/front/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/front/css/bootstrap-datetimepicker-standalone.css" rel="stylesheet">
+    <link href="/front/css/jquery-ui.css" rel="stylesheet" >
+    <link href="/front/css/font-awesome.min.css" rel="stylesheet">
+  <!--   <link href="/front/css/semantic.min.css" rel="stylesheet"> -->
+    <link href="/front/css/fullyCustom_Calender.css" rel="stylesheet">
+      <link href="/front/css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="/front/css/zuck.min.css" rel="stylesheet">
+    <link href="/front/css/style.css" rel="stylesheet">
+    <link href="/front/css/custom.css" rel="stylesheet">
+    <link href="/front/css/responsive.css" rel="stylesheet">
+    <link href="/front/css/loader.css" rel="stylesheet">
+    <script src="/front/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/front/js/jquery.validate.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+<body class="static" onload="$('.loading').hide();$('body').removeClass('static');">
+ <div class="loading">Loading&#8230;</div>   
+<!--Navbar-->
+<header id="header">
+<!-- <div class="topBar">
+  <div class="container">
+    <div class="topBarCnt">
+      <div class="pull-left">
+        <ul class="contactinfo list-inline">
+          <li><a href="#"><i class="fa fa-phone-square"></i> +92 95 01 88 821</a></li>
+          <li><a href="#"><i class="fa fa-envelope"></i> info@beautyspa.com</a></li>
+        </ul>
+      </div>
+      <div class="pull-right"></div>
+    </div>
+  </div>
+</div> -->
+
+
+<nav class="navbar navbar-expand-lg navbar-dark csNav">
+  <div class="container">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse">  
+            <% if (!session.fUser) { %>
+            <ul class="navbar-nav mainMenu">
+              <li class="nav-item">
+                <a class="nav-link" href="/businessLogin">Are you business/freelancer?</a>
+              </li>
+            </ul>
+           <% }else{ if (session.fUser.userType=="artist") {%>
+                 <ul class="navbar-nav mainMenu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/artistDashboard">
+                      <i class="fa fa-desktop" aria-hidden="true"></i>
+                      </i>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/bookinghistory">
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </a>
+                  </li>
+                </ul>
+
+           <% }}%> 
+          </div>
+
+           <% if (session.fUser && session.fUser.userType=="artist") {%>
+              
+              <a class="navbar-brand mx-auto" href="/artistDashboard"><img src="/front/img/logo.png"></a>
+
+           <% }else{%>
+
+              <a class="navbar-brand mx-auto" href="/"><img src="/front/img/logo.png"></a>
+
+           <% }%>   
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">  
+    <ul class="navbar-nav mainMenu ml-auto">
+
+      
+
+
+        <% if (session.fUser) { %>
+
+           <%if (session.fUser.userType=="artist") {%>
+                  <li class="nav-item mobile-view">
+                    <a class="nav-link" href="/artistDashboard">
+                      <i class="fa fa-desktop" aria-hidden="true"></i>
+                      </i>
+                    </a>
+                  </li>
+                  <li class="nav-item mobile-view">
+                    <a class="nav-link" href="/bookinghistory">
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </a>
+                  </li>
+           <% }%> 
+
+          <li class="nav-item">
+          <a class="nav-link" href="/explore"><i class="fa fa-search-plus"></i></a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="javascript:void();" id="chat"><i class="fa fa-send"></i></a>
+      </li>
+      <% if (session.fUser.userType=="artist") {%>
+      <li class="nav-item">
+          <a class="nav-link myPr" href="/myProfile"><img src="<%= lUser.profileImage %>"> My Profile</a>
+      </li>
+      <% }else{ %>
+       <li class="nav-item">
+          <a class="nav-link myPr" href="/myProfile"><img src="<%= lUser.profileImage %>"> My Profile</a>
+      </li>
+      <% } %>
+      <!-- <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fa fa-align-right"></i></a>
+      </li> -->
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-align-right"></i></a>
+          <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="/userProfile">Edit Profile</a>
+              <a class="dropdown-item" href="/allBookinghistory">Bookings History</a>
+              <a class="dropdown-item" href="/paymenthistory">Payment History</a>
+              <% if (session.fUser.userType=="artist") {
+                  if(session.fUser.businessType=="business"){
+              %>
+                <a class="dropdown-item" href="/staffManagement">Staff Management</a>
+              <% }else{ %>
+                <a class="dropdown-item" href="/staffManagement">Company Management</a>
+              <% } %>
+                <a class="dropdown-item" href="/subCategoryAdd?type=type">Service Management</a>
+              <% } %>
+              <a class="dropdown-item" href="#">Payment Info</a>
+              <a class="dropdown-item" href="#">Help</a>
+              <a class="dropdown-item" href="/userLogout">Logout</a>
+          </div>
+      </li>
+      <% }else{ %>
+
+         <% if (!session.fUser) { %>
+              <li class="nav-item mobile-view">
+                <a class="nav-link" href="/businessLogin">Are you business/freelancer?</a>
+              </li>
+           <% } %> 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Sign Up/Sign In</a>
+          </li>
+
+      <% } %>
+      <!-- <li class="nav-item">
+          <a class="nav-link" href="#">About Us</a>
+      </li> -->
+      <!-- <li class="nav-item">
+          <a class="nav-link" href="services.html">Services</a>
+      </li>
+       <li class="nav-item">
+          <a class="nav-link" href="#">How it Works</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link myPr" href="artist_my_profile.html"><img src="img/staff-5.jpg"> My Profile</a>
+      </li> -->
+    </ul>
+  </div>
+    <% if (session.fUser) { %>
+    <input type="hidden" id="page" value="0">
+      <div class="NotificationMenu">
+              <div class="dropdown show">
+              <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" aria-expanded="flase">
+                <i class="fa fa-bell-o"></i>
+              </a>
+              
+              <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+                
+                <div class="notification-heading"><h4 class="menu-title">Notifications <!-- a href="#">View all<i class="fa fa-arrow-circle-o-right"></i></a> --></h4>
+                </div>
+               <div class="notifications-wrapper" id="notifications_list"> </div>
+              </ul>
+              </div>
+      </div>
+    <% } %>
+
+</nav>
+<!--/.Navbar-->
+
+</header>

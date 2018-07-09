@@ -1,0 +1,93 @@
+ <%
+
+  if(listdata.length>0){
+   listdata.forEach(function(rs) { %>
+   <div class="userListlead">
+              <div class="userDetails">
+                <div class="media">
+                  <div class="media-left">
+                    <div class="user-image">
+                        <a href="/profile?id=<%= cryptr.encrypt(rs.users._id); %>" target="_self"><img src="<%= rs.users.profileImage %>" alt="<%= rs.users.userName %>" title="<%= rs.users.userName %>" class="img-responsive"></a>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="row">
+                      <div class="col-md-8">
+                          <h4 class="media-heading"><a href="/profile?id=<%= cryptr.encrypt(rs.users._id); %>"><%= rs.users.userName %></a></h4>
+                          <div class="ratingBox">
+                            <ul class="rating inline-ul">
+                              <% count = rs.users.review;
+                                for(i=1;i<=count;i++){ %>
+                                <li> <i class="fa fa-star amber-text"></i></li> 
+                              <% } minCount = 5-count; 
+                                for(j=1;j<=minCount;j++){ 
+                              %>
+                                <li> <i class="fa fa-star"></i></li> 
+                              <% } %>
+                            </ul>
+                          </div>
+                          <div class="serviseslead">
+                            <span>
+                              <% service = rs.service;
+                                 for (i = 0 ; i < service.length ; i++) { 
+                                 if(i!=(service.length-1) && i!=1){%>
+                                 
+                             <%= service[i].title %> ,
+                             <% }else{ %>
+                              <%= service[i].title %>
+                              <% }
+                              if(i==1){
+                                break;
+                              }
+                              } %>
+                          </span>
+                          </div>
+                      </div>
+                      <div class="col-md-4 text-right">
+                          <p class="paraText"><span><i class="fa fa-map-pin"></i></span> <%= rs.distance %> Miles</p>
+                          <a class="btn btn-theme" href="/booking_detial?id=<%= rs._id %>&distance= <%= rs.distance %>">Book</a>
+
+                      </div>
+                    </div>                   
+                  </div>
+                </div>
+              </div>
+            </div>
+
+  <% });}else{ %>
+ <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+  <% } %> 
+
+    <% if (pageCount > 1) { %>
+       <nav class="my-4 mr-auto text-center">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+                <% if (currentPage > 1) { %>
+
+                    <li class="page-item "><a class="page-link" aria-label="Previous" href="#" onclick="faveroite_list(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="page-item active"> <a class="page-link" href="#"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="#" onclick="faveroite_list('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li class="page-item" ><a class="page-link" aria-label="Next" href="#" onclick="faveroite_list('<%= i-1 %>');"> <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span></a></li>
+                <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+              

@@ -1,0 +1,513 @@
+<!--Footer-->
+<footer id="footer" class="page-footer center-on-small-only unique-color-dark pt-0 Footer">
+
+  <div class="footer-copyright">
+    <div class="container-fluid">
+      © 2018 Copyright: <a href="#"><strong> mualab.com</strong></a>
+    </div>
+  </div> 
+</footer>
+
+    <!--Modal: Subscription From-->
+    <div class="modal fade" id="modalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header light-blue darken-3 white-text">
+                    <h4 class="title">
+                        <i class="fa fa-lock"></i> Forgot Your Password</h4>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-0">
+                  <div style="display:none;" class="alert alert-danger hideDiv" role="alert" id="errorDiv1">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        </button>
+                                        <strong>Oh snap!</strong> <span id="error1"></span>
+                                    </div>
+                                    <div style="display:none;" class="alert alert-success hideDiv" role="alert" id="err-sucess1">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            
+                                        </button>
+                                        <strong>Success!</strong> <span id="err-sucess2"></span>
+                                    </div>
+
+                    <div class="md-form form-sm">
+                        <i class="fa fa-envelope prefix"></i>
+                        <input type="text" id="forget_email" class="form-control" oninput="$('#forget_email_error').html('');">
+                        <input type="hidden" id="type">
+                        <label for="form28">Your Email</label>
+                        <div id="forget_email_error" class="err_msg"></div>
+                    </div>
+                    <div class="text-center mt-1-half">
+                        <button class="btn btn-theme mb-1" id="forgetpassword">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <section id="ChatBox" class="sidebar-right">
+      <div class="chatContent">
+        <div class="chatTab">
+          <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" href="#profile" role="tab" data-toggle="tab">Messages</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#buzz" role="tab" data-toggle="tab">Group Messages</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#references" role="tab" data-toggle="tab">Booking Messages</a>
+            </li>
+          </ul>
+        </div>
+        <div class="chatCnt">
+          <div class="tab-content">
+            <div class="ChatLink">
+              <div class="float-left">
+                <a href="#">
+                  <i class="fa fa-plus"></i> New Message</a>
+              </div>
+              <div class="float-right">
+                <a href="chat.html">See Inbox</a>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade show active" id="profile">
+              <div class="chat-user chatHisUser csScroll">
+                <div class="list-group">
+                  <a class="list-group-item" href="chat.html">
+                    <div class="media">
+                      <img class="rounded-circle float-left d-flex mr-3" src="/front/img/staff-1.jpg">
+                      <div class="media-middle media-body">
+                        <h5 class="media-heading">Harry Jones</h5>
+                        <small class="text-muted">Hello how are you?</small>
+                        <span class="lastTime">09:23 AM</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item" href="chat.html">
+                    <div class="media">
+                      <img class="rounded-circle float-left d-flex mr-3" src="/front/img/staff-5.jpg">
+                      <div class="media-middle media-body">
+                        <h5 class="media-heading">Daniel Taylor</h5>
+                        <small class="text-muted">Hello i am also makeup artist</small>
+                        <span class="lastTime">10:23 AM</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item" href="chat.html">
+                    <div class="media">
+                      <img class="rounded-circle float-left d-flex mr-3" src="/front/img/staff-3.jpg">
+                      <div class="media-middle media-body">
+                        <h5 class="media-heading">Charlotte Harrison</h5>
+                        <small class="text-muted">Lorem ipsum dolor sit amet</small>
+                        <span class="lastTime">Yesterday</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item" href="#">
+                    <div class="media">
+                      <img class="rounded-circle float-left d-flex mr-3" src="/front/img/staff-1.jpg">
+                      <div class="media-middle media-body">
+                        <h5 class="media-heading">Harry Jones</h5>
+                        <small class="text-muted">Managing Partner</small>
+                        <span class="lastTime">06:23 PM</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="buzz">bbb</div>
+            <div role="tabpanel" class="tab-pane fade" id="references">ccc</div>
+          </div>
+        </div>
+      </div>
+      <span class="backIc">
+        <i class="fa fa-angle-right"></i>
+      </span>
+    </section>
+    <!---Modal Start Here-->
+    <!-- Modal -->
+    <div class="modal fade csCicon" id="CounterOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+          <div class="modal-header light-blue darken-3 white-text">
+            <h4 class="title">Change time frame</h4>
+            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mb-0">
+            <div class="weekly-tab">
+              <div class="profileDetails">
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#Today">Today</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#Week">Week</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#Month">Month</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#Custom">Custom</a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div id="Today" class="tab-pane active">
+                    <div class="change_sale">
+                      <h2>Today</h2>
+                      <h1>£ 500
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </h1>
+                      <div class="list-items2">Last Monday
+                        <span class="pull-right color-red">£ 200
+                          <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="Week" class="tab-pane">
+                    <div class="change_sale">
+                      <h2>Week</h2>
+                      <h1>£ 500
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </h1>
+                      <div class="list-items2">Last Monday
+                        <span class="pull-right color-red">£ 200
+                          <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="Month" class="tab-pane">
+                    <div class="change_sale">
+                      <h2>Month</h2>
+                      <h1>£ 500
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </h1>
+                      <div class="list-items2">Last Monday
+                        <span class="pull-right color-red">£ 200
+                          <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="Custom" class="tab-pane">
+                    <div class="change_sale">
+                      <h2>Custom</h2>
+                      <form action="" class="mt-4">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="md-form">
+                              <input type="text" id="form1" class="form-control datepickDateonly">
+                              <label for="form1" class="">Form</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="md-form">
+                              <input type="text" id="form2" class="form-control datepickDateonly">
+                              <label for="form1" class="">To</label>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <h1>£ 500
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </h1>
+                      <div class="list-items2">Last Monday
+                        <span class="pull-right color-red">£ 200
+                          <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="text-center mt-1-half">
+              <button class="btn blue-gradient mb-2">Send</button>
+          </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---Modal End Here-->
+
+
+ <div class="modalANimation">
+ <div class="modal fade csCicon" id="serviceViewMore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text p-2">
+          <div class="likeuser p-0 moreSrvices">
+                  <div class="media">
+                      <a href="" class="proLink">
+                      <img class="d-flex mr-3" src="/front/img/staff-1.jpg" alt="" id="serviceViewMore-img">   </a>
+                     <div class="media-body">
+                         <a href="" class="proLink" style="color: #FFF !important;"> <h5 class="mt-0" id="serviceViewMore-name">Isabella Smith</h5></a>
+                      </div>
+
+                    </div>
+              </div>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0 modalScroll">
+          <div class="LikeMember" id="serviceviewmore_result">
+
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="modal fade" id="errormsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header light-blue darken-3 white-text p-2" style=" margin: -1rem 1rem 1rem !important;">
+                    <h4 class="title">Alert</h4>
+                   
+                </div>
+                <div class="modal-body mb-0">
+                
+
+                    <div class="md-form form-sm ">
+                          <p style="text-align: center;font-size: 18px;font-weight: normal;" id="message"></p>
+                    </div>
+                   <div class="text-center mt-1-half">
+                        <button class="btn btn-theme mb-1"  type="button" data-dismiss="modal" aria-label="Close">ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="imgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+        
+                <div class="modal-header ">
+                    <div class="alert dark alert-icon alert-danger alert-dismissible" role="alert" id="errorDiv" style="display:none;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <center><span id="upload-error">Please Save Image First</span> </center>
+          </div> 
+                    <div id="upload-demo-i"></div>
+                </div>
+                <div class="modal-body">
+                <input type="hidden" id="hidee" name="hidee">
+                   
+              <div id="upload-demo" class="croppie-container"></div>
+        
+                </div>
+                <div class="modal-footer">
+                    
+                    <button id="save" class="btn btn-theme waves-effect waves-light">Save</button>
+                    <button type="button" class="btn btn-theme waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+ </div> 
+ <div class="modal fade" id="authTokenCheckModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header light-blue darken-3 white-text p-2" style=" margin: -1rem 1rem 1rem !important;">
+                    <h4 class="title">Alert</h4>
+                   
+                </div>
+                <div class="modal-body mb-0">
+                
+
+                    <div class="md-form form-sm ">
+                          <p style="text-align: center;font-size: 18px;font-weight: normal;" id="auth_message"></p>
+                    </div>
+                   <div class="text-center mt-1-half">
+                        <a class="btn btn-theme mb-1"  href="/userLogout">ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<a href="#" class="smooth-scroll back-to-top"><img src="/front/img/scroll.png" alt="scroll"></a>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/front/js/popper.min.js"></script>
+<script src="/front/js/bootstrap.min.js" ></script>
+<script src="/front/js/mdb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js" defer="defer"></script>
+<script src="/front/js/bootstrap-datetimepicker.min.js" defer="defer"></script>
+<script src="/front/js/jquery-ui.js"></script>
+<script src="/front/js/jquery-ui-sliderAccess.js"></script>
+<!-- <script src="/front/js/semantic.min.js"></script> -->
+<script src="/front/js/jquery.easing.compatibility.min.js"></script>
+<script src="/front/js/jquery.touch.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="/front/js/jquery.fancybox.min.js" defer="defer"></script>
+<script src="/front/js/custom.js" defer="defer"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyie5SLruC8QRsZ4VYSaK1uwUE6g4w2IY&libraries=places" type = "text/javascript" defer="defer"></script> 
+<script type="text/javascript">
+  var senderId = '';
+</script><% if (session.fUser) { %>
+<script type="text/javascript">
+  var senderId = '<%= session.fUser._id%>';
+  var authToken = '<%= session.fUser.authToken%>';
+</script>
+<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+<script src="/front/js/web-notification.js" defer="defer"></script>
+<% }%>
+<script src="/front/js/register-login.js" defer="defer"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+$(".form-control,.md-textarea,.emoji-wysiwyg-editor").on("input", function(e) {
+
+    var d = $(e.target).val();
+    string = d.replace(/\s\s+/g, ' ');
+    $(e.target).val(string);
+});
+
+
+$("#passwordLogin,#passwrd2,#cpassword").on("input", function(e) {
+    var d = $(e.target).val();
+    string = d.replace(/\s+/g, '');
+    $(e.target).val(string);
+});
+function errorMsg(message){
+
+    $("#errormsg").modal({backdrop: 'static'});  
+    $("#message").html(message);
+}
+
+
+                         function changecountrycode(a){
+
+                            var id = $(a).data("id");
+                            var code = $(a).data("code");
+                            $('#ccode').text(code +' ('+id+')');
+                            $('#Countrycode').val(id);
+                         }
+
+
+  setInterval(function(){ 
+
+    var bookingExpireTime = localStorage.getItem("bookingExpireTime");
+    var newTime = timeConvert(formatAMPM());
+    if(bookingExpireTime<=newTime){
+      bookingRemove();
+    }
+    }, 5000);
+
+
+    function bookingRemove(){
+
+         var url = '/bookingRemove';
+         $.ajax({
+            url: url,
+            type: "get",
+            cache: false,            
+            success: function(data){
+              localStorage.removeItem("bookingExpireTime");
+              if(data.message!='fail'){
+                
+                window.location.href = '/';
+              
+              }
+
+            
+            }
+        });
+
+    }
+
+
+function timeConvert(otime){
+  
+      var ohours = Number(otime.match(/^(\d+)/)[1]);
+      var ominutes = Number(otime.match(/:(\d+)/)[1]);
+      var AMPM = otime.match(/\s(.*)$/)[1];
+      if(AMPM == "PM" && ohours<12) ohours = ohours+12;
+      if(AMPM == "AM" && ohours==12) ohours = ohours-12;
+      var osHours = ohours.toString();
+      var osMinutes = ominutes.toString();
+      if(ohours<10) osHours = "0" + osHours;
+      if(ominutes<10) osMinutes = "0" + osMinutes;
+     return osHours + ":" + osMinutes;
+}
+
+   function formatAMPM() {
+          var date    = new Date();
+          var hours   = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm    = hours >= 12 ? 'PM' : 'AM';
+          hours       = hours % 12;
+          hours       = hours ? hours : 12; // the hour '0' should be '12'
+          minutes     = minutes < 10 ? '0'+minutes : minutes;
+          var strTime = hours + ':' + minutes + ' ' + ampm;
+          return strTime;
+   
+    }
+
+
+function followUnfollow(e,s,rId){
+
+ $.ajax({
+
+        url: '/followUnfollow',
+        type: "POST", 
+        data:{'id':e,'status':s,rId:rId} ,                 
+        cache: false,
+        beforeSend: function() {
+                $("#"+rId).html("<img id='zlodaer' src='/front/img/smart_scroll-ajax_loader1.gif' alt='' style=' height: 40px; width: 40px;'>");
+        },
+        success: function(data){
+
+
+
+            $("#F3").load(location.href + " #FD1");
+            $("#F4").load(location.href + " #FD2");
+            $("#"+rId).html(data);
+
+        }
+
+    });   
+}
+
+
+function artistFavorite(e,s,rId){
+
+ $.ajax({
+
+        url: '/artistFavorite',
+        type: "POST", 
+        data:{'id':e,'status':s,rId:rId} ,                 
+        cache: false,
+        beforeSend: function() {
+                $("#"+rId).html("<img id='zlodaer' src='/front/img/smart_scroll-ajax_loader1.gif' alt='' style=' height: 40px; width: 40px;'>");
+        },
+        success: function(data){
+
+            $("#"+rId).html(data);
+
+        }
+
+    });   
+}
+
+
+
+</script>
+   

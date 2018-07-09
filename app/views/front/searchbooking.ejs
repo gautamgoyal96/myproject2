@@ -1,0 +1,482 @@
+<% include ./header %>
+    <link rel="stylesheet" type="text/css" href="/front/css/jquery.timepicker.css" />
+
+    <link href="/front/css/select2.min.css" rel="stylesheet"/>
+   <script src="/front/js/select2.min.js"></script>
+
+ <div class="header-margin"></div>
+<div class="MainWrapper creambg">
+<section class="filterFixed">
+  <div class="filterForm sec-pad gradient-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <form class="frp" action="/searchResult" method="get">
+            <div class="form-group">
+              <input type="text" class="" id="address" placeholder="Enter Location" value ="<%= city %>" name="city">
+              <label for="address" class="fa fa-map-marker icc"></label>
+             <!--  <select><option>Select Location</option><option>Option 1</option><option>Option 1</option><option>Option 1</option><option>Option 1</option><option>Option 1</option></select> -->
+            </div>
+            <div class="form-group">
+              <select class="category" name="services[]" id="category"  onchange="ajax_fun('1');" multiple>
+
+
+               <% categorydata.forEach(function(rs) { %>
+                   
+                   <option value="<%= rs._id %>"><%= rs.title %></option>
+
+               <% }); %>
+
+              </select>
+              <label for="category" class="fa fa-tasks icc"></label>
+            </div>
+            <!-- <div class='input-group date' >
+              <input type='text' class="form-control" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div> -->
+          <div class="form-group">
+              <input type="text" class="searchdatepick" id="date" placeholder="Select Date" name="date" readonly="true">
+              <label for="date" class="fa fa-calendar icc"></label>
+            </div> 
+           <div class="form-group">
+              <input type="text" class="searchtime" id="time" placeholder="Select Time" name="time">
+              <label for="time" class="fa fa-clock-o icc"></label>
+            </div>   
+            <div class="btnR" align="center">
+              <button type="submit" class="filterIcR">Search</button>
+            </div>    
+           <div>
+            <% if(session.fUser){ %>
+              <span class="filterbtn" onclick="faveroite_list(1);" title="Favourite List"><i class="fa fa-star-o" id="fav_list"></i></span>
+            <% }else{ %>
+              <a class="filterbtn" href="/login" title="Favourite List"><i class="fa fa-star-o"></i></a>
+            <% } %>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="Leaderboard leadList">
+  <div class="container">
+    <div class="row blockCnt">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <a id="DivClick" href="javascript:void();"><i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div id="topUsers" class="col-md-6">
+        <div class="tab-content">
+          <div id="AverageLikes" class="tab-pane show active forAL" role="tabpanel" aria-labelledby="AverageLikes-tab">
+
+          <div id="search_result"></div>
+
+      
+          </div>
+        </div>
+      </div>
+      <div class="feedcolumn col-md-6">
+        <div class="Feeds">
+          <div class="FeedSearch">
+            <input class="form-control" type="text" placeholder="Search...">
+            <a class="searchIc"><i class="fa fa-search"></i></a>
+          </div>
+          <div class="feedData">
+            <div class="feedHead">
+              <div class="fHleft float-left">
+                <a href="">
+                  <img src="/front/img/staff-4.jpg">
+                  <h2>Olivia Smith</h2>
+                </a>
+              </div>
+              <div class="fHright float-right">
+                <a href="#"><i class="fa fa-send"></i></a>
+                <a class="btn btn-theme">Follow</a>
+              </div>
+            </div>
+            <div class="feedImg">
+              <img src="/front/img/s1.jpg">
+            </div>
+            <div class="feedMeta">
+                <div class="float-left">
+                  <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                  <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                </div>
+                <div class="float-right">
+                    <a href="#"><i class="fa fa-window-minimize"></i></a>
+                  <a href="#"><i class="fa fa-share-alt"></i></a>
+                </div>
+            </div>
+            <div class="feedFoot">
+                <h2>If you wanted to get rich, how would you do it?</h2>
+            </div>
+          </div>
+          <div class="feedData">
+              <div class="feedHead">
+                <div class="fHleft float-left">
+                    <a href="">
+                        <img src="/front/img/staff-1.jpg">
+                        <h2>Sophia Smith</h2>
+                    </a>
+                </div>
+                <div class="fHright float-right">
+                  <a href="#"><i class="fa fa-send"></i></a>
+                  <a class="btn btn-theme">Follow</a>
+                </div>
+              </div>
+              <div class="feedImg">
+                <img src="/front/img/s3.jpg">
+              </div>
+              <div class="feedMeta">
+                  <div class="float-left">
+                    <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                    <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                  </div>
+                  <div class="float-right">
+                      <a href="#"><i class="fa fa-window-minimize"></i></a>
+                    <a href="#"><i class="fa fa-share-alt"></i></a>
+                  </div>
+              </div>
+              <div class="feedFoot">
+                <h2>If you wanted to get rich, how would you do it?</h2>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div id="storyData" class="col-md-6">
+          <div class="StoryOnline">
+            <h2>Stories</h2>
+            <ul>
+                <li><a href="#"><img src="/front/img/staff-5.jpg"> James</a></li>
+                <li><a href="#"><img src="/front/img/staff-4.jpg"> Isabella</a></li>
+                <li><a href="#"><img src="/front/img/staff-1.jpg"> John Smith</a></li>
+                <li><a href="#"><img src="/front/img/staff-6.jpg"> Glamin</a></li>
+              </ul>
+          </div>
+          <div class="StoryOnline">
+              <h2>Friends Online</h2>
+              <ul>
+                  <li><a href="#"><img src="/front/img/staff-5.jpg"> James</a></li>
+                  <li><a href="#"><img src="/front/img/staff-4.jpg"> Isabella</a></li>
+                  <li><a href="#"><img src="/front/img/staff-1.jpg"> John Smith</a></li>
+                  <li><a href="#"><img src="/front/img/staff-6.jpg"> Glamin</a></li>
+                </ul>
+            </div>
+          </div>
+      </div>
+  </div>
+</section>
+</div>
+
+
+<% include ./footer %> 
+<script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+
+
+<% if(bsuccess.length>0){ %>
+<script>
+swal("Congratulations!", "<%= bsuccess %>", "success")
+
+</script>
+<% } %>
+<% if(success.length>0){ %>
+
+<script type="text/javascript">
+errorMsg('<%= success %>');
+</script>
+<% } %>
+<script type="text/javascript">
+$(function () {
+
+ //$('.searchdatepick').datepicker({  minDate:new Date(),dateFormat: 'dd/mm/yy',}).on('change', function(e) {
+
+ // ajax_fun('1');
+ 
+//});
+
+/* $('.searchtime').datetimepicker({ format: 'LT',stepping: 10,ignoreReadonly: true}).on('dp.change', function(e) {
+
+ ajax_fun('1');
+ 
+});*/
+
+
+
+  $('.searchdatepick').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false,
+                minDate:new Date(),
+               ignoreReadonly: true
+
+
+            }).on('dp.change', function(e) {
+
+         ajax_fun('1');
+ 
+});
+
+ $('.searchtime').timepicker({
+                 'timeFormat': 'g:i A',
+                 'step': 10,
+                 'disableTextInput': true,
+                 'disableTouchKeyboard' : true
+
+              }).on('change', function(e) {
+
+               ajax_fun('1');
+       
+    })
+
+});
+
+$(function() {
+    $('.category').multiselect({
+        includeSelectAllOption: true
+    });
+});
+
+</script>
+
+<script>
+
+     $(document).ready(function() {
+         var currgeocoder;
+
+         //Set geo location lat and long
+
+         navigator.geolocation.getCurrentPosition(function(position, html5Error) {
+
+             geo_loc = processGeolocationResult(position);
+             currLatLong = geo_loc.split(",");
+             initializeCurrent(currLatLong[0], currLatLong[1]);
+
+        });
+
+        //Get geo location result
+
+       function processGeolocationResult(position) {
+             html5Lat = position.coords.latitude; //Get latitude
+             html5Lon = position.coords.longitude; //Get longitude
+             html5TimeStamp = position.timestamp; //Get timestamp
+             html5Accuracy = position.coords.accuracy; //Get accuracy in meters
+             return (html5Lat).toFixed(8) + ", " + (html5Lon).toFixed(8);
+       }
+
+        //Check value is present or not & call google api function
+
+        function initializeCurrent(latcurr, longcurr) {
+             currgeocoder = new google.maps.Geocoder();
+             console.log(latcurr + "-- ######## --" + longcurr);
+
+             if (latcurr != '' && longcurr != '') {
+                 var myLatlng = new google.maps.LatLng(latcurr, longcurr);
+                 return getCurrentAddress(myLatlng);
+             }
+       }
+
+        //Get current address
+
+         function getCurrentAddress(location) {
+              currgeocoder.geocode({
+                  'location': location
+
+            }, function(results, status) {
+           
+                if (status == google.maps.GeocoderStatus.OK) {
+                  
+                    console.log(results[0]);
+                    $("#address").val(results[0].formatted_address);
+                    ajax_fun('1');
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+         }
+    });
+
+ajax_fun('1');
+
+function formatAMPM(date) {
+
+      var d = date;
+      st = d.split(":");
+      oh = st[0];
+      if(st[0]<10){
+
+        var oh = 0+st[0];
+      }
+
+  return  oh+":"+st[1];  
+}
+
+function ajax_fun(e)
+
+{
+
+if($("#fav_list").hasClass( "fa-star")){
+
+  faveroite_list('1','1');
+
+}else{
+
+      var category = $("#category").val();
+      var city = $("#address").val();
+      var date = $("#date").val();
+      var time1 = $("#time").val();
+      var day = time = '';
+      if(date){
+
+        var rew = date.split("/");
+        var newDate = rew[1]+'/'+rew[0]+'/'+rew[2];
+
+        var d = new Date(newDate);
+        var day = d.getDay();
+          if(day!=0){
+
+          day = day - Number(1);
+
+          }else{
+
+            day = 6;
+
+          }
+        
+        if(time1){
+          
+          time = formatAMPM(time1);
+        }
+      }else{
+        
+        if(time1){
+
+          var d = new Date();
+          var day = d.getDay();
+          time = formatAMPM(time1);
+          if(day!=0){
+
+            day = day - Number(1);
+          
+          }else{
+
+            day = 6;
+
+          }
+
+        }
+      }
+
+         $.ajax({
+
+              url: '/home_search_artist',
+              type: "POST", 
+              data:{category:category,date:date,city:city,day:day,time:time,'page':e} ,                 
+              cache: false,
+              beforeSend: function() {
+                 $(".loading").show();
+              },
+              success: function(data){
+                   $(".loading").hide();
+                  $("#search_result").html(data);
+
+              }
+
+          });   
+
+  }
+
+}
+
+function faveroite_list(e,t=''){
+
+var category = $("#category").val();
+var city = $("#address").val();
+var date = $("#date").val();
+var time1 = $("#time").val();
+var day = time = '';
+if(date){
+
+  var rew = date.split("/");
+  var newDate = rew[1]+'/'+rew[0]+'/'+rew[2];
+
+  var d = new Date(newDate);
+  var day = d.getDay();
+    if(day!=0){
+
+    day = day - Number(1);
+
+    }else{
+
+      day = 6;
+
+    }
+  
+  if(time1){
+    
+    time = formatAMPM(time1);
+  }
+}else{
+  
+  if(time1){
+
+    var d = new Date();
+    var day = d.getDay();
+    time = formatAMPM(time1);
+    if(day!=0){
+
+      day = day - Number(1);
+    
+    }else{
+
+      day = 6;
+
+    }
+
+  }
+}
+
+
+
+if($("#fav_list").hasClass( "fa-star-o") || t==1){
+
+if(t!=1){
+
+  $('.fa-star-o').addClass('fa-star').removeClass('fa-star-o');
+}
+
+     $.ajax({
+
+        url: '/faveroite_list',
+        type: "POST", 
+        data:{category:category,date:date,city:city,day:day,time:time,'page':e} ,                 
+        cache: false,
+        beforeSend: function() {
+            $(".loading").show();
+        },
+        success: function(data){
+           $(".loading").hide();
+            $("#search_result").html(data);
+
+        }
+
+    }); 
+
+  
+
+}else{
+
+$('.fa-star').addClass('fa-star-o').removeClass('fa-star');  
+  ajax_fun('1');
+
+
+}
+  
+
+}
+
+</script>
+
+ 

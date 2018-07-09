@@ -1,0 +1,87 @@
+<% include ./header %> 
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+       
+<% include ./sub_header %> 
+
+<section class="ServiceSec pb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- <div class="tabbable tabTop">
+        <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#AboutUs" role="tab"><span>About Us</span></a>
+          </li>
+        </ul>
+        </div> -->
+            <div class="tab-content tabTopCnt" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="AboutUs" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="tabbable tabs-left">
+                      <div class="nav nav-pills workingHours">
+                        <h2>Working Hours</h2>
+
+                           <%  for(i=0; i<days.length;i++) { 
+                            businesshours = user.businesshours; %>
+                           <p class="nav-link" style="display:none;" id="<%= i%>"><%-  days[i] %>
+                           <%
+                           for(s=0; s<businesshours.length;s++) { 
+                            if(businesshours[s].day==i){
+                           %>
+                           <script>
+                           $("#<%= i%>").show();
+                           </script>
+                          <span>From <%= businesshours[s].startTime%> To <%= businesshours[s].endTime%></span>
+                       <% } } %>
+                       </p>
+                       <% } %> 
+                      
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="tab-content" id="v-pills-tabContent">
+                      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel">
+                        <div class="varietyContent">
+                          <div class="AbtCnt">
+                            <h3>Bio</h3>
+                            <p class="paraText"> <%= user.bio ? user.bio : 'No Bio' %></p>
+                          </div>
+                          <div class="AbtCnt">
+                            <h3>Certificate</h3>
+                            <div class="certBox mt-3">
+                              <div class="row">
+
+                               <% if(certificate.length>0){
+                                   certificate.forEach(function(rs) { %>
+
+                                <div class="col-md-6 col-sm-6">
+                                  <div class="CrBox">
+                                  
+                                    <a class="crtImg fancybox" rel="ligthbox" href="/uploads/certificateImage/<%= rs.certificateImage %>">
+                                      <img src="/uploads/certificateImage/<%= rs.certificateImage %>" alt="" />
+                                    </a>
+                                  </div>
+                                </div>
+                            <% }); }else{%>
+                              <div class="col-md-12 col-sm-12" style="color:#626262;">  No Certificate</div>
+                            <%} %>  
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<% include ./footer %> 

@@ -1,0 +1,137 @@
+  <%
+
+  if(listdata.length>0){
+   listdata.forEach(function(rs) { %>
+    <div class="userListlead " style="display:none;" id="show<%= rs._id %>">
+              <div class="userDetails">
+                <div class="media">
+                  <div class="media-left">
+                    <div class="user-image">
+                      <a href="/profile?id=<%= cryptr.encrypt(rs._id); %>"" target="_self">
+                        <img src="<%= rs.profileImage %>" class="img-responsive" alt="<%= rs.userName %>" title="<%= rs.userName %>">
+                      </a>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <h4 class="media-heading">
+                          <a href="/profile?id=<%= cryptr.encrypt(rs._id); %>"><%= rs.userName %></a>
+                        </h4>
+                        <div class="ratingBox">
+                          <ul class="rating inline-ul">
+                                <% count = rs.review;
+                            for(i=1;i<=count;i++){ %>
+                            <li> <i class="fa fa-star amber-text"></i></li> 
+                          <% } minCount = 5-count; 
+                            for(j=1;j<=minCount;j++){ 
+                          %>
+                            <li> <i class="fa fa-star"></i></li> 
+                          <% } %>
+                           
+                          </ul>
+                        </div>
+                        <p> <%= rs.address.substring(0,55) %></p>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="serviseslead servicesSerch">
+                           <% service = rs.service;
+                                  var a = 0;
+                                 for (i = 0 ; i < service.length ; i++) { 
+
+                                 if(serviceType=="2"){
+                                    
+                                    var  priceCheck = service[i].inCallPrice;
+
+                                 }else{
+
+                                  var  priceCheck = service[i].outCallPrice;
+
+                                 }
+                                 if(priceCheck!="" & priceCheck!='0' & priceCheck!='00' & priceCheck!="0.0" & priceCheck!="0.00"){ %>
+
+                                  <script>
+                                  $("#show<%= rs._id %>").show();
+                                </script>
+
+                                <% if(a<3){  %>
+                         
+                          <label for=" <%= service[i]._id %>"> <%= service[i].title %>
+                            <span>
+                            <% if(serviceType=="2"){ %>
+
+                            &#163;<%= Number(service[i].inCallPrice).toFixed(2) %>
+
+                            <% }else{ %>
+
+                              &#163;<%= Number(service[i].outCallPrice).toFixed(2) %>
+                            <% } %>
+                            </span>
+                          </label>
+                           <% a++;}}} %>
+                        <br>
+
+                         <%
+                          var  checkServiceType = '';
+                           if(serviceType=="1"){
+                                    
+                              var  checkServiceType = 2;
+
+                           }
+                           var url = '/booking_detial/'+cryptr.encrypt(rs._id)+'/'+cryptr.encrypt(rs.distance)+'?checkServiceType='+cryptr.encrypt(checkServiceType); %>
+                          <% if(a>=3){ %>
+                          <a href="#" class="moreSr" data-toggle="modal" data-target="#serviceViewMore" data-id="<%= rs._id %>" data-name="<%= rs.userName %>"  data-img="<%= rs.profileImage %>" data-purl="/profile?id=<%= cryptr.encrypt(rs._id); %>"  data-type="<%= serviceType %>" data-url="<%= url %>" onclick="serviceviewmore(this);">View More</a>
+                           <% } %> 
+                        </div>
+                      </div>
+                      <div class="col-md-3 text-right">
+                        <p class="paraText">
+                          <span>
+                            <i class="fa fa-map-pin"></i>
+                          </span> <%= rs.distance %> Miles</p>
+                        <a class="btn btn-theme" href="<%= url %>">Book</a>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+  <% });}else{ %>
+ <div style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+  <% } %> 
+
+    <% if (pageCount > 1) { %>
+       <nav class="my-4 mr-auto text-center">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+                <% if (currentPage > 1) { %>
+
+                    <li class="page-item "><a class="page-link" aria-label="Previous" href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="page-item active"> <a class="page-link" href="#"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li class="page-item" ><a class="page-link" aria-label="Next" href="#" onclick="ajax_fun('<%= i-1 %>');"> <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span></a></li>
+                <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+              

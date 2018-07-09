@@ -1,0 +1,494 @@
+<% include ./header %> 
+<input type="hidden" name="artistId" value="<%= staff._id %>" id="staff_artist">
+  <link rel="stylesheet" type="text/css" href="/front/css/jquery.timepicker.css" />
+<script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+  <script src="/front/js/staff.js"></script>
+
+<script>
+
+function addfield(a){
+
+
+var b = $("#check"+a).val();
+var n = b-1;
+var isTime = $("#isTime"+a).val();
+var open_time = $("#openOld_"+a+0).val();
+var close_time = $("#closeOld_"+a+0).val();
+if(isTime==2){
+  var open_time = $("#openOld_"+a+1).val();
+  var close_time = $("#closeOld_"+a+1).val();
+}
+  if(b<2){
+    $('.thelink'+a).removeClass('disabled');
+      var html = '<input name="day['+a+']['+b+'][]" value="'+a+'" type="hidden"><div  id="data'+a+b+'"><div class="dayTime workingdata'+a+'"><input class="daycls_'+a+b+'" name="openTime['+a+']['+b+'][]" placeholder="From" id="open_'+a+b+'"  data-id="'+a+'" data-sid="'+b+'" data-type="open" value="" onclick="$(this).keydown(false);"><input class="timecls_'+a+b+'" name="openTime['+a+']['+b+'][]" placeholder="To" id="close_'+a+b+'" data-id="'+a+'" data-type="close" data-sid="'+b+'" value="" onclick="$(this).keydown(false);"><a class="closeMoreTime" id="remove'+a+'" onclick="removedata('+a+','+b+');"><i class="fa fa-close"></i> </a></div><div class="time-error show_error'+a+b+'"><span class="err_msg" id="openErr'+a+b+'"></span><span class="err_msg" id="closeErr'+a+b+'"></span></div></div>';
+        $('#'+a).append(html);
+
+            $('#open_'+a+b).timepicker({
+                        'timeFormat': 'g:i A',
+                        'step': 10,
+                        'minTime':open_time, 
+                        'maxTime':close_time,
+                        'disableTextInput': true,
+                        'disableTouchKeyboard' : true 
+                    }).on('change', function(e) {
+
+                           timecheck(this);
+           
+          });
+
+           $('#close_'+a+b).timepicker({
+                        'timeFormat': 'g:i A',
+                        'step': 10,
+                        'minTime':open_time, 
+                        'maxTime':close_time,
+                        'disableTextInput': true,
+                        'disableTouchKeyboard' : true 
+                    }).on('change', function(e) {
+
+                           timecheck(this);
+           
+          });
+
+      $("#check"+a).val(Number(b)+Number(1));
+  }else{
+
+    $('.thelink'+a).addClass('disabled');
+
+  }
+}
+
+</script>
+
+  <div class="header-margin"></div>
+  <div class="MainWrapper creambg">
+    <section class="sec-pad staffManage">
+      <div class="container">
+        <form action="/staff_add" method="post" onsubmit="return addstaff();">
+          <div class="row">
+              <div class="col-md-6">
+                <div class="workingHrStaff">
+                  <div class="userListlead">
+                    <div class="userDetails">
+                      <div class="media">
+                        <div class="media-left">
+                          <div class="user-image">
+                            <a href="/profile?id=<%= cryptr.encrypt((read=='') ? staff._id : staff._id ); %>" target="_self">
+                            <img src="<%= staff.profileImage %>" class="img-responsive" alt="<%= (read=='') ? staff.userName : staff.businessName %>" title="<%= (read=='') ? staff.userName : staff.businessName %>">
+                            </a>
+                          </div>
+                        </div>
+                        <div class="media-body">
+                          <h4 class="media-heading">
+                            <a href="/profile?id=<%= cryptr.encrypt((read=='') ? staff._id : staff._id ); %>"><%= (read=='') ? staff.userName : staff.businessName %> </a>
+                          <input type="hidden" name="artistId" value="<%= staff._id %>">
+
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="workingTime">
+                       <div class="SelectSubItem stffSelection  csSelect">
+                      <p>Job Title</p>
+                       <select id="job" name="job" <%= disa %>>
+                         <option value="">Select job</option>
+                         <option value="Beginner" <%= (staffInfo.job=="Beginner") ? "selected" : ''%>>Beginner</option>
+                         <option value="Moderate" <%= (staffInfo.job=="Moderate") ? "selected" : ''%>>Moderate</option>
+                         <option value="Expert" <%= (staffInfo.job=="Expert") ? "selected" : ''%>>Expert</option>
+                      </select>
+                     <span class="err_msg" id="job-err"></span>
+
+                      </div>
+                      <input type="hidden" value="<%= staffInfo._id%>" name="staffId">
+
+                    <h2>Working Hours</h2>
+                      <div class="ApALl form-lights">
+                        <!-- <a href="#">Apply to all</a> -->
+                        <!-- <div class="Check">
+                          <input id="otcall" type="checkbox">
+                          <label for="otcall">Apply for all</label>
+                        </div> -->
+                      </div>
+
+                      <%
+                      mainbusinesshours = businesshours;
+                       for(i=0; i<days.length;i++) {
+                      d=0; for(s=0; s<mainbusinesshours.length;s++) {
+                                  if(i==mainbusinesshours[s].day){
+                                       %>
+                                       <input type="hidden" id="openOld_<%= mainbusinesshours[s].day%><%-  d %>" value="<%= mainbusinesshours[s].startTime%>">
+
+                                      <input type="hidden"  id="closeOld_<%= mainbusinesshours[s].day%><%-  d %>" value="<%= mainbusinesshours[s].endTime%>">
+
+                                      <%
+                                     d++;} } }
+                                      %>
+                      
+                           <%  for(i=0; i<days.length;i++) {
+
+
+
+                            %>
+                              <div class="form-group fltCheck timeCheck Settime" style="display:none;" id="hide<%= i%>">
+                                  <div class="workingDay">
+                                    <% if(disa==''){ %>
+                                      <div class="SelectCheck form-light ">
+                                         <input class="check_<%-  i %> workingcheck" id="closeDay_<%-  i %>" name="close[]" value="<%-  i %>" type="checkbox"  onclick="closeDays('<%-  i %>');" <%= disa %>>
+
+                                          <label for="closeDay_<%-  i %>" class="grey-text"></label>
+                                      </div>
+                                    <% } %>  
+                                      <label><%-  days[i] %></label>
+                                      <% if(read==''){ %>
+                                      <span id="add<%-  i %>">
+                                      <a class="addMoreTime thelink<%-  i %>" onclick="addfield('<%-  i %>');">
+                                          <i class="fa fa-plus"></i>
+                                      </a>
+                                      </span>
+                                    <% } %>  
+                                      <input type="hidden" id="check<%-  i %>" value="1">
+                                  </div>
+                                  <span id="<%-  i %>" class="working12data<%-  i %>">
+                                  <%
+                                    Newbusinesshours = businesshours;
+                                    mainbusinesshours = businesshours;
+                                    if(staffInfo.staffHours){
+
+                                        Newbusinesshours = staffInfo.staffHours;
+                                    }
+
+                                      
+
+                                   d=0; for(s=0; s<businesshours.length;s++) {
+
+                                    if(businesshours[s].day==i){
+
+                                    %> 
+                                    <script>
+                                   $("#hide<%= i%>").show();
+
+                                   </script>
+
+                                   <div  id="data<%-  i %><%-  d %>">
+
+                                      <div class="dayTime workingdata<%-  i %>">
+                                        <input class="daycls_<%-  i %><%-  d %>" name="openTime[<%-  i %>][<%-  d %>][]" placeholder="From" id="open_<%-  i %><%-  d %>" value="<%= businesshours[s].startTime%>" data-id="<%-  i %>" onclick="$(this).keydown(false);" data-sid="<%-  d %>"  data-type="open" <%= disa %>>
+
+
+                                        <input class="daycls_<%-  i %><%-  d %>" name="day[<%-  i %>][<%-  d %>][]" value="<%-  i %>" type="hidden">
+
+                                        <input class="edatepickDate timecls_<%-  i %><%-  d %>" name="openTime[<%-  i %>][<%-  d %>][]" placeholder="To" id="close_<%-  i %><%-  d %>" value="<%= businesshours[s].endTime%>" data-id="<%-  i %>" data-sid="<%-  d %>" onclick="$(this).keydown(false);" data-type="close"  <%= disa %>>
+                                      <% if(read==''){%>  
+                                       <script>
+
+                                          $(function () {
+                                               $('#open_<%-  i %><%-  d %>').timepicker({
+                                                            'timeFormat': 'g:i A',
+                                                            'step': 10,
+                                                            'minTime':$("#openOld_<%-  i %><%-  d %>").val(), 
+                                                            'maxTime':$("#closeOld_<%-  i %><%-  d %>").val(),
+                                                            'disableTextInput': true,
+                                                            'disableTouchKeyboard' : true 
+                                                        }).on('change', function(e) {
+                                                               timecheck(this);
+                                               
+                                              });
+
+                                               $('#close_<%-  i %><%-  d %>').timepicker({
+                                                            'timeFormat': 'g:i A',
+                                                            'step': 10,
+                                                            'minTime':$("#openOld_<%-  i %><%-  d %>").val(), 
+                                                            'maxTime':$("#closeOld_<%-  i %><%-  d %>").val(),
+                                                            'disableTextInput': true,
+                                                            'disableTouchKeyboard' : true 
+                                                        }).on('change', function(e) {
+
+                                                               timecheck(this);
+                                               
+                                              });
+                                          });
+                                        </script>
+                                    <% } %>
+                                   <% if(d!=0 && read==''){ %>  
+                                    <a class="closeMoreTime" id="remove<%-  i %>" onclick="removedata('<%-  i %>','<%-  d %>');"><i class="fa fa-close"></i> </a>
+                                    <script>
+                                   $("#check<%= i%>").val(2);
+                                   </script>
+                                   <% } %> 
+                                    </div>
+
+                                    <div class="time-error show_error<%-  i %><%-  d %>">
+                                      <span class="err_msg" id="openErr<%-  i %><%-  d %>"></span>
+                                      <span class="err_msg" id="closeErr<%-  i %><%-  d %>"></span>
+                                    </div>
+                                </div>
+
+                                <%
+
+
+                                var picked = lodash.filter(Newbusinesshours, { 'day': businesshours[s].day } );
+                                var picked12 = lodash.filter(businesshours, { 'day': i } );
+                                    
+                                     if(picked.length){
+                                  %>
+                                    <input type="hidden" id="isTime<%-  i %>" value="<%= picked12.length%>">
+                                    <script>
+                                     $("#open_<%-  i %><%-  d %>").val('<%= picked[0].startTime%>');
+                                     $("#close_<%-  i %><%-  d %>").val('<%= picked[0].endTime%>');
+                                     
+                                   </script>
+                                    <% if(picked.length==1) { %>
+                                    <script>
+                                      $("#remove<%= picked[0].day%>").click();
+                                    </script>
+                                    <% }if(picked.length==2){ %> 
+                                    <script>
+                                   // alert("<%= picked.length %>");
+                                     //addfield('<%= picked[1].day%>');
+                                      $('#open_<%= picked[1].day%>'+1).val('<%= picked[1].startTime %>');
+                                      $('#close_<%= picked[1].day%>'+1).val('<%= picked[1].endTime %>');
+                                    </script>
+                                     <% if(picked12.length!=2){ %>
+
+                                      <script>
+                                        addfield('<%= picked[1].day%>');
+                                        $('#open_<%= picked[1].day%>'+1).val('<%= picked[1].startTime %>');
+                                        $('#close_<%= picked[1].day%>'+1).val('<%= picked[1].endTime %>');
+                                    </script>
+
+                                    <%  } } }else{%>
+
+                                      <script>
+                                        $("#remove<%-  i %>").click();
+                                       $("#closeDay_<%-  i %>").removeAttr('checked','checked');
+                                        $("#add<%-  i %>").hide();
+                                        $('#open_<%-  i %>'+0).prop('readonly',true); 
+                                        $('#close_<%-  i %>'+0).prop('readonly',true);                                       
+                                        $('#open_<%-  i %>'+0).val('');
+                                        $('#close_<%-  i %>'+0).val('');
+                                        $('#open_<%-  i %>'+0).removeClass('datepickDate');
+                                        $('#close_<%-  i %>'+0).removeClass('datepickDate');
+
+                              
+                                      </script>
+
+                                    <% } %>
+
+                                   <script>
+                                   if( $('#open_<%= i%>'+0).val()){
+                                   
+                                      $('#closeDay_<%= i%>').prop('checked', true); // Checks it  
+                                   }
+
+                                  </script>
+                                 <% d++;} } %> 
+                                </span> 
+
+                                 </div>
+                                 
+
+                              
+                               <% } %>
+                  </div>
+                </div>
+              </div>
+           
+               <div class="col-md-6">
+                    <div class="workingTime">
+                        <div style="display:none;" class="alert alert-danger hideDiv" role="alert" id="err-invalid">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  </button>
+                                  <strong>Oh snap!</strong> <span id="error-invalid"></span>
+                              </div>
+                              <div style="display:none;" class="alert alert-success hideDiv" role="alert" id="err-sucess">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      
+                                  </button>
+                                  <strong>Success!</strong> <span id="error-sucess"></span>
+                              </div>
+
+                     <% if(read==''){ %>  
+                                           <h2>Add Services</h2>       
+                     <div class="TimeSl" id="servicAdd">
+                        <div class="SelectSubItem stffSelection  csSelect">
+                          <p>Select Service</p>
+                            <select id="services" onchange="subservice_get(this.value);$('#service-err').html('');">
+                             <option value="">Select Service</option>
+                                  <% categorydata.forEach(function(rs) { %>
+
+                                    <option value="<%= rs.serviceId %>"><%= rs.serviceName %></option>
+
+                                  <% }); %>
+         
+                            </select>
+                            <div class="err_msg" id="service-err"></div>
+                          </div>
+                          <div class="SelectSubItem stffSelection  csSelect">
+                            <p>Select Sub Service</p>
+                              <select id="subservice" onchange="artistservice_get(this.value);$('#subService-err').html('');">
+                                <option value="">Select Sub Service</option>
+                              </select>
+                              <div class="err_msg" id="subService-err"></div>
+                          </div>
+                          <div class="SelectSubItem stffSelection  csSelect">
+                              <p>Select Artist Service</p>
+                                <select id="artistService" onchange="artistservice_detail(this.value);$('#artistService-err').html('');">
+                                  <option value="">Select Artist Service</option>
+                                </select>
+                               <div class="err_msg" id="artistService-err"></div>
+                          </div>
+
+
+                               <div class="serviceTypeCheck">
+                                <div class="form-light " id="incallPriceType">
+                                
+                                </div>
+                                <div class="form-light " id="outcallPriceType">                                 
+                                </div>
+                                </div>
+                            <div class="err_msg hidden" id="inType-err"></div>
+                            <div class="row priceBox">
+                                <div class="col-md-6" id="incallDiv">
+                                  <div class="jobTitle">
+                                    <label>Incall Price</label>
+                                    <input type="number" class="form-control number" placeholder="£ 20" id="incallPrice"  onkeypress="return isNumberprice(event);"  maxlength="7"  oninput="$('#incallPrice-err').html('');dataType(this);">
+                                     <input type="hidden" id="inCallhiddenPrice" value="0">
+                                    <div class="err_msg" id="incallPrice-err"></div>
+                                    <div class="err_msg" id="incallPrice1-err"></div>
+                                  </div>
+                                </div>
+                                <div class="col-md-6" id="outcallDiv">
+                                  <div class="jobTitle">
+                                    <label>Outcall Price</label>
+                                     <input type="number" class="form-control number" placeholder="£ 20" id="outCallPrice"  onkeypress="return isNumberprice(event);"  maxlength="7" oninput="$('#outCallPrice-err').html('');">
+                                     <input type="hidden" id="outCallhiddenPrice" value="0">
+                                     <input type="hidden" id="type" value="insert">
+                                     <div class="err_msg" id="outCallPrice-err"></div>
+                                     <div class="err_msg" id="outCallPrice1-err"></div>
+                                  </div>
+                                </div>                              
+                            </div>
+                              <div class="row priceBox">
+                                <div class="col-md-12" >
+                                <label>Time for completion (HH:MM)</label>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="jobTitle">
+                                  <input type="text" class="form-control Htime" placeholder="HH"  min="0" max="23" maxlength="2" id="hours"  onclick="$(this).keydown(false);" oninput="$('#hours-err').html('');">
+                                  <span class="err_msg" id="hours-err"></span>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="jobTitle">
+                                  <input type="text" class="form-control mtime" placeholder="MM" min="0" max="59" maxlength="2"  id="minute" onclick="$(this).keydown(false);"oninput="$('#minute-err').html('');">
+                                  <span class="err_msg" id="minute-err"></span>
+                                </div>
+                                </div>
+                                 <div class="col-md-12 text-right mt-2">
+                                  <a href="javascript:void(0);" class="btn btn-theme btn-maxWidth" id="s-btn" onclick="staffSubservice();">Add</a>
+                                </div>
+                              </div>
+
+                     </div>
+                    <% } %> 
+
+                      <div class="AddedService mt-4">
+                        <h2><%= (read=='') ? 'Staff': 'Company' %> Services</h2>
+                        <div id="staffserviceList"></div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="workingTime mt-3">
+                          <div class="SelectSubItem stffSelection  csSelect">
+                          <p>Social Media Access</p>
+                            <select name="mediaAccess" <%= disa %>>
+                              <option value="Admin"  <%= (staffInfo.mediaAccess=="Admin") ? "selected" : ''%>>Admin</option>
+                            <option value="Editor"  <%= (staffInfo.mediaAccess=="Editor") ? "selected" : ''%>>Editor</option>
+                            <option value="Moderator" <%= (staffInfo.mediaAccess=="Moderator") ? "selected" : ''%>>Moderator</option>
+                            </select>
+                          </div>
+                      </div>
+
+                      <div class="workingTime mt-3">
+                          <div class="SelectSubItem stffSelection  csSelect">
+                          <p>Holiday Allocation</p>
+                             <input type="text" name="holiday" class="form-control" value="<%= staffInfo.holiday %>" onkeypress="return isNumberKey(event);" <%= disa %>> 
+                          </div>
+                      </div>
+
+                     <% if(read==''){ %>     
+                      <div class="mt-5 text-right">
+                         <button class="btn btn-theme btn-maxWidth" type="submit" id="m-btn">Done</button>
+                         <a class="btn btn-theme btn-maxWidth" href="/staffManagement">Cancel</a>
+
+                      </div>
+                    <% } %>  
+              </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    </div>
+
+<% include ./footer %> 
+
+<script type="text/javascript">
+
+$('.number').keypress(function(event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+           ((event.which < 48 || event.which > 57) &&
+           (event.which != 0 && event.which != 8))) {
+               event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function() {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 2) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 2)) {
+                event.preventDefault();
+        }     
+    });
+
+ 
+    $('.number').bind("paste", function(e) {
+        var text = e.originalEvent.clipboardData.getData('Text');
+        if ($.isNumeric(text)) {
+            if ((text.substring(text.indexOf('.')).length > 3) && (text.indexOf('.') > -1)) {
+                e.preventDefault();
+                $(this).val(text.substring(0, text.indexOf('.') + 3));
+           }
+        }else{
+            e.preventDefault();
+        }
+    });   
+
+
+ $('.Htime').timepicker({
+                    'timeFormat': 'H',
+                    'step': 60,
+                    'disableTextInput': true,
+                    'disableTouchKeyboard' : true 
+                });
+
+
+  $('.mtime').timepicker({
+                    'timeFormat': 'i',
+                    'step': 10, 
+                    maxTime: '00:50',
+                    startTime: '00:00',
+                    'disableTextInput': true,
+                    'disableTouchKeyboard' : true 
+                });
+</script>

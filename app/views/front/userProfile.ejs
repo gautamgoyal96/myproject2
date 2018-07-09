@@ -1,0 +1,215 @@
+<% include ./header %> 
+<link href="/front/css/croppie.css" rel="stylesheet">
+<link href="/front/css/toastr.min.css" rel="stylesheet">
+<div class="header-margin"></div>
+<div class="MainWrapper">
+<section class="Register sec-pad grayBg">
+  <div class="container">
+    <div class="RegPart EditProfile">   
+      <form class="form-light aos-item" data-aos="flip-right" data-aos-duration="1500" method="post" action="/profileUpdate" enctype="multipart/form-data" onsubmit="$('#m-btn').attr('disabled','disabled');$('.loading').show();">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6">
+            <div class="card leftCard">
+              <div class="regisHead">
+                <div class="regCnt text-center p-4">
+                  <div class="text-center">
+                    <div class="log_div">
+                      <img src="<%= userData.profileImage %>" id="pImg">
+                      <div class="text-center upload_pic_in_album"> 
+                          <input accept="image/*" class="inputfile hideDiv" id="recImage" name="filetoupload" type="file"  style="opacity: 0; position: absolute; height: 100%; width: 100%;">
+                          <label for="file-1" class="upload_pic">
+                          <span class="fa fa-camera"></span></label>
+                      </div>
+                      <div id="profileImage-err"> </div>
+                    </div>
+                  </div>
+                  <p>Edit your personal info</p>
+                </div>
+              </div>
+              <input type="hidden" name="recImageData" id="recImageData">
+              <div class="card-body mx-4 pt-5">
+                <div>
+                  <div class="md-form">
+                      <input  type="text" id="fName2" class="form-control" value="<%= userData.firstName %>" name="firstName" title="Please enter First name" oninput="$('#fname-err').html('');"" required>
+                      <label class="active" for="fName2">First Name</label>
+                      <div id="fname-err" class="error"></div>
+                  </div>
+                  <div class="md-form">
+                      <input  type="text" id="lastName2" class="form-control" value="<%= userData.lastName %>" name="lastName" title="Please enter last name" oninput="$('#lname-err').html('');" required>
+                      <label class="active" for="lastName2">Last Name</label>
+                      <div id="lname-err" class="error"></div>
+                  </div>
+                  <div class="md-form">
+                      <input  type="text" id="userName" class="form-control" value="<%= userData.userName %>" name="userName" title="Please enter User name"  oninput="$('#username-err').html('');" disabled="">
+                      <label class="active" for="userName">User Name</label>
+                      <div id="username-err" class="error"></div>
+                  </div>
+                  <% if(session.fUser.userType=="artist"){ %>
+                    <div class="md-form">
+                        <input  type="text" id="businessName" class="form-control" value="<%= userData.businessName %>" name="businessName" title="Please enter Business name" oninput="$('#businessName-err').html('');" required>
+                        <label class="active" for="businessName">Business Name</label>
+                        <div id="businessName-err" class="error"></div>
+                    </div>
+                  <% } %>
+                  <div class="md-form">
+                        <input  type="text" id="uemail" class="form-control" value="<%= userData.email %>" name="email"  disabled="" required>
+                      <label class="active" for="uemail">Email</label>
+
+                  </div>
+                  <div class="md-form">
+                      <input  type="text" id="form6" class="form-control" name="contactNo"  value="<%= userData.contactNo %>" disabled="">
+                      <label class="active" for="form6">Phone No</label>
+                  </div>
+                  <div class="md-form">
+                      <input type="text" id="dob" class="form-control" name="dob"  title="Please enter Date of birth" value="<%= moment(userData.dob).format("DD/MM/YYYY"); %>" onchange="$('#dob-err').html('');" readonly required>
+                      <label class="active" for="dob">Date Of Birth</label>
+                     <div id="dob-err" class="error"></div>
+                  </div>  
+
+               
+                  <div class="radioBox ">
+                    <div class="labelheading">
+                      <label>Gender</label>
+                    </div>
+                    <div class="form-inline">
+                      <div class="radio">
+                        <% 
+                        var mchecked = fchecked = '';
+                        if(userData.gender == 'male'){ 
+                          mchecked = 'checked';
+                        }
+                        if(userData.gender == 'female'){ 
+                          fchecked = 'checked';
+                        }
+                         %>
+                          <input name="gender" type="radio" id="radio11" value="male" title="Please enter gender" <%= mchecked %> onclick="$('#gender-err').html('');" required >
+                          <label for="radio11" class="radio-label">Male</label>
+                      </div>
+
+                      <div class="radio">
+                          <input name="gender" type="radio" id="radio21" value="female" title="Please enter gender" required <%= fchecked %> onclick="$('#gender-err').html('');" >
+                          <label for="radio21" class="radio-label">Female</label>
+                      </div>
+                      <div id="gender-err" class="error"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-6 ">
+            <div class="card CardHeight">
+              <div class="regisHead">
+                <div class="regCnt text-center p-4">
+                  <!-- <span><i class="fa  fa-address-book-o"></i></span> -->
+                  <p>Edit your info</p>
+                </div>
+              </div>
+              <div class="card-body mx-4 pt-5">
+                <div>
+                 <div class=" d-none d-sm-block">
+                 <% if (error.length > 0) { %>
+                          <div class="alert alert-danger"><%- error %></div>
+                 <% } %>
+
+                 <% if (success.length > 0) { %>
+                <div class="alert alert-success"><%- success %></div>
+                <% } %>
+                </div>
+      
+                  <div class="md-form">
+                      <input value="<%= userData.address %>" type="text" id="address" class="form-control" name="address" title="Please enter address" oninput="$('#address-err').html('');" onblur="addresscheck();"  onfocusout="addresscheck();" required>
+                      <label class="active" for="form9">Address</label>
+                      <div id="address-err" class="error"></div>
+                  </div>
+                  <% if(session.fUser.userType=="artist"){ %>
+                    <div class="md-form">
+                        <textarea type="text" id="bio" class="md-textarea" name = "bio"  maxlength="250" oninput="$('#bio-err').html('');"><%= userData.bio %></textarea>
+                        <label for="bio">Bio</label>
+                        <div id="bio-err" class="error"></div>
+                    </div>             
+                  <% } %>
+                  <div class="formbtn mt-3 mb-4">
+                    <button type="submit" id="m-btn" class="btn btn-theme" onclick="return profileValidation('<%= session.fUser.userType %>');">Update</button>
+                    <a href="/myProfile" class="btn btn-theme">Cancel</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>   
+        </div>
+      </form>    
+    </div>
+  </div>
+</section>
+</div>
+<% include ./footer %> 
+
+ <script  type="text/javascript" src="/front/js/croppie.js"></script>
+<script src="/front/js/alert.min.js"></script>
+<script src="/front/js/toastr.min.js"></script>
+
+      <% if (error.length > 0) { %>
+    <script type="text/javascript">
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+         $.tips('<%- error %>');
+      }
+    </script>
+<% } %>
+    <% if (success.length > 0) { %>
+      <script type="text/javascript">
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          $.tips('<%- success %>');
+        }
+      </script>
+     <% } %>
+ <script type="text/javascript">
+
+
+  $uploadCrop = $('#upload-demo').croppie({
+    enableExif: true,
+    viewport: {
+        width: 300,
+        height: 300,
+        type: 'square'
+    },
+    boundary: {
+        width: 500,
+        height: 300
+    }
+});
+
+$('#recImage').on('change', function () { 
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $uploadCrop.croppie('bind', {
+        url: e.target.result
+      }).then(function(){
+        console.log('jQuery bind complete');
+      });
+      
+    }
+    reader.readAsDataURL(this.files[0]);
+    $('#imgConfirm').modal({ backdrop: 'static',keyboard: false});
+      
+  
+});
+
+
+$('#save').on('click', function (ev) {
+  
+  $uploadCrop.croppie('result', {
+    type: 'canvas',
+    size: 'viewport'
+  }).then(function (resp) {
+       $('#recImageData').val(resp);
+       document.getElementById('pImg').src = resp;
+       html = '<img src="' + resp + '" style="width:180px;height:100px;" />';
+
+      $('#imgConfirm').modal('hide');
+  });
+
+ 
+});
+</script>

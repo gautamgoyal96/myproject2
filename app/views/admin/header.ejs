@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mualab Admin </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    
+    <link rel="stylesheet" href="/admin/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/admin/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/admin/dist/css/skins/_all-skins.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/admin/plugins/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="/admin/plugins/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="/admin/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="/admin/plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/admin/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+        <link rel="icon" type="image/png" href="/front/img/loader.png" />
+
+    <script src="/admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="/admin/dist/css/custom_css.css">
+        <link href="/admin/dist/css/loader.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+    .error{
+      color: red;
+      }</style>
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini" onload="$('.loading').hide();$('body').removeClass('static');">
+     <div class="loading">Loading&#8230;</div>   
+
+    <div class="wrapper">
+
+   
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="/adminDashboard" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><img src="/front/img/loader.png"></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><img src="/front/img/loader.png" title="Mualab"></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+             <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="/admin/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <span class="hidden-xs">Admin </span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <p>
+                      Admin
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+          
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="/adminProfile" class="btn btn-default btn-flat">Profile</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+             
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+    
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="treeview common" id="adminDashboard">
+              <a href="/adminDashboard">
+                <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
+              </a>
+            
+            </li>
+            <li class="treeview common" id="service">
+              <a href="#">
+                <i class="fa fa-cog"></i>
+                <span>Services</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="common" id="addCategory"><a href="/addCategory"><i class="fa fa-circle-o"></i> Add Service</a></li>
+                <li  class="common"  id="listCategory"><a href="/listCategory"><i class="fa fa-circle-o"></i>  List services</a></li>
+              </ul>  
+            </li>
+
+
+            <li class="treeview common" id="sub_service">
+              <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Sub services</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="common" id="addSubCategory"><a href="/addSubCategory"><i class="fa fa-circle-o"></i> Add Sub service</a></li>
+                <li  class="common" id="listSubCategory"><a href="/listSubCategory"><i class="fa fa-circle-o"></i>  List Sub services</a></li>
+              </ul>  
+            </li>
+
+            <li class="treeview common" id="user">
+              <a href="#">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="common" id="artist"><a href="/artist"><i class="fa fa-circle-o"></i> Artist</a></li>
+                <li  class="common" id="customer"><a href="/customer"><i class="fa fa-circle-o"></i>  Users</a></li>
+              </ul>  
+            </li>
+
+            <li class="treeview common" id="Tservices">
+              <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Artist Services</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="common" id="total_services"><a href="/total_services"><i class="fa fa-circle-o"></i> Artist Services</a></li>
+              </ul>  
+            </li>
+            <li class="treeview common" id="payment">
+              <a href="#">
+                <i class="fa fa-money"></i>
+                <span>Payment History</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="common" id="admin_payment_history"><a href="/admin_payment_history"><i class="fa fa-circle-o"></i> Payment History</a></li>
+              </ul>  
+            </li>
+            <li class="treeview common">
+              <a href="#">
+                <i class="fa fa-envelope-o"></i>
+                <span>Email campaign</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="common"><a href="#"><i class="fa fa-circle-o"></i> Email campaign</a></li>
+              </ul> 
+            </li> 
+
+         
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>

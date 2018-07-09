@@ -1,0 +1,7 @@
+<div id="dImg<%= imageCount %>" class="item">
+    <img src="/uploads/certificateImage/<%= imageName %>">
+    <div class="inplabelBlock">     
+      <span class="inplabel remove" onclick="deletePropertyImages('<%= imageCount %>'); "><i class="fa fa-close"></i></span>
+    </div>
+    <input type="hidden" id="hideImg<%= imageCount %>" name="img[]" value="<%= imageName %>">
+</div>

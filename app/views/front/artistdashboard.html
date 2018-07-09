@@ -1,0 +1,262 @@
+<% include ./header %> 
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+        <section class="ProfilePart profileBg">
+                <div class="container">
+                  <div class="PrSlider">
+                    <div id="FirstPr">
+                      <div class="profilePartInner">
+                        <div class="card ">
+                          <div class="UsInfo text-center">             
+                            <div class="PrActionBtn prImgIc">
+                            <div class="row ">
+                              <div id="DivSec" class="col-lg-4 col-md-12">
+                              <div class="usImg">
+                                <img src="<%= user.profileImage %>">
+                                <span class="crt"><i class="fa fa-check"></i></span>
+                              </div>
+                              <div class="UsPdata">
+                                   <h2><%= user.firstName %> <%= user.lastName %></h2>
+
+                                  <p>@<%= user.userName %></p>     
+                                  <div class="counterData">
+                                  <div class="rating">
+                                    <ul class="inline-ul">
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star amber-text"></i></li>
+                                      <li><i class="fa fa-star"></i></li>
+                                      <li><i class="fa fa-star"></i></li>
+                                    </ul>
+                                    <span>(150)</span>
+                                  </div>
+                                  </div>
+                                  <p><span>30 Miles</span> </p>
+                                  <span class="msg"><i class="fa fa-send"></i></span>
+                                </div>
+                              </div>
+                              <div id="DivThird" class="col-lg-8 col-md-12 text-md-left">
+                                      <div class="counterData">
+                                              <div class="row">
+                                                  <div class="col-lg-1"></div>
+                                                <div id="c1" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/myProfile"><p><%= user.serviceCount %></p><p>Services</p></a>
+                                                </div>              
+                                             
+                                                
+                                                <div id="c3" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/myProfile"><p>02</p><p>Followers</p></a>
+                                                </div>
+                                                <div id="c4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                  <a href="/myProfile"><p>10</p><p>Following</p></a>
+                                                </div>
+                                                <div id="c4" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                    <a href="/myProfile"><p>10</p><p>Post</p></a>
+                                                  </div>
+                                                  <div id="c2" class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                                          <a href="/myProfile"><p><i class="fa  fa-info-circle"></i></p><p>About Us</p></a>
+                                                        </div>
+                                              </div>
+                                              </div>
+                              </div>
+                            </div>
+                            </div>
+                       <!--      <div class="btnprc">
+                                  <a href="#" class="btn btn btn-theme"><i class="fa fa-comment"></i> <span>Follow</span></a>
+                                  <a href="#" class="btn btn btn-theme"><i class="fa fa-user-plus"></i> <span>Book Now</span></a>
+                            </div> -->
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+           
+                  </div>
+                </div>
+              </section>
+
+                       <div class="FeedTab">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6"></div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="nav-item">
+                                    <a class="nav-link active" href="/myProfile" >Image</a>
+                                    <a class="nav-link" href="#">Video</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                      </div>
+<section class="feeds sec-pad" >
+    <div class="container">     
+        <div class="feedCnt">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="feedData">
+                        <div class="feedHead">
+                        <div class="fHleft float-left">
+                            <a href="">
+                            <img src="/front/img/staff-4.jpg">
+                            <h2>Olivia Smith</h2>
+                            </a>
+                        </div>
+                        <!-- <div class="fHright float-right">
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a class="btn btn-theme">Follow</a>
+                        </div> -->
+                        </div>
+                        <div class="feedImg">
+                        <img src="/front/img/s1.jpg">
+                        </div>
+                        <div class="feedMeta">
+                            <div class="float-left">
+                            <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                            <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                            </div>
+                            <div class="float-right">
+                                <a href="#"><i class="fa fa-window-minimize"></i></a>
+                            <a href="#"><i class="fa fa-share-alt"></i></a>
+                            </div>
+                        </div>
+                        <div class="feedFoot">
+                            <h2>If you wanted to get rich, how would you do it?</h2>
+                        </div>
+                    </div>
+                    <div class="feedData">
+                        <div class="feedHead">
+                        <div class="fHleft float-left">
+                            <a href="">
+                            <img src="/front/img/staff-4.jpg">
+                            <h2>Olivia Smith</h2>
+                            </a>
+                        </div>
+                        <!-- <div class="fHright float-right">
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a class="btn btn-theme">Follow</a>
+                        </div> -->
+                        </div>
+                        <div class="feedImg">
+                        <img src="/front/img/s4.jpg">
+                        </div>
+                        <div class="feedMeta">
+                            <div class="float-left">
+                            <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                            <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                            </div>
+                            <div class="float-right">
+                                <a href="#"><i class="fa fa-window-minimize"></i></a>
+                            <a href="#"><i class="fa fa-share-alt"></i></a>
+                            </div>
+                        </div>
+                        <div class="feedFoot">
+                            <h2>If you wanted to get rich, how would you do it?</h2>
+                        </div>
+                    </div>
+                    <div class="feedData">
+                        <div class="feedHead">
+                        <div class="fHleft float-left">
+                            <a href="">
+                            <img src="/front/img/staff-4.jpg">
+                            <h2>Olivia Smith</h2>
+                            </a>
+                        </div>
+                        <!-- <div class="fHright float-right">
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a class="btn btn-theme">Follow</a>
+                        </div> -->
+                        </div>
+                        <div class="feedImg">
+                        <img src="/front/img/s2.jpg">
+                        </div>
+                        <div class="feedMeta">
+                            <div class="float-left">
+                            <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                            <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                            </div>
+                            <div class="float-right">
+                                <a href="#"><i class="fa fa-window-minimize"></i></a>
+                            <a href="#"><i class="fa fa-share-alt"></i></a>
+                            </div>
+                        </div>
+                        <div class="feedFoot">
+                            <h2>If you wanted to get rich, how would you do it?</h2>
+                        </div>
+                    </div>
+                    <div class="feedData">
+                        <div class="feedHead">
+                        <div class="fHleft float-left">
+                            <a href="">
+                            <img src="/front/img/staff-4.jpg">
+                            <h2>Olivia Smith</h2>
+                            </a>
+                        </div>
+                        <!-- <div class="fHright float-right">
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a class="btn btn-theme">Follow</a>
+                        </div> -->
+                        </div>
+                        <div class="feedImg">
+                        <img src="/front/img/s3.jpg">
+                        </div>
+                        <div class="feedMeta">
+                            <div class="float-left">
+                            <a href="#" class="likes"><i class="fa fa-heart"></i> 400 Likes</a>
+                            <a href="#"><i class="fa fa-commenting-o"></i> 20 Comments</a>
+                            </div>
+                            <div class="float-right">
+                                <a href="#"><i class="fa fa-window-minimize"></i></a>
+                            <a href="#"><i class="fa fa-share-alt"></i></a>
+                            </div>
+                        </div>
+                        <div class="feedFoot">
+                            <h2>If you wanted to get rich, how would you do it?</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="" id="Image" >
+                        <div class="list-group gallery">
+                          <div class="row">
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/1.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/1.png" />
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/2.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/2.png" />
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/3.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/3.png" />
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/4.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/4.png" />
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/3.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/3.png" />
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6 mb-30">
+                                <a class="thumbnail fancybox" rel="ligthbox" href="/front/img/gallery/1.png">
+                                    <img class="img-responsive" alt="" src="/front/img/gallery/1.png" />
+                                </a>
+                            </div>
+                          </div>
+                        </div> 
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<% include ./footer %> 

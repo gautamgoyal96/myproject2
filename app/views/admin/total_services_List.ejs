@@ -1,0 +1,75 @@
+ <div class="box-body table-responsive no-padding" id="ajaxdata">    <table class="table table-hover">
+                            <tr>
+                                <th>S.no</th>
+                                <th>Service</th>
+                                <th>Artist service</th>
+                                <th>Artist Name</th>
+                                <th>Total Booking</th>
+                                <th>Total Earning</th>
+                            </tr>
+
+                            <% 
+                              var startTime = (Number(currentPage)-1)*10;
+                             i=1+startTime;
+                            if(categorydata){
+                            categorydata.forEach(function(rs) {
+                             var picked = lodash.filter(bookedServices, { 'artistServiceId': rs._id } );
+                             let count = 0;
+                            picked.forEach(function(cat) {
+
+                             
+                                count = Number(cat.bookingPrice)+count ;
+                            });
+                             %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td><b><%= rs.category[0].title %></b> (<%= rs.subcategory[0].title %>)</td>
+                                 <td><%= rs.title %></td>
+                                <td> <a href="/artistview/<%=  cryptr.encrypt(rs.artistDetail[0]._id) %>"  class="black" target="_self"><%= rs.artistDetail[0].userName %></a></td>
+                                  <td><%= picked.length %></td>
+                                  <td>£<%= count %></td>
+                               
+                              
+                            </tr>
+                            <% i++;}); }else{ %>
+
+                             <tr><td colspan="6" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="ajax_fun('<%= i-1 %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+
+    

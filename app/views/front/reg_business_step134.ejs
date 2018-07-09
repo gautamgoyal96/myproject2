@@ -1,0 +1,573 @@
+<% include ./header %>
+ <div class="header-margin"></div>
+    <div class="MainWrapper">
+        <section class="Register sec-pad">
+            <div class="container">
+                <div class="BusinessSetUp">
+                    <form role="form" class="workingTime" action="/update_workingTime" method="post" onsubmit="return my();">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="">
+                                <h2>Working Hours</h2>
+                                <div class="ApALl form-lights">
+                                    <!-- <a href="#">Apply to all</a> -->
+                                    <div class="Check">
+                                        <input id="applyCheck"  type="checkbox" checked="checked">
+                                        <label for="applyCheck">Apply for all</label>
+                                    </div>
+                                </div>
+
+                                 <%  for(i=0; i<days.length;i++) { %>
+                                    <div class="form-group fltCheck timeCheck Settime">
+                                        <div class="workingDay">
+                                            <div class="SelectCheck form-light ">
+                                               <input class="check_<%-  i %>" id="closeDay_<%-  i %>" name="close[]" value="<%-  i %>" type="checkbox"  onclick="closeDays('<%-  i %>');" checked="checked">
+
+                                                <label for="closeDay_<%-  i %>" class="grey-text"></label>
+                                            </div>
+                                            <label><%-  days[i] %></label>
+                                            <span id="add<%-  i %>">
+                                            <a class="addMoreTime thelink<%-  i %>" onclick="addfield('<%-  i %>');">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            </span>
+                                            <input type="hidden" id="check<%-  i %>" value="1">
+                                        </div>
+                                        <span id="<%-  i %>">
+
+                                            <div class="dayTime workingdata<%-  i %>">
+                                              <input class="datepickDate daycls_<%-  i %>0" name="openTime[<%-  i %>][0][]" placeholder="From" id="open_<%-  i %>0" value="10:00 AM" data-id="<%-  i %>" data-sid="0" data-type="open">
+                                              <input class="datepickDate edatepickDate timecls_<%-  i %>0" name="openTime[<%-  i %>][0][]" placeholder="To" id="close_<%-  i %>0" value="07:00 PM" data-id="<%-  i %>" data-sid="0" data-type="close">
+                                            </div>
+
+                                          <div class="time-error show_error<%-  i %>0">
+                                            <span class="err_msg" id="openErr<%-  i %>0"></span>
+                                            <span class="err_msg" id="closeErr<%-  i %>0"></span>
+                                          </div>
+
+                                       </span>
+
+                                        
+
+                                       </div>
+                                       
+
+                                    
+                                     <% } %>
+                                   
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                                <h2>Service Type</h2>
+                                <div class="ServiceTyp">
+                                <div class="radio">
+                                    <input id="radio-1" class="serviceType" name="serviceType" checked="" type="radio" value="1"  onclick="$('#area').hide();$('#outcall').hide();$('#incall').show();">
+                                    <label for="radio-1" class="radio-label">Incall</label>
+                                </div>
+                                <div class="radio">
+                                    <input id="radio-2" class="serviceType" name="serviceType" type="radio"  value="2" onclick="$('#area').show();$('#incall').hide();$('#outcall').show();">
+                                    <label for="radio-2" class="radio-label">Outcall</label>
+                                </div>
+                                <div class="radio">
+                                    <input id="radio-3" class="serviceType" name="serviceType" type="radio"  value="3" onclick="$('#area').show();$('#incall').show();$('#outcall').show();">
+                                    <label for="radio-3" class="radio-label">Both</label>
+                                </div>
+                                </div>
+
+                                     <div class="formoutcall timeSr">
+                                                    <div class="row">
+                                                      <div class="col-lg-6 col-md-12 col-sm-12" id="incall">
+                                                          <div class="form-group">
+                                                            <label>Incall Buffer Time (HH:MM)</label>
+                                                            <input type="text" class="form-control" placeholder="HH" min="0" max="23" id="inpreprationHours" name="inpreprationHours" maxlength="2"  onkeypress="return isNumberKey(event);" oninput="$('#inhours-err').html('');">
+                                                            <input type="text" class="form-control" placeholder="MM" min="0" max="59" maxlength="2" id="inpreprationminut" name="inpreprationminut" onkeypress="return isNumberKey(event);" oninput="$('#inminut-err').html('');">
+                                                          </div>
+                                                          <span class="err_msg" id="inhours-err"></span>
+                                                          <span class="err_msg" id="inminut-err"></span>
+                                                      </div>
+                                                      <div class="col-lg-6 col-md-12 col-sm-12 hidden" id="outcall">
+                                                          <div class="form-group">
+                                                            <label>Outcall Buffer Time (HH:MM)</label>
+                                                            <input type="text" class="form-control" placeholder="HH" min="0" max="23" maxlength="2" id="outpreprationHours" name="outpreprationHours" onkeypress="return isNumberKey(event);$('#outhours-err').html('');" oninput="$('#outhours-err').html('');">
+                                                            <input type="text" class="form-control" placeholder="MM" min="0" max="59" maxlength="2" id="outpreprationminut" name="outpreprationminut" onkeypress="return isNumberKey(event);" oninput="$('#outminut-err').html('');">
+                                                          </div>
+
+                                                          <span class="err_msg" id="outhours-err"></span>
+                                                          <span class="err_msg" id="outminut-err"></span>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                <div class="RadiusSet">
+                                    <h4>Your Business Address</h4>
+                                    <div class="md-form">
+                                            <input type="text" class="form-control" id="address" oninput="addresscheck(this.value);"  name="address"  value="<%=user.address %>">
+                                            <label for="Form-email15">Location</label>
+                                    </div>
+                                    <div class="err_msg" id="address-err"> </div>
+                                    <div id="area" class="md-form radiusRange hidden">
+                                        <h3>Select Radius</h3>                                    
+                                        <div id="slider"></div>
+                                        <input type="text" class="sliderValue" data-index="0" id="radius" name="range" value="1" placeholder="Enter Radius" readonly />
+                                        <span class="err_msg" id="radius-err"></span>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="formbtn mb-4 pt-3 text-right">
+                            <button type="submit" class="btn btn-theme" id="m-btn">Next</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+<% include ./footer %> 
+
+<script type="text/javascript">
+
+
+
+function addfield(a){
+var b = $("#check"+a).val();
+  if(b<2){
+    $('.thelink'+a).removeClass('disabled');
+      var html = '<div  id="data'+a+b+'"><div class="dayTime workingdata'+a+'"><input class="datepickDate daycls_'+a+b+'" name="openTime['+a+']['+b+'][]" placeholder="From" id="open_'+a+b+'"  data-id="'+a+'" data-sid="'+b+'" data-type="open" value=""><input class="datepickDate timecls_'+a+b+'" name="openTime['+a+']['+b+'][]" placeholder="To" id="close_'+a+b+'" data-id="'+a+'" data-type="close" data-sid="'+b+'" value=""><a class="closeMoreTime" id="remove'+a+'" onclick="removedata('+a+','+b+');"><i class="fa fa-close"></i> </a></div><div class="time-error show_error'+a+b+'"><span class="err_msg" id="openErr'+a+b+'"></span><span class="err_msg" id="closeErr'+a+b+'"></span></div></div>';
+        $('#'+a).append(html);
+
+
+
+        $('.datepickDate').datetimepicker({
+          format: 'LT'
+        }).on('dp.change', function(e) {
+
+          timecheck(this);
+       
+      });
+
+      $("#check"+a).val(Number(b)+Number(1));
+  }else{
+
+    $('.thelink'+a).addClass('disabled');
+
+  }
+}
+
+function timecheck(e){
+  var error = new Array();
+     var id = $(e).data('id');
+  var y = dataCheck(id);
+  var position = $(e).data('sid');
+  var type = $(e).data('type');
+  var currenttime =  timeConvert($(e).val());
+  if(type=='close'){
+
+   openTime =  timeConvert($('#open_'+id+position).val());
+    var aopenTime = addMinutes(openTime, '10');
+    closeTime = currenttime;
+
+
+       if(openTime<closeTime && openTime!=closeTime){
+
+
+
+            if(aopenTime<closeTime){
+
+
+                              error.push("1");
+                              $("#closeErr"+id+position).text("");
+
+
+                        
+                      }else{
+
+                          if(aopenTime==closeTime){
+                              
+                              error.push("1");
+                              $("#closeErr"+id+position).text("");
+
+                          }else{
+
+                            error.push("0");
+                            $("#closeErr"+id+position).text("Select more than 10 min from opening time.");
+
+                          }
+
+
+                      }
+
+                  }else{
+
+                      error.push("0");
+                      $("#closeErr"+id+position).text("Closing time must be after opening time");
+
+                  }
+
+
+       
+  
+
+  }
+
+
+  for(i=0;i<position;i++){
+          if($('#close_'+id+i).val()!=''){
+
+              matchtime =  timeConvert($('#close_'+id+i).val());
+
+              if(matchtime>=currenttime && type=="open"){ 
+
+                   error.push("0");
+                    $("#openErr"+id+position).text("Time slot in the same day can't intersect");
+
+              }else{
+
+                  if(type=="open" && (jQuery.inArray("0",error) != -1 || error.length==0)){
+
+                      error.push("1");
+                      $("#openErr"+id+position).text("");
+                  }
+              }
+
+          }
+
+
+  }
+
+  if(type=="open"){
+
+      $('#close_'+id+position).val('');
+      $("#closeErr"+id+position).text("");
+
+  }
+    var data = Number(position)+1;
+     for(i=data;i<y;i++){
+
+        $('#open_'+id+i).val('');
+        $('#close_'+id+i).val('');
+        $("#openErr"+id+i).text("");
+        $("#closeErr"+id+i).text("");
+    }
+
+
+
+console.log(error);
+
+   if(jQuery.inArray("0",error) == -1){
+
+        $(".show_error"+id+position).show();
+        $("#m-btn").removeAttr("disabled");
+          return true;
+        }else{
+
+          $(".show_error"+id+position).show();
+          $("#m-btn").attr("disabled","disabled");  
+          return false ;
+        }
+
+}
+
+function removedata(a,d){
+
+    var b = $("#check"+a).val();
+    if(b){
+
+        $("#data"+a+d).remove();
+        $("#check"+a).val(Number(b)-Number(1));
+        $('.thelink'+a).removeClass('disabled');
+
+    } 
+
+}
+function closeDays(e)
+    {
+       var now = formatAMPM();
+       var  xe= $('#closeDay_'+e).prop("checked");
+       if (!xe) {
+        $("#remove"+e).click();
+        $("#add"+e).hide();
+        $('#open_'+e+0).prop('readonly',true); 
+        $('#close_'+e+0).prop('readonly',true);
+       
+        $('#open_'+e+0).val('');
+        $('#close_'+e+0).val('');
+        $('#open_'+e+0).removeClass('datepickDate');
+        $('#close_'+e+0).removeClass('datepickDate');
+
+
+     
+      }else{
+
+       $("#add"+e).show();
+
+          $('#open_'+e+0).val('10:00 AM');
+          $('#close_'+e+0).val('07:00 PM');
+            $('#open_'+e+0).addClass('datepickDate');
+            $('#close_'+e+0).addClass('datepickDate');
+         $('#open_'+e+0).prop('readonly',false);
+        $('#close_'+e+0).prop('readonly', false);
+      }
+   
+     
+    }
+    function formatAMPM() {
+    var date    = new Date();
+    var hours   = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm    = hours >= 12 ? 'PM' : 'AM';
+    hours       = hours % 12;
+    hours       = hours ? hours : 12; // the hour '0' should be '12'
+    minutes     = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+   
+    }
+
+
+$('#applyCheck').on("click",function(){
+      var  xe= $('#applyCheck').prop("checked");
+    if (xe) {
+
+        var i=0;  
+        $('.Settime').each(function(){
+
+        $("#add"+i).show();
+        $('#open_'+i+0).prop('readonly', false); 
+        $('#close_'+i+0).prop('readonly', false); 
+              var  xe= $('#closeDay_0').prop("checked");
+           if($('#open_00').val() =='' || $('#close_00').val() ==''){
+                $('#closeDay_'+i).prop('checked', true); // Checks it  
+                 $('#open_'+i+0).val('10:00 AM');
+                $('#close_'+i+0).val('07:00 PM'); 
+             }else{
+
+                $('#closeDay_'+i).prop('checked', true); // Checks it  
+                 $('#open_'+i+0).val($('#open_00').val());
+                $('#close_'+i+0).val($('#close_00').val()); 
+
+             }  
+          i++;
+        });
+
+  }else{
+      var i=0;
+      $('.Settime').each(function(){
+
+            $("#add"+i).hide();
+            $("#remove"+i).click();
+              $('#open_'+i+0).prop('readonly', true); 
+                $('#close_'+i+0).prop('readonly', true); 
+
+                $('#closeDay_'+i).prop('checked', false); // Checks it 
+                $('#open_'+i+0).removeAttr('placeholder'); // Checks it 
+                $('#close_'+i+0).removeAttr('placeholder'); // Checks it 
+                $('#open_'+i+0).val(''); 
+                $('#close_'+i+0).val(''); 
+         
+          i++;
+        });
+
+  } 
+  
+});
+
+
+ function addMinutes(time, minsToAdd) {
+  function D(J){ return (J<10? '0':'') + J;};
+  var piece = time.split(':');
+  var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+
+  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);  
+}  
+
+function timeConvert(otime){
+  
+      var ohours = Number(otime.match(/^(\d+)/)[1]);
+      var ominutes = Number(otime.match(/:(\d+)/)[1]);
+      var AMPM = otime.match(/\s(.*)$/)[1];
+      if(AMPM == "PM" && ohours<12) ohours = ohours+12;
+      if(AMPM == "AM" && ohours==12) ohours = ohours-12;
+      var osHours = ohours.toString();
+      var osMinutes = ominutes.toString();
+      if(ohours<10) osHours = "0" + osHours;
+      if(ominutes<10) osMinutes = "0" + osMinutes;
+     return osHours + ":" + osMinutes;
+}
+function dataCheck(i){
+  
+    var y=0;
+       $('.workingdata'+i).each(function(){
+       y++;
+       });
+     return y;
+}
+
+$('form').on('submit', function() {
+var flag = new Array();
+ var i=0;  
+  $('.Settime').each(function(){
+    var a=0;
+    
+    $('.workingdata'+i).each(function(){
+
+         var  xe= $('#closeDay_'+i).prop("checked");
+           if(!xe){
+            flag.push("1");
+            $("#openErr"+i+a).text("");
+            $("#closeErr"+i+a).text("");
+          }else{
+
+      
+             if($('#open_'+i+a).val() ==''){
+
+              $(".show_error"+i+a).show();
+              flag.push("0");
+              $("#openErr"+i+a).text("Opening time is mandatory");
+              }else{
+
+                  
+                 
+                    var s = 1;
+
+                    var y = dataCheck(i);
+
+
+                    if(y==2 && s!=a){
+
+                        if($('#close_'+i+a).val()!='' && $('#open_'+i+s).val()!=''){
+                            matchtime =  timeConvert($('#close_'+i+a).val());
+                            var currenttime = timeConvert($('#open_'+i+s).val());
+
+                              if(matchtime>=currenttime){ 
+
+
+                                flag.push("0");
+                                $(".show_error"+i+s).show();
+                                $("#openErr"+i+s).text("Time slot in the same day can't intersect");
+
+
+                              }else{
+
+
+                                       //    $(".show_error"+i+a).hide();
+                                            flag.push("1");
+                                            $("#openErr"+i+a).text("");
+                           
+                              }
+                        
+                        }   
+
+                    }else{
+                      if((jQuery.inArray("0",flag) != -1)){
+                      }else{
+
+                      console.log(flag);
+                        flag.push("1");
+                        $("#openErr"+i+a).text("");
+                       }
+
+                    }
+
+
+
+              }
+
+
+              if($('#close_'+i+a).val() ==''){
+
+                   $(".show_error"+i+a).show();
+                    flag.push("0");
+                    $("#closeErr"+i+a).text("Closing time is mandatory");
+
+              }else{
+
+
+                  var closeTime = timeConvert($('#close_'+i+a).val());
+                  var openTime = timeConvert($('#open_'+i+a).val());
+                  var aopenTime = addMinutes(openTime, '10');
+
+                  if(openTime<closeTime && openTime!=closeTime){
+
+
+                       if(aopenTime<closeTime){
+
+
+                 // console.log('a');
+
+                        //if((jQuery.inArray("0",flag) != -1 || flag==0)){
+
+                          //$(".show_error"+i+a).hide();
+                          flag.push("1");
+                          $("#closeErr"+i+a).text("");
+
+                      //  }
+
+
+                      }else{
+
+
+
+                          if(aopenTime==closeTime){
+
+                              if((jQuery.inArray("0",flag) != -1 || flag==0)){
+                                 // $(".show_error"+i+a).hide();
+                                  flag.push("1");
+                                  $("#closeErr"+i+a).text("");
+                            }
+
+                          }else{
+
+                            $(".show_error"+i+a).show();
+                            flag.push("0");
+                            $("#closeErr"+i+a).text("Select more than 10 min from opening time.");
+
+                          }
+
+
+                      }
+
+
+                  }else{
+
+                      $(".show_error"+i+a).show();
+                      flag.push("0");
+                      $("#closeErr"+i+a).text("Closing time must be after opening time");
+
+                  }
+
+
+              }
+
+
+          }
+
+       a++;
+      });
+              
+
+  i++;
+  });
+
+  checked = $("input[type=checkbox]:checked").length;
+  if(checked==0){
+      $(".show_error00").show();
+      flag.push("0");
+      $("#openErr00").text("Opening time is mandatory");
+      $("#closeErr00").text("Closing time is mandatory");
+
+
+  }
+
+   if(jQuery.inArray("0",flag) == -1){
+
+
+            return true;
+        }else{
+          
+            return false ;
+        }
+
+
+});
+
+</script>

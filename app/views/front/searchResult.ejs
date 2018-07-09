@@ -1,0 +1,539 @@
+<% include ./header %>
+<link href="/front/css/select2.min.css" rel="stylesheet"/>
+<script src="/front/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/front/css/jquery.timepicker.css" />
+   <div class="header-margin"></div>
+  <div class="MainWrapper creambg">
+    <section class="SearchResult sec-pad">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4">
+            <div class="filter_btn text-right">
+              <button id="flter" type="button" class="btn btn-fliter"><i class="fa fa-filter"></i></button>
+            </div>
+            <div class="filterSide">
+              <div class="fltHead">Filters <button id="flter_close" type="button" class="btn pull-right btn-close"><i class="fa fa-close"></i></button></div>
+              <div class="fltData">
+                <form>
+                  <div class="form-group csSelect">
+                    <label>Categories</label>
+                  
+                        <select class="category" name="services" onchange="categorychange(this.value,'c');" id="category" multiple>
+
+
+                         <% categorydata.forEach(function(rs) { 
+                          var index = -1;
+                          if(services){
+                            var index = services.findIndex(qqqq => qqqq === String(rs._id));
+                          }
+                         %>
+                             
+                             <option value="<%= rs._id %>" <% if(index == 0 || index > 0){ %> selected <% } %>><%= rs.title %></option>
+
+                         <% }); %>
+
+                    </select>
+                  </div>
+                  <div class="fltbx">
+                    <span id="subcat_result"></span>
+                  </div>
+                  <div class="form-group date">
+                    <label>Availability Date</label>
+                    <input type="text" class="form-control searchdatepick" placeholder="Select Date" value="<%= date %>" id="date" readonly="true" >
+                  </div>
+
+                  <div class="form-group date">
+                    <label>Availability Time</label>
+                    <input type="text" class="form-control searchtime" placeholder="Select Time" value="<%= time %>" id="time">
+                  </div>
+                  <div class="form-group date">
+                    <label>Location</label>
+                    <input type="text" class="form-control" id="address" value="<%= city %>">
+                  </div>
+              
+                  <div class="form-group fltCheck">
+                    <label>Outcall</label>
+                    <div class="SelectCheck form-light ">
+                      <input id="outcall" type="checkbox" onclick="ajax_fun('1');">
+                      <label for="outcall" class="grey-text"></label>
+                    </div>
+                  </div>
+                  <div class="fltbx price_filter">
+                    <h2 class="head">Prices</h2>
+                    <div class="priceText">
+                    <div class="priceTblock">
+                    Min. Price
+                    <input type="text" id="startPrice" onkeypress="return isNumberKey(event);" min="0" max="99" maxlength="2">
+                    </div>
+                    <div class="priceTblock pull-right">
+                    Max. Price
+                    <input type="text" id="endPrice" onkeypress="return isNumberKey(event);" min="0" max="99" maxlength="2">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div id="slider-range"></div>
+
+                      
+                    </div>
+
+
+ 
+                  </div>
+                  <div class="fltbx">
+                    <h2 class="head">Reviews</h2>
+                    <div class="form-group fltCheck">
+                      <div class="ratingBox">
+                        <ul class="rating inline-ul">
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="SelectCheck form-light ">
+                        <input id="r5" type="checkbox" class="rating"  onclick="ajax_fun('1');" value="5">
+                        <label for="r5" class="grey-text"></label>
+                      </div>
+                    </div>
+                    <div class="form-group fltCheck">
+                      <div class="ratingBox">
+                        <ul class="rating inline-ul">
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="SelectCheck form-light ">
+                        <input id="r4" type="checkbox" class="rating"  onclick="ajax_fun('1');" value="4">
+                        <label for="r4" class="grey-text"></label>
+                      </div>
+                    </div>
+                    <div class="form-group fltCheck">
+                      <div class="ratingBox">
+                        <ul class="rating inline-ul">
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="SelectCheck form-light ">
+                        <input id="r3" type="checkbox" class="rating"  onclick="ajax_fun('1');" value="3">
+                        <label for="r3" class="grey-text"></label>
+                      </div>
+                    </div>
+                     <div class="form-group fltCheck">
+                      <div class="ratingBox">
+                        <ul class="rating inline-ul">
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="SelectCheck form-light ">
+                        <input id="r2" type="checkbox" class="rating"  onclick="ajax_fun('1');" value="2">
+                        <label for="r2" class="grey-text"></label>
+                      </div>
+                    </div>
+                    <div class="form-group fltCheck">
+                      <div class="ratingBox">
+                        <ul class="rating inline-ul">
+                          <li>
+                            <i class="fa fa-star amber-text"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                          <li>
+                            <i class="fa fa-star"></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="SelectCheck form-light ">
+                        <input id="r1" type="checkbox" class="rating"  onclick="ajax_fun('1');" value="1">
+                        <label for="r1" class="grey-text"></label>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-8">
+            <span id="search_result"></span>
+          </div>
+        </div>
+    </section>
+    </div>
+
+
+   <% include ./footer %> 
+
+<script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+  <script>
+  $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 100,
+      values: [ 0, 50 ],
+      slide: function( event, ui ) {
+        $( "#startPrice" ).val(ui.values[ 0 ]);
+        $( "#endPrice" ).val( ui.values[ 1 ]);
+        if(ui.values[ 1 ]==100){
+          $( "#endPrice" ).val( ui.values[ 1 ]+'+');
+        }
+        ajax_fun('1');
+      }
+    });
+      $( "#startPrice" ).val($( "#slider-range" ).slider( "values", 0 ));
+      $( "#endPrice" ).val($( "#slider-range" ).slider( "values", 1 ) );
+  } );
+
+
+  $("#startPrice,#endPrice").change(function() {
+
+    var startPrice = $("#startPrice").val();
+    var endPrice = $("#endPrice").val();
+
+ajax_fun('1');
+
+      $( "#slider-range" ).slider({
+      values: [ startPrice, endPrice ],
+      });
+  });
+  </script>
+
+   <script type="text/javascript">
+
+$(function () {
+
+ //$('.searchdatepick').datepicker({  minDate:new Date(),dateFormat: 'dd/mm/yy',}).on('change', function(e) {
+
+ // ajax_fun('1');
+ 
+//});
+
+/* $('.searchtime').datetimepicker({ format: 'LT',stepping: 10,ignoreReadonly: true}).on('dp.change', function(e) {
+
+ ajax_fun('1');
+ 
+});
+*/
+
+ $('#time').click(function(){
+    $("body").addClass('date_scl');
+});
+  $('#time').blur(function(){
+    $("body").removeClass('date_scl');
+});
+  $('.searchdatepick').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false,
+                minDate:new Date(),
+               ignoreReadonly: true
+
+
+            }).on('dp.change', function(e) {
+
+         ajax_fun('1');
+ 
+});
+
+ $('.searchtime').timepicker({
+                 'timeFormat': 'g:i A',
+                 'step': 10,
+                 'disableTextInput': true,
+                 'disableTouchKeyboard' : true 
+              }).on('change', function(e) {
+    $("body").removeClass('date_scl');
+
+               ajax_fun('1');
+       
+    })
+
+});
+
+
+$(function() {
+    $('.category').multiselect({
+        includeSelectAllOption: true
+    });
+});
+
+function formatAMPM(date) {
+
+      var d = date;
+      st = d.split(":");
+      oh = st[0];
+      if(st[0]<10){
+
+        var oh = 0+st[0];
+      }
+
+  return  oh+":"+st[1];  
+}
+
+
+
+</script>
+
+   <script type="text/javascript">
+
+$(function() {
+    $('.category').multiselect({
+        includeSelectAllOption: true
+    });
+});
+
+</script>
+
+    <script type="text/javascript">
+
+
+    function serviceviewmore(e){
+
+
+            var artistId = $(e).data('id');
+            var serviceType = $(e).data('type');
+            var name = $(e).data('name');
+            var img = $(e).data('img');
+            var url = $(e).data('url');
+            var pUrl = $(e).data('purl');
+            $("#serviceViewMore-name").text(name);
+            $("#serviceViewMore-img").attr('src',img);
+            $("#serviceViewMore-img").attr('alt',name);
+            $("#serviceViewMore-img").attr('title',name);
+            $(".proLink").attr('href',pUrl);
+             $.ajax({
+
+                url: '/get_sub_service',
+                type: "POST", 
+                data:{artistId:artistId,serviceType:serviceType,url:url} ,                 
+                cache: false,
+                beforeSend: function() {
+                        $("#serviceviewmore_result").html("<img id='zlodaer' src='https://www.walshcreative.com/wp-content/plugins/smart-scroll-posts/images/smart_scroll-ajax_loader.gif' alt='' style='display: block;margin: 0 auto; height:250px;'>");
+                },
+                success: function(data){
+
+
+                    $("#serviceviewmore_result").html(data);
+                }
+
+            });
+         
+
+    }
+
+    categorychange('<%= services %>','f');
+
+
+
+function categorychange(e,type){
+
+  var category = $("#category").val();
+
+    if(category!=''){
+   $(".price_filter").show();  
+  
+  }else{
+
+    $(".price_filter").hide();
+  }
+
+
+    if(type=='f'){
+    
+        var category = e;
+    
+    }else{
+          if(category!=''){
+
+            var category = [];    
+            $(".category :selected").each(function(){
+                category.push($(this).val()); 
+            });
+
+          }else{
+
+            var category = 0; 
+
+          }
+    }
+  
+    $.ajax({
+
+        url: '/get_sub_category',
+        type: "POST", 
+        data:{category:category,type:type} ,                 
+        cache: false,
+        beforeSend: function() {
+           $(".loading").show();
+        },
+        success: function(data){
+            $(".loading").hide();
+            $("#subcat_result").html(data);
+            ajax_fun('1');
+
+        }
+
+    });
+
+}
+
+function ajax_fun(e)
+
+{
+
+var category = $("#category").val();
+var date = $("#date").val();
+var city = $("#address").val();
+ var subservice = $('.getcat:checkbox:checked').map(function() {
+            return Number(this.value);
+        }).get();
+
+ var rating = $('.rating:checkbox:checked').map(function() {
+            return Number(this.value);
+        }).get();        
+ var outcall = $("#outcall").prop("checked");
+ if(outcall!=""){
+
+  serviceType = 1;
+
+ }else{
+
+    serviceType = 2;
+ }
+
+var startPrice = $("#startPrice").val();
+var min = startPrice.length>2 ? "0"+startPrice : startPrice;
+var max = $("#endPrice").val();
+
+ var date = $("#date").val();
+ var time1 = $("#time").val();
+var day = time = '';
+if(date){
+  var rew = date.split("/");
+  var newDate = rew[1]+'/'+rew[0]+'/'+rew[2];
+  var d = new Date(newDate);
+  var day = d.getDay();
+  if(day!=0){
+  
+    day = day - Number(1);
+  
+  }else{
+
+    day = 6;
+
+  }
+  if(time1){
+    
+    time = formatAMPM(time1);
+  }
+}else{
+  
+  if(time1){
+
+    var d = new Date();
+    var day = d.getDay();
+    time = formatAMPM(time1);
+     if(day!=0){
+  
+        day = day - Number(1);
+  
+    }else{
+
+      day = 6;
+
+    }
+    
+  }
+}
+   $.ajax({
+
+        url: '/search_artist',
+        type: "POST", 
+        data:{category:category,date:date,city:city,subservice:subservice,serviceType:serviceType,min:min,max:max,rating:rating,day:day,time:time,'page':e} ,                 
+        cache: false,
+        beforeSend: function() {
+            $(".loading").show();
+        },
+        success: function(data){
+            $(".loading").hide();
+            $("#search_result").html(data);
+
+        }
+
+    });
+
+   
+
+}
+
+</script>
+
+<script>
+  $(document).ready(function(){
+    $("#flter").click(function(){
+        $(".filterSide").slideDown();
+        $(".filterSide").addClass("filter_mob");
+        $("body").addClass("filter_body");
+    });
+    $("#flter_close").click(function(){
+        $(".filterSide").slideUp();
+        $("body").removeClass("filter_body");
+    });
+  });  
+</script>

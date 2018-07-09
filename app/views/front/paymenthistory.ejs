@@ -1,0 +1,64 @@
+<% include ./header %>
+
+<div class="header-margin"></div>
+  <div class="MainWrapper creambg">
+    <!---Artist Dashboard Start Here-->
+    <section class="artist-payment-wrap">
+      <div class="container">
+       <!--  <div class="FeedSearch mb-4">
+          <input class="form-control" type="text" placeholder="Search..." onkeyup="ajax_fun('1');" id="search">
+          <a class="searchIc">
+            <i class="fa fa-search"></i>
+          </a>
+        </div> -->
+        <!---Artist Payment start Here-->
+        <div class="payment-wrap" id="payment_result">    
+        </div>
+        <!---Artist Payment end Here-->
+      </div>
+    </section>
+    </div>
+
+<% include ./footer %> 
+
+ <% if(success.length>0){ %>
+
+<script type="text/javascript">
+errorMsg('<%= success %>');
+</script>
+
+<% } %>
+
+
+<script type="text/javascript">
+  
+
+function ajax_fun(e)
+
+{
+
+   $.ajax({
+
+        url: '/payment_list',
+        type: "get", 
+        cache: false,
+        data:{'page':e,'search':$.trim(jQuery("#search").val())} ,                 
+
+        beforeSend: function() {
+          $(".loading").show();
+
+        },
+        success: function(data){
+            $(".loading").hide();
+            $("#payment_result").html(data);
+
+        }
+
+    });   
+
+}
+ajax_fun('1');
+
+</script>
+
+

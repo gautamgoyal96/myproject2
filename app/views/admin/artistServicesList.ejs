@@ -1,0 +1,85 @@
+ <div class="box-body table-responsive no-padding" id="ajaxdata">    <table class="table table-hover">
+                            <tr>
+                                <th>ID</th>
+                                <th>Service</th>
+                                <th>Sub Service</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>In call Price</th>
+                                <th>Out call Price</th>
+                                <th>Completion Time</th>
+<!--                                 <th>Status</th>
+ -->                            </tr>
+
+                            <%   var startTime = (Number(currentPage)-1)*10;
+                             i=1+startTime;
+                            if(categorydata.length>0){
+                            categorydata.forEach(function(rs) { %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td><%= rs.category[0].title %></td>
+                                <td><%= rs.subcategory[0].title %></td>
+
+                                <td><%= rs.title %></td>
+                                <td><%= rs.description.substring(0,60) %>......</td>
+                                 <td>
+                                   <% if(rs.inCallPrice!=0 && rs.inCallPrice!='0' && rs.inCallPrice!='0.0' && rs.inCallPrice!='0.00'){ %>
+                                        &#163;<%= Number(rs.inCallPrice).toFixed(2); %>
+                                   <% }%></td>
+                                  <td>
+                                    <% if(rs.outCallPrice!=0 && rs.outCallPrice!='0' && rs.outCallPrice!='0.0' && rs.outCallPrice!='0.00'){ %>
+                                    &#163;<%= Number(rs.outCallPrice).toFixed(2);%>
+                                    <% }%></td>
+                                 <td>
+                                 <%
+                                      var time = rs.completionTime;
+                                      var t = time.split(':');
+                                      var h = t[0]!=0 ? t[0]+" hrs " : '';
+                                      var m = t[1]+" min";
+                                 %>
+                                 <%= h+m %></td>
+<!--                                 <td><span class="label <%= rs.status==1 ? 'label-success' : 'label-danger' %>"><%= rs.status==1 ? 'Active' : 'Inactive' %></span></td>
+ -->                               
+                            </tr>
+                            <% i++;}); }else{ %>
+
+                             <tr><td colspan="5" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                        <% if (pageCount > 1) { %>
+            <ul class="pagination">
+                <% if (currentPage > 1) { %>
+
+                    <li><a href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a href="#">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+                    <% } else { %>
+                        <li><a href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="disabled"><a href="#">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li><a href="#" onclick="ajax_fun('<%= i %>');">&raquo;</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+
+    

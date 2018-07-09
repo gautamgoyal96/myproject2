@@ -1,0 +1,97 @@
+  <% include ./header %> 
+ 
+    <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+Update sub Service         
+          </h1>
+        
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+               <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                 <% if (error.length > 0) { %>
+                          <div class="alert alert-danger"><%- error %></div>
+                          <% } %>
+
+                           <% if (success.length > 0) { %>
+                          <div class="alert alert-success"><%- success %></div>
+                          <% } %>
+                <form role="form" action="/updateSubCategory" method="post" enctype= "multipart/form-data" id="regsterForm">
+                  <div class="box-body">
+
+                      <div class="form-group">
+
+                          <label for="exampleInputEmail1">Service</label>
+                           <select name="serviceId" class="form-control form-title" title="Service field is required"  required />
+                                  <option value="">-- select Category --</option>
+                                   <% row.forEach(function(rs) { %>
+                                      <option value="<%= rs._id %>" <% if(rs._id==categorydata.serviceId){ %>selected="selected" <% }%>><%= rs.title %></option>
+
+                                  <% }); %>
+
+                           </select>
+                       </div>
+                        <div class="form-group">
+                              <label for="exampleInputEmail1"> Sub service name</label>
+                             <input type="text" name="title" id="title" class="form-control form-title" title="Sub service name field is required"  required  placeholder="Title"  value="<%= categorydata.title %>" maxlength="50"/>
+
+                        </div>
+                         <input type="hidden" name="id" value="<%= categorydata._id%>">
+                   
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                     <a href="/listSubCategory" class="btn btn-default">Cancel</a>
+                      <button type="submit" class="btn btn-primary" id="submitbutton">Submit</button>
+                  </div>
+                </form>
+              </div><!-- /.box -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+      
+          </div>   <!-- /.row -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+     <% include ./footer %> 
+
+<script type="text/javascript">
+
+$('#submitbutton').click(function(){
+    $(this).hide().attr("disabled", "disabled");
+    $(this).parents('form').submit();
+    $(this).delay(1000).fadeIn().prop("disabled", false);
+});
+ $("#regsterForm").validate( {
+
+  rules: {
+    serviceId: {required : true },
+    title: { lettersonly: true,required : true },
+  },
+
+  messages:{
+
+        title:{
+        required: "Sub service name field is required",
+        lettersonly:"Only alphabet letters",
+        }
+   }     
+
+});
+
+jQuery.validator.addMethod("lettersonly", function(value, element) {
+  return this.optional(element) || /^[a-zA-Z\s]+$/i.test(value);
+}, "Letters only please"); 
+</script>

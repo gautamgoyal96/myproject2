@@ -1,0 +1,86 @@
+    <div id="nofount">No services found</div>
+
+                        <%
+                              i = 1;
+                               categorydata.forEach(function(rs) { %>
+
+                                <div class="card hidden" id="<%= i %>">
+                                  <div class="card-header" role="tab">
+                                    <h5 class="mb-0">
+                                      <a data-toggle="collapse"  href="#collapseOne<%= i %>" aria-expanded="true" aria-controls="collapseOne">
+                                        <%= rs.serviceName %>
+                                      </a>
+                                    </h5>
+                                  </div>
+                                      <div id="collapseOne<%= i %>" class="collapse <% if((rs.serviceId==category) || (i==1) ){ %>show <% }%>" role="tabpanel">
+                                        <%a = 1;rs.subcategory.forEach(function(res) { 
+                                           if(artist._id==res.artistId && res.status==1 && res.deleteStatus==1){
+                                        %>
+                                            <div class="acclist hidden" id="<%= rs.serviceId %><%= a %>">
+                                              <div class="acclist-box">
+                                                <div class="">
+                                                    <input type="radio" id="checkbox<%= res.subServiceId %><%= rs.serviceId %>" name="servicselect">
+                                                    <label for="checkbox<%= res.subServiceId %><%= rs.serviceId %>" class="checkbox<%= res._id %><%= rs._id %> <% if(i==1 && a==1){ %>first <% }%> acc_headding check<%= res.subServiceId %><%= rs.serviceId %>" onclick="subservices('<%= res.subServiceId %>','<%= rs.serviceId %>');">
+                                                     <%= res.subServiceName %>
+                                                    </label>
+                                                </div>
+                                              </div>
+                                            </div> 
+
+                                                <% 
+                                                  var e= 1;
+                                                service = rs.artistServices; 
+                                                   for (s = 0 ; s < service.length ; s++) { 
+                                                   if(res.subServiceId==service[s].subserviceId && service[s].artistId == res.artistId){
+                                                   if(checkServiceType!="2"){
+                                                      
+                                                      var  priceCheck = service[s].inCallPrice;
+
+                                                   }else{
+
+                                                    var  priceCheck = service[s].outCallPrice;
+
+                                                   } %>
+
+                                                       <%
+                                                      if(priceCheck!="" & priceCheck!='0' & priceCheck!='00' & priceCheck!="0.0" & priceCheck!="0.00"){ 
+                                                        var e = 0;
+                                                      %>
+
+                                                    <script>
+                                                    $("#<%= rs.serviceId %><%= a %>").show();
+                                                    $("#nofount").hide();
+                                                  </script> 
+                                                   <% } %>  
+
+                                                     <%
+                                                      if(e==0){ 
+                                                      %>
+                                                    <script>
+                                                    $("#<%= i %>").show();
+                                                  </script> 
+                                                 <% } %> 
+
+                                             <% }} %>
+                                        <% a++;}}); %>  
+                             
+                                      </div>
+                                </div>
+
+                               
+                              <% i++;}); %>
+
+       <script type="text/javascript">
+
+                                    var cat  = '<%= category %>';
+      var subcategory  = '<%= subcategory %>';
+      if(cat==''){
+       $( ".first" ).click();
+
+      }else{
+
+          $(".check"+subcategory+cat).click();
+
+      }
+
+</script>

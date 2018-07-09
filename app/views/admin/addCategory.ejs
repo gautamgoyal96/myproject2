@@ -1,0 +1,85 @@
+  <% include ./header %> 
+ 
+    <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+Add Service        
+          </h1>
+       
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+               <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                 <% if (error.length > 0) { %>
+                          <div class="alert alert-danger"><%- error %></div>
+                          <% } %>
+
+                           <% if (success.length > 0) { %>
+                          <div class="alert alert-success"><%- success %></div>
+                          <% } %>
+                <form role="form" action="/createCategory" method="post" id="regsterForm">
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Service Name</label>
+                     <input type="text" name="title" id="title" class="form-control form-title" title="Title field is required"  required  placeholder="Service Name" maxlength="50"/>
+
+                    </div>
+
+
+              
+                   
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary" id="submitbutton">Submit</button>
+                  </div>
+                </form>
+              </div><!-- /.box -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+      
+          </div>   <!-- /.row -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+     <% include ./footer %> 
+
+<script type="text/javascript">
+
+$('#submitbutton').click(function(){
+    $(this).hide().attr("disabled", "disabled");
+    $(this).parents('form').submit();
+    $(this).delay(1000).fadeIn().prop("disabled", false);
+});
+
+ $("#regsterForm").validate( {
+
+  rules: {
+    title: { lettersonly: true,required : true }
+  },
+
+  messages:{
+
+        title:{
+        required: "Service name field is required",
+        lettersonly:"Only alphabets letters",
+        }
+   }     
+
+});
+
+jQuery.validator.addMethod("lettersonly", function(value, element) {
+  return this.optional(element) || /^[a-zA-Z\s]+$/i.test(value);
+}, "Letters only please"); 
+</script>

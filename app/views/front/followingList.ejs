@@ -1,0 +1,86 @@
+ <div class="followTeam row">
+    <%
+
+  if(staff.length>0){
+   staff.forEach(function(rs) { 
+    var id = rs.followerId;
+
+   %>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+            <div class="teamBlock text-center">
+              <div class="team-person-image">
+                <a href="/profile?id=<%= cryptr.encrypt(id); %>" target="_self" title="<%= rs.userName %>">
+                  <img src="<%= rs.profileImage %>" class="img-responsive" alt="<%= rs.userName %>" title="<%= rs.userName %>">
+                </a>
+              </div>
+              <div class="team-person-sep bordered-box"></div>
+              <div class="team-person-info">
+                <div class="team-person-name">
+                  <a href="/profile?id=<%= cryptr.encrypt(id); %>"><%= (rs.firstName+" "+rs.lastName).substring(0,15) %></a>
+                </div>
+                <div class="team-person-position">@<%= rs.userName %></div>
+                <div class="followBtn">
+                 <% if (session.fUser) {
+
+                  if(id!=session.fUser._id){
+                    var rId = 'F'+session.fUser._id+id;
+                  %>
+                    <span id="<%= rId %>">
+                    <% if(rs.followStatus==true){ %>
+                    <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= id %>','0','<%= rId %>');" title="Unfollow">Unfollow</button>
+                    <% }else{ %>
+                     <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= id %>','1','<%= rId %>');" title="follow">Follow</button>
+                    <% } %>
+                   </span> 
+                    <a href="#" class="btn btn-theme btn-maxWidth">Message</a>
+                
+                <% }}else{ %>
+
+                   <a href="/login" class="btn btn-theme btn-maxWidth">Follow</a>
+                   <a href="/login" class="btn btn-theme btn-maxWidth">Message</a>
+                   
+                <% } %>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+
+  <% });}else{ %>
+ <div class="col-lg-12" style="text-align: center;font-size: 18px;font-weight: bold;"> No Record Found </div>
+  <% } %> 
+   </div>
+  <% if (pageCount > 1) { %>
+       <nav class="my-4 mr-auto text-center">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+                <% if (currentPage > 1) { %>
+
+                    <li class="page-item "><a class="page-link" aria-label="Previous" href="#" onclick="staff_List(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="page-item active"> <a class="page-link" href="#"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="#" onclick="staff_List('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li class="page-item" ><a class="page-link" aria-label="Next" href="#" onclick="staff_List('<%= i-1 %>');"> <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span></a></li>
+                <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+               

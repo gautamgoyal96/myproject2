@@ -1,0 +1,35 @@
+              <div class="likeuser serviseslead servicesSerch" >
+                      <% service = listdata[0].service;
+                                 for (i = 0 ; i < service.length ; i++) { 
+
+                                 if(serviceType=="2"){
+                                    
+                                    var  priceCheck = service[i].inCallPrice;
+
+                                 }else{
+
+                                  var  priceCheck = service[i].outCallPrice;
+
+                                 }
+                                 if(priceCheck!="" & priceCheck!='0' & priceCheck!="0.0" & priceCheck!="0.00"){ %>
+
+       
+                                <%  %>
+                          <label for="a<%= service[i]._id %>"> <%= service[i].title %>
+                            <span>
+                            <% if(serviceType=="2"){ %>
+
+                            &#163;<%= Number(service[i].inCallPrice).toFixed(2) %>
+
+                            <% }else{ %>
+
+                              &#163;<%= Number(service[i].outCallPrice).toFixed(2) %>
+                            <% } %>
+                            </span>
+                          </label>
+                           <% }} %>
+              </div>
+
+               <div class="text-center">
+                    <a href="<%= url%>" class="btn btn-theme">Book</a>
+               </div>

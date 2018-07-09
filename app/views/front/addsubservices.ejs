@@ -1,0 +1,140 @@
+
+                                                 <% if(subservicesdata.length>0) { %>
+
+  <div class="SelectSubItem stffSelection  csSelect">
+                                                  <select id="subservices" onchange="subservicesChanges(this.value);">
+                                                    <option value="">Select Sub Category</option>
+                                                       <% subservicesdata.forEach(function(rs) { %>
+                                                          <option value="<%= rs._id %>"><%= rs.title %></option>
+
+                                                      <% }); %>
+                                                  </select>
+                                              </div>  
+                                               <% } %> 
+                                            <input type="hidden" id="category">             
+                                            <input type="hidden" id="subcategory">             
+                                            <input type="hidden" id="type" value="insert">             
+                                            <input type="hidden" id="serviceType" value="<%= user.serviceType %>">             
+                                            <div class="formbox">
+                                                <div class="md-form">
+                                                  <input type="text" class="form-control" placeholder="Enter a tag name (eg. Red)" id="title" oninput="$('#title-err').html('');" maxlength="30">
+                                                  <div class="err_msg" id="title-err" ></div>
+                                                  <!---<label for="Form-email2">Enter Name</label>-->
+                                                </div>
+                                                <div class="md-form">
+                                                  <textarea type="text" id="description" class="md-textarea" style="height: 70px; overflow: auto !important;" placeholder="Enter Description" oninput="$('#description-err').html('');" maxlength="250"></textarea>
+                                                  <div class="err_msg" id="description-err"></div>
+                                              </div>
+                                              <div class="formoutcall">
+                                                <div class="row">
+                                                 <% if(user.serviceType==1 || user.serviceType==3) { %>
+                                                  <div class="col-lg-6 col-md-12 col-sm-12">
+                                                      <div class="form-group">
+                                                        <label>In Call Price</label>
+                                                        <input type="number" class="form-control number" placeholder="£ 20" id="incallPrice"  onkeypress="return isNumberprice(event);"  maxlength="7"  oninput="$('#incallPrice-err').html('');">
+                                                        <div class="err_msg" id="incallPrice-err"></div>
+
+                                                      </div>
+                                                  </div>
+                                                   <% } %> 
+                                                  <% if(user.serviceType==2 || user.serviceType==3) { %>
+                                                  <div class="col-lg-6 col-md-12 col-sm-12">
+                                                      <div class="form-group">
+                                                        <label>Out Call Price</label>
+                                                        <input type="number" class="form-control number" placeholder="£ 20" id="outCallPrice"  onkeypress="return isNumberprice(event);"  maxlength="7" oninput="$('#outCallPrice-err').html('');">
+                                                        <div class="err_msg" id="outCallPrice-err"></div>
+                                                      </div>
+                                                  </div>
+                                                  <% } %>  
+                                                </div>
+                                              </div>
+                                              <div class="formoutcall timeSr">
+                                                    <div class="row">
+                                                      <div class="col-lg-6 col-md-12 col-sm-12">
+                                                          <div class="form-group">
+                                                            <label>Time for completion (HH:MM)</label>
+                                                            <input type="text" class="form-control Htime" placeholder="HH"  min="0" max="23" maxlength="2" id="hours"  onclick="$(this).keydown(false);" oninput="$('#hours-err').html('');">
+                                                            <input type="text" class="form-control mtime" placeholder="MM" min="0" max="59" maxlength="2"  id="minute" onclick="$(this).keydown(false);"oninput="$('#minute-err').html('');">
+                                                             <span class="err_msg" id="hours-err"></span>
+                                                              <span class="err_msg" id="minute-err"></span>
+                                                          </div>
+                                                      </div>
+                                               
+                                                    </div>
+                                                  </div>
+                                                  <button type="button" class="btn btn-theme" onclick="subservice();" id="m-btn">Add more</button>
+
+                                            </div>
+
+
+<script type="text/javascript">
+
+
+$(".form-control,.md-textarea").on("input", function(e) {
+
+    var d = $(e.target).val();
+    string = d.replace(/\s\s+/g, ' ');
+    $(e.target).val(string);
+});
+
+$('.form-control,.md-textarea').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+
+$('.number').keypress(function(event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+           ((event.which < 48 || event.which > 57) &&
+           (event.which != 0 && event.which != 8))) {
+               event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function() {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 2) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 2)) {
+                event.preventDefault();
+        }     
+    });
+
+ 
+    $('.number').bind("paste", function(e) {
+        var text = e.originalEvent.clipboardData.getData('Text');
+        if ($.isNumeric(text)) {
+            if ((text.substring(text.indexOf('.')).length > 3) && (text.indexOf('.') > -1)) {
+                e.preventDefault();
+                $(this).val(text.substring(0, text.indexOf('.') + 3));
+           }
+        }else{
+            e.preventDefault();
+        }
+    });   
+
+
+
+ $('.Htime').timepicker({
+                    'timeFormat': 'H',
+                    'step': 60,
+                    'disableTextInput': true,
+                    'disableTouchKeyboard' : true 
+                });
+
+
+  $('.mtime').timepicker({
+                    'timeFormat': 'i',
+                    'step': 10, 
+                    maxTime: '00:50',
+                    startTime: '00:00',
+                    'disableTextInput': true,
+                    'disableTouchKeyboard' : true 
+                });
+</script>

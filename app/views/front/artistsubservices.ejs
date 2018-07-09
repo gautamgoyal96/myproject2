@@ -1,0 +1,23 @@
+
+<option value="">Select services</option>
+<% subservicesdata.forEach(function(rs) {
+
+	var price = rs.outCallPrice;
+
+		if(call=='inCallPrice'){
+
+			var price = rs.inCallPrice;
+
+
+		}
+
+		var time = rs.completionTime;
+		var t = time.split(':');
+		var h = t[0]!=0 ? t[0]+" hrs " : '';
+		var m = t[1]+" min";
+if(price!="" && price!="0"){		
+ %>
+<option value="<%= rs._id %>" <% if(rs._id==artistServiceId){%>selected<%}%>><%= rs.title %></option>
+
+<% }}); %>
+ 

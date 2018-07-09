@@ -1,0 +1,9 @@
+
+<option value="">Select Sub Service</option>
+<% data.forEach(function(rs) {
+
+ %>
+<option value="<%= rs.subServiceId %>"><%= rs.subServiceName %></option>
+
+<% }); %>
+ 

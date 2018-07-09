@@ -1,0 +1,251 @@
+<% include ./header %> 
+<div class="header-margin"></div>
+<div class="MainWrapper">
+    <section class="booksec sec-pad">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="booking_bg">
+              <div class="userListlead">
+                <div class="userDetails">
+                  <div class="media">
+                    <div class="media-left">
+                      <div class="user-image">
+                        <a href="/profile?id=<%= cryptr.encrypt(artist._id); %>" target="_self">
+                          <img src="<%= artist.profileImage %>" class="img-responsive">
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-body">
+                      <div class="row vertical-align">
+                        <div class="col-md-12">
+                          <h4 class="media-heading">
+                            <a href="/profile?id=<%= cryptr.encrypt(artist._id); %>"><%= artist.userName %></a>
+                          </h4>
+                          <div class="ratingBox">
+                           <ul class="rating inline-ul">
+                                    <% count = artist.ratingCount;
+                            for(i=1;i<=count;i++){ %>
+                            <li> <i class="fa fa-star amber-text"></i></li> 
+                          <% } minCount = 5-count; 
+                            for(j=1;j<=minCount;j++){ 
+                          %>
+                            <li> <i class="fa fa-star"></i></li> 
+                          <% } %>
+                            </ul>
+                          </div>
+                          <p class="paraText">
+                            <span>
+                              <i class="fa fa-map-pin"></i>
+                            </span>  <%= artist.distance %> Miles</p>
+                        </div>
+                        <!-- <div class="col-md-4 text-right">
+                              <a class="btn btn-theme">Follow</a>
+                              <a class="btn btn-theme">Message</a>
+                          </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="book_information">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                      <div class="SaloonName">
+                        <!-- <img src="img/bg.png"> -->
+                        <h2><%= artist.businessName %></h2>
+                      </div>
+                      <div class="BookInfo">
+                      
+                        <div class="inBox">
+                          <h2>Booking Date and Time :</h2>
+                          <p><%= bookingDate %></p>
+                        </div>
+                        <div class="inBox">
+                          <h2>Location :</h2>
+                          <% if(bookingData[0].serviceType!=2) { %>
+                          <p class="AddText"><%= artist.address %><span class="srEdit"><!-- <a href=""><i class="fa fa-edit"></i></a> --></span></p>
+                          
+                          <% }else{ %>
+                          <p class="AddText"><input type="text" id="address" placeholder="location" value="<%= user.address %>"></p>
+
+                          <% } %>
+                          <input type="hidden" value="<%= user.latitude %>" id="latitude">
+                          <input type="hidden" value="<%= user.longitude %>"  id="longitude">
+
+
+                        </div>
+                        <div class="inBox">
+                          <h2>Services :</h2>
+                            <%
+                              var total = 0;
+                              i = 1;
+                               bookingData.forEach(function(rs) { %>
+                          <p><%= rs.subService[0].title %>
+                            
+                            <%
+                              price = rs.bookingPrice;
+
+                               
+                                var price =  Number(price).toFixed(2);
+                                total = Number(price)+Number(total);
+                            %>
+                            <span>&#163;<%= price%>  <span class="srEdit"><a href="/booking_detial/<%= cryptr.encrypt(artist._id) %>/<%= cryptr.encrypt(artist.distance) %>?category=<%= cryptr.encrypt(rs.subService[0].serviceId) %>&subcategory=<%= cryptr.encrypt(rs.subServiceId) %>&artistServiceId=<%= cryptr.encrypt(rs.subService[0]._id) %>&staff=<%= cryptr.encrypt(rs.staff) %>&bookingDate=<%= cryptr.encrypt(rs.bookingDate) %>&BookingTime=<%= cryptr.encrypt(rs.startTime) %>&BookingId=<%= cryptr.encrypt(rs._id) %>&completionTime=<%= cryptr.encrypt(rs.subService[0].completionTime) %>&bookingCount=<%= cryptr.encrypt(bookingData.length) %>"><i class="fa fa-edit"></i></a></span> </span>
+
+
+
+                          </p>
+                          <% });%>
+                        </div>
+                        <div class="inBox ApplyCoupon">
+                          <h2>Apply Coupon Code</h2>
+                          <div class="input-group">
+                            <input type="text" class="form-control" value="">
+                            <span class="input-group-btn">
+                              <button class="btn btn-theme" type="button">Apply</button>
+                            </span>
+                          </div>
+                         <!-- <p class="couponStatus">Applied Successfully !</p> -->
+                        </div>
+                        <div class="totalAmount">
+                          <h2>Total
+                            <span>&#163;<%= total.toFixed(2)%></span>
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" value="<%= total%>" name="totalAmount" id="totalAmount">
+                    <input type="hidden" value="<%= bookingData[0].bookingDate %>" name="bookingDate" id="bookingDate">
+                    <input type="hidden" value="<%= bookingData[0].startTime %>" name="bookingTime" id="bookingTime">
+                    <input type="hidden" value="<%= artist.address %>" name="location" id="location">
+                    <div class="col-lg-6 col-md-6">
+                      <div class="paymentOption">
+                        <div class="paymethod">
+                          <h2>Select Payment Method</h2>
+                          <div class="opt">
+                          <!--   <span>
+                              <input type="radio" id="pay1" value="1" name="payment">
+                              <label for="pay1">Paypal</label>
+                            </span> -->
+
+                            <% if(artist.bankStatus==1){ %>
+                            <span>
+                              <input type="radio" id="pay2" value="2" name="payment">
+                              <label for="pay2">Credit/Debit Card</label>
+                            </span>
+                            <% } %>
+                            <span>
+                              <input type="radio" id="pay3" value="3" name="payment">
+                              <label for="pay3">Cash</label>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="btn-groups text-center">
+                      <% if(session.fUser){%>
+                         <a href="javascript:void(0);" class="btn btn-back" id="m-btn" onclick="finalBooking();">Confirm Booking</a>
+                       <% }else{%>
+                         <a class="btn btn-back" href="/login?id= <%= artist._id %>&distance=<%= artist.distance %>">Confirm Booking</a>
+                       <% } %>
+                      </div>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <% include ./footer %> 
+
+
+<script type="text/javascript">
+        
+
+  function finalBooking(){
+
+    var latitude = $('#latitude').val();
+    var longitude = $('#longitude').val();
+    var alatitude = '<%= artist.latitude %>';
+    var alongitude = '<%= artist.longitude %>';
+    var radius = '<%= artist.radius %>';
+    var a = distance(latitude,longitude,alatitude,alongitude,'k');
+        var paymentType = $('input[name=payment]:checked').val();
+        var serviceType = "<%= bookingData[0].serviceType %>";
+        var address = '<%= artist.address %>';
+        if(serviceType==2){
+            var address = $('#address').val();
+
+        }
+         if(address==''){
+
+             errorMsg('Please enter location');
+           
+        }else if(serviceType==2 && a>radius){
+
+             errorMsg('Selected artist services is not available at this location');
+           
+        }else if($('input[name=payment]:checked').is(':checked')==false){
+
+             errorMsg('Please select payment method');
+           
+        }else{ 
+
+
+
+
+            var data = {
+            bookingDate:'<%= bookingData[0].bookingDate %>',
+            bookingTime:'<%= bookingData[0].startTime %>',
+            location:address,
+            totalAmount:'<%= total %>',
+            paymentType:paymentType,
+            artistId:'<%= artist._id %>'
+            }
+
+            var url = '/finalBooking';
+            $.ajax({
+              url: url,
+              type: "post",
+              data:data,              
+              cache: false, 
+              beforeSend: function() {
+                      
+                      $('#m-btn').addClass('disabled');
+                    $(".loading").show();
+
+
+              },                  
+              success: function(data){
+               
+                $(".loading").hide();
+                if(data.status=="success"){
+                    localStorage.removeItem("bookingExpireTime");
+                    window.location.href = "/";
+
+                }
+
+                        
+              }
+            });
+        }
+  }
+
+
+function distance(lat1, lon1, lat2, lon2, unit) {
+  var radlat1 = Math.PI * lat1/180
+  var radlat2 = Math.PI * lat2/180
+  var theta = lon1-lon2
+  var radtheta = Math.PI * theta/180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  dist = Math.acos(dist)
+  dist = dist * 180/Math.PI
+  dist = dist * 60 * 1.1515
+  if (unit=="K") { dist = dist * 1.609344 }
+  if (unit=="N") { dist = dist * 0.8684 }
+  return dist
+}
+
+</script>

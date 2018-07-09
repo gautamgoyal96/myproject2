@@ -1,0 +1,128 @@
+ <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Invoice No</th>
+                  <th><%= (session.fUser.userType!="user") ? 'Customer' : 'Artist'; %> Name</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Staff Name</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% 
+ var startTime = (Number(currentPage)-1)*10;
+   i=1+startTime;
+                  if(listdata.length>0){
+   listdata.forEach(function(rs) { %>
+                <tr>
+                  <td><%= i %></td>
+                  <td>
+                    <div class="paymentuser">
+                      <div class="media">
+                        <div class="media-left">
+                          <div class="user-image">
+                             <% var img = (session.fUser.userType=="user") ? rs.artistDetail[0].profileImage : rs.userDetail[0].profileImage ;
+                              var name = (session.fUser.userType=="user") ? rs.artistDetail[0].userName : rs.userDetail[0].userName ;
+                              var id  = (session.fUser.userType=="user") ? rs.artistDetail[0]._id : rs.userDetail[0]._id ;
+                              %>
+                            <a href="/profile?id=<%= cryptr.encrypt(id); %>" target="_self">
+                             
+                              <img src="<%= img %>" alt="<%= name %>" title="<%= name %>" class="img-responsive">
+                            </a>
+                          </div>
+                        </div>
+                        <div class="media-body">
+                          <div class="m-t-20">
+                            <div class="col-md-9">
+                              <div class="paymentname">
+                                <h4><%= name %></h4>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>   <%
+                                    d=0;
+                                    bookingList = rs.bookingData;
+                                     bookingList.forEach(function(brs) { 
+                                      artistServicesData.forEach(function(ars) { 
+
+                                      if(ars._id==brs.artistServiceId){
+
+                                     %>
+
+                                    <% if(d!=(bookingList.length-1)){%>
+                                 
+                                     <%= ars.title %>,
+                                     <% }else{ %>
+                                    <%= ars.title %>
+                                     <% } %>
+
+                                    
+                                    <% } });d++;});%> </td>
+                  <td><%= moment(rs.bookingDate).format("DD/MM/YYYY");%></td>
+                  <td> <% 
+
+                    staffaId = rs.bookingData[0].staff; 
+                    if(staffaId){
+                        userData.forEach(function(srs) {
+                            if(staffaId==srs._id){
+                        %>
+                                   <%= srs.userName %>
+
+                        <% }}); }else{%>
+                     <%= rs.artistDetail[0].userName %>     
+                     <% } %>
+                        </td>
+                  <td>£<%=rs.totalPrice%></td>
+                  <% if(rs.paymentStatus==0) { %>
+                    <td class="cr2">Pending</td>
+                  <% }else{ %>
+                    <td class="cr1">Paid</td>
+                  <% } %>
+                    <td><a href="/bookingInfo/<%= cryptr.encrypt(rs._id) %>" title="View">View</a></td>
+                </tr>
+              <% i++; });}else{ %>
+                <tr><td colspan="8">No Record Found </td></tr>
+              <% } %> 
+              </tbody>
+            </table>
+          </div>
+
+             <% if (pageCount > 1) { %>
+       <nav class="my-4 mr-auto text-center">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+                <% if (currentPage > 1) { %>
+
+                    <li class="page-item "><a class="page-link" aria-label="Previous" href="#" onclick="ajax_fun(1);">&laquo;</a></li>
+                <% } %>
+                <% var i = 1;
+                if (currentPage > 5) {
+                    i = +currentPage - 4;
+                } %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                <% } %>
+                <% for (i; i<=pageCount; i++) { %>
+                    <% if (currentPage == i) { %>
+                        <li class="page-item active"> <a class="page-link" href="#"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="#" onclick="ajax_fun('<%= i %>');"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == (+currentPage + 4)) { %>
+                        <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+                    <% break; } %>
+                <% } %>
+                <% if (currentPage != pageCount) { %>
+                    <li class="page-item" ><a class="page-link" aria-label="Next" href="#" onclick="ajax_fun('<%= i-1 %>');"> <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span></a></li>
+                <% } %>
+            </ul>
+          </nav>
+        <% } %>

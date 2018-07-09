@@ -1,0 +1,109 @@
+<% include ./header %>
+    <link rel="stylesheet" type="text/css" href="/front/css/jquery.timepicker.css" />
+<div class="header-margin"></div>
+   <div class="MainWrapper">
+        <section class="Register sec-pad">
+            <div class="container">
+                <div class="BusinessSetUp">
+                    <form class="workingTime">
+                            <div class="aadservices">
+                                    <div class="row">
+                                        <div class="col-md-12">                                           
+                                            <h2>Select Services</h2>
+                                        </div>
+                                      <div class="col-lg-5 col-md-6 col-sm-12">
+                                          <div class="TimeSl" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <%
+                                            i = 1;
+                                             categorydata.forEach(function(rs) { %>
+
+                                              <div class="card">
+                                                <div class="card-header" role="tab">
+                                                  <h5 class="mb-0">
+                                                    <a data-toggle="collapse"  href="#collapseOne<%= i %>" aria-expanded="true" aria-controls="collapseOne">
+                                                      <%= rs.title %>
+                                                    </a>
+                                                  </h5>
+                                                </div>
+                                                    <div id="collapseOne<%= i %>" class="collapse <% if(i==1){ %>show <% }%>" role="tabpanel">
+                                                      <%a = 1;rs.subcategory.forEach(function(res) {
+                                                            if(res.status==1 && res.deleteStatus==1){
+                                                       %>
+                                                          <div class="acclist">
+                                                            <div class="acclist-box">
+                                                              <div class="">
+                                                                  <input type="radio" id="checkbox<%= res._id %><%= rs._id %>" name="servicselect">
+                                                                  <label for="checkbox<%= res._id %><%= rs._id %>" class="checkbox<%= res._id %><%= rs._id %> acc_headding <% if(i==1 && a==1){ %>first <% }%>" onclick="subservices('<%= res._id %>','<%= rs._id %>');">
+                                                                   <%= res.title %>
+                                                                  </label>
+                                                              </div>
+                                                            </div>
+                                                          </div> 
+                                                      <% a++;}}); %>  
+                                           
+                                                    </div>
+                                              </div>
+                                            <% i++;}); %>
+                                        </div>
+                                      </div>
+                                    <input type="hidden" id="sType" value="<%= type %>">
+
+                                      <div class="col-lg-7 col-md-6">
+                                                <div style="display:none;" class="alert alert-danger hideDiv" role="alert" id="err-invalid">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            </button>
+                                            <strong>Oh snap!</strong> <span id="error-invalid"></span>
+                                        </div>
+                                        <div style="display:none;" class="alert alert-success hideDiv" role="alert" id="err-sucess">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                
+                                            </button>
+                                            <strong>Success!</strong> <span id="error-sucess"></span>
+                                        </div>
+                                    <span id="result"></span>
+                                            
+                                      </div>
+                                    </div>
+                                  </div>
+                    </form>
+                    <div class="formbtn mb-4 pt-3 text-right">
+                           <!-- <a href="/businessHours" class="btn btn-theme">Previous</a> -->
+                          <% if(type==''){%>
+                            <a href="/registerStep3" id="next" class="btn btn-theme" <% if (serviceCount==0){ %> onclick="return false;" <% }%>>Next</a>
+                          <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+<% include ./footer %> 
+    <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+
+<script type="text/javascript">
+
+ $( ".first" ).click();
+
+function subservices(id,catId){
+
+    var url = '/addsubservices?id='+id+'&catId='+catId;
+    $.ajax({
+      url: url,
+      type: "get",
+      data:{page: url},              
+      cache: false,
+     beforeSend: function() {
+          $(".loading").show();
+
+              //  $("#data").hide();
+      },                    
+      success: function(data){
+        $(".loading").hide();
+          $("#result").html(data);
+              $("#category").val(catId);
+    $("#subcategory").val(id);
+                
+      }
+    });
+
+}</script>
+

@@ -1,0 +1,120 @@
+<% include ./header %>
+
+    <div class="header-margin"></div>
+    <div class="MainWrapper">
+        <section class="Register sec-pad">
+            <div class="container">
+                <div class="BusinessSetUp">
+                    <form id="bankform"  class="workingTime" action="/addBackAccount" method="post">
+                        <div class="aadservices">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6">
+
+                         
+                                        <div style="display:none;" class="alert alert-success hideDiv" role="alert" id="err-sucess">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                
+                                            </button>
+                                            <strong>Success!</strong> <span id="error-sucess"></span>
+                                        </div>
+
+
+                                    <h2>Add Certificate</h2>
+                                    <div class="AddCertificate">
+                                        <div class="md-form">
+
+                                         <span id="newImages">
+
+                                         </span>
+                                         <span class="AddCrBlock">
+                                            <label><i class="fa fa-plus"></i></label>
+                                            <input accept="image/*" type="file" id="file1" onchange="addMorePropImg();">
+                                            <input type="hidden" id="imgCount" value="" >
+                                         </span>
+                                       <div class="err_msg" id="file_error"></div>
+
+                                        </div>
+                                        <div class="md-form">
+                                            <label>Bio</label>
+                                            <textarea  class="md-textarea" placeholder="" name="about" id="about" oninput="$('#about_error').html('');" maxlength="250" style="height: 70px; overflow: auto !important;"></textarea>
+                                            <div class="err_msg" id="about_error"></div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 col-md-6">
+                                    <h2>Add Bank Account</h2>
+                                    <div class="bankAcc mt-3">
+                                        <img src="/front/img/bank.png">
+                                        <p>Fill all information to add your bank account.</p>
+                                    </div>
+                                     <div style="display:none;" class="alert alert-danger hideDiv" role="alert" id="err-invalid">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            </button>
+                                             <span id="error-invalid"></span>
+                                            </div>
+                                    <div class="formbox bankForm">
+                                        <div class="row">
+
+                                            <input type="hidden" class="form-control bName" id="accountId" name="accountId">
+
+
+                                            <input type="hidden" class="form-control" id="type" value="1">
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>First Name</label>
+                                                    <input type="text" class="form-control bName" placeholder="" id="firstName" oninput="$('#firstName_error').html('');">
+                                                   <div class="err_msg" id="firstName_error"></div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Last Name</label>
+                                                    <input type="text" class="form-control bName" placeholder="" id="lastName" oninput="$('#lastName_error').html('');">
+                                                    <div class="err_msg" id="lastName_error"></div>
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>Sort Code</label>
+                                                        <input type="text" class="form-control" placeholder="" id="routingnumber" oninput="$('#routingnumber_error').html('');">
+                                                        <div class="err_msg" id="routingnumber_error"></div>
+
+                                                    </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Account Number</label>
+                                                    <input type="text" class="form-control" placeholder="" id="accountNumber" oninput="$('#accountNumber_error').html('');">
+                                                    <div class="err_msg" id="accountNumber_error"></div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" class="form-control" placeholder="" id="countryCode" oninput="$('#countrycode_error').html('');" value="GB">
+                                             <input type="hidden" id="currency" type="text" value="gbp" readonly>
+
+
+                                         
+                                           
+                                        </div>
+                                        <button type="button" class="btn btn-theme" id="m-btn" onclick="return addBackAccount();">Submit</button>
+                                         <a  class="btn btn-theme pull-right"  href="/skipstep3">Skip</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                   
+                </div>
+            </div>
+        </section>
+    </div>
+
+<% include ./footer %> 
+
+
