@@ -305,6 +305,7 @@ exports.AddServices  = function(req, res){
 
 			};
 
+
 		Category.findOne({'_id':req.body.category}).exec(function(err,rs) {
 								
 			artistCategory.findOne({'serviceId':req.body.category,'artistId':artistId}).exec(function(err,row) {
@@ -545,6 +546,8 @@ exports.addBackAccount = function(req, res){
 			res.redirect('/artistDashboard');
 		}
 
+
+
 	});	
 
 
@@ -562,7 +565,7 @@ exports.skipstep3 = function(req, res){
 
 	    });
 	    
-	    if(req.session.fUser.businessType=="business"){
+	   	if(req.session.fUser.businessType=="business"){
 	    
 	    	res.redirect('/staffManagement?type=first');
 		
@@ -570,7 +573,6 @@ exports.skipstep3 = function(req, res){
 
 			res.redirect('/artistDashboard');
 		}
-	    
 
 	}
 

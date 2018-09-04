@@ -23,7 +23,6 @@ var appUser         =   require('../app/controllers/api/user');
 var service       =   require('../app/controllers/api/service_controller');
 var authtokenCheck = require('../app/controllers/api/validateRequest');
 
-
 //Api//
 //you can include all your controllers
 
@@ -84,7 +83,6 @@ module.exports = function (app, passport) {
         
     /* Sub Category module end*/
 
-
       /* userList and artist module start*/
 
     app.get('/artist',adminCategory.loggedIn, adminuser.artistList);
@@ -108,7 +106,9 @@ module.exports = function (app, passport) {
     app.get('/payment_history_list',adminCategory.loggedIn,adminuser.payment_list);
     app.get('/total_services',adminCategory.loggedIn, adminSubCategory.total_services);
     app.get('/total_services_list',adminCategory.loggedIn,adminHome.bookedServices,adminSubCategory.total_services_list);
-
+    app.get('/staffview/:id/:businessType',adminCategory.loggedIn, adminuser.staff_Info, adminuser.staffview);
+    app.get('/staffServicesAdmin',adminuser.artistServicesListData,adminuser.staffServiceList);
+       
     /* userList and artist end*/
 
     /* profile update  and change password module start*/
@@ -117,6 +117,7 @@ module.exports = function (app, passport) {
     app.post('/admin_changepassword', adminCategory.loggedIn , adminHome.admin_changepassword);
 
     /* profile update  and change password module start*/
+
 
 
 
@@ -214,6 +215,7 @@ module.exports = function (app, passport) {
     app.post('/authTokenCheck',frontHome.loggedIn,frontHome.authTokenCheck);
     app.get('/paymenthistory',frontHome.loggedIn,login.profileCheck,payment.paymenthistory);
     app.get('/payment_list',booking.artistservicesList,staff.independArtistListData,payment.paymentList_data,payment.payment_list);
+    app.get('/chat/',frontHome.loggedIn,frontHome.loggedInuserData,frontHome.certificateCount,frontHome.chat);   
 
 
 /*    app.post('/userLogin', passport.authenticate('local-user-login', {
@@ -225,6 +227,8 @@ module.exports = function (app, passport) {
     // process the login form
     /* Front module end*/
 
+
+   /*  code start from sunil side*/
     app.post('/api/phonVerification',service.phonVerification);
     app.post('/api/artistRegistration',service.artistRegistration);
     app.post('/api/userRegistration',service.userRegistration);
@@ -238,10 +242,10 @@ module.exports = function (app, passport) {
     app.post('/api/subService',authtokenCheck.checkaccessToken,artist.subService);
     app.post('/api/addArtistService',authtokenCheck.checkaccessToken,artist.addArtistService);
     app.post('/api/addArtistCertificate',authtokenCheck.checkaccessToken,artist.addArtistCertificate);
-    app.post('/api/addFeed',authtokenCheck.checkaccessToken,artist.addTag,artist.followerFeed,artist.addFeed);
+    app.post('/api/addFeed',authtokenCheck.checkaccessToken,artist.addTag,artist.followerFeedGet,artist.addFeed);
     app.post('/api/getAllFeeds',authtokenCheck.checkaccessToken,artist.followerFeed,artist.getAllFeeds,artist.finalFeed);
     app.post('/api/addMyStory',authtokenCheck.checkaccessToken,appUser.addMyStory);
-    app.post('/api/myStory',authtokenCheck.checkaccessToken,appUser.getMyStory);
+    app.post('/api/myStory',authtokenCheck.checkaccessToken,appUser.deleteOldStory,appUser.getMyStory);
     app.post('/api/getMyStoryUser',authtokenCheck.checkaccessToken,appUser.deleteOldStory,appUser.getMyStoryUser);
     app.post('/api/test',service.test);
     app.post('/api/addFavorite',authtokenCheck.checkaccessToken,appUser.addFavorite);
@@ -309,6 +313,11 @@ module.exports = function (app, passport) {
     app.get('/api/bankPayment',authtokenCheck.checkaccessToken,stripe.bookingInfoData12,stripe.bookingArtistInfo,stripe.bankPayment);
     app.get('/api/cardPayment',authtokenCheck.checkaccessToken,stripe.bookingInfoData12,stripe.bookingArtistInfo,stripe.cardPayment); 
     app.post('/api/checkUserStatus',authtokenCheck.checkaccessToken,appUser.checkUserStatus);
+    app.get('/api/sendNotificationOld',service.sendNotificationOld);
+    /*code end form sunil side */
+
+
+    /* Service  module start*/
 
 /*   app.post('/api/phoneVerification', service.verification, service.sendSms);
    app.post('/api/userRegister', service.register);

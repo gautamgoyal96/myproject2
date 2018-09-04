@@ -1,0 +1,57 @@
+ <div class="box-body table-responsive no-padding" id="ajaxdata">    <table class="table table-hover">
+                            <tr>
+                                <th>ID</th>
+                                <th>Service</th>
+                                <th>Sub Service</th>
+                                <th>Title</th>
+                                <th>In call Price</th>
+                                <th>Out call Price</th>
+                                <th>Completion Time</th>
+<!--                                 <th>Status</th>
+ -->                            </tr>
+
+                            <% i=1;
+                            if(row.length>0){
+                            row.forEach(function(rs) {
+                              var picked = lodash.filter(data, { 'staffId': rs._id } );
+                              if(picked.length>0){
+                             %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td><%= rs.category[0].title %></td>
+                                <td><%= rs.subcategory[0].title %></td>
+
+                                <td><%= rs.title %></td>
+                                 <td>
+                                   <% if(picked[0].inCallPrice!=0 && picked[0].inCallPrice!='0' && picked[0].inCallPrice!='0.0' && picked[0].inCallPrice!='0.00'){ %>
+                                        &#163;<%= Number(picked[0].inCallPrice).toFixed(2); %>
+                                   <% }%></td>
+                                  <td>
+                                    <% if(picked[0].outCallPrice!=0 && picked[0].outCallPrice!='0' && picked[0].outCallPrice!='0.0' && picked[0].outCallPrice!='0.00'){ %>
+                                    &#163;<%= Number(picked[0].outCallPrice).toFixed(2);%>
+                                    <% }%></td>
+                                 <td>
+                                 <%
+                                      var time = picked[0].completionTime;
+                                      var t = time.split(':');
+                                      var h = t[0]!=0 ? t[0]+" hrs " : '';
+                                      var m = t[1]+" min";
+                                 %>
+                                 <%= h+m %></td>
+<!--                                 <td><span class="label <%= rs.status==1 ? 'label-success' : 'label-danger' %>"><%= rs.status==1 ? 'Active' : 'Inactive' %></span></td>
+ -->                               
+                            </tr>
+                            <% i++;}}); }else{ %>
+
+                             <tr><td colspan="5" align="center"><b>No record found</b></td></tr>
+
+                            <% } %>
+                          
+                        </table>
+
+
+    </div><!-- /.box-body -->
+
+
+                    
+    

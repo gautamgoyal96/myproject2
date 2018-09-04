@@ -1,4 +1,4 @@
-  var config = {
+/*  var config = {
     apiKey: "AIzaSyAEXQmhBYTNToKyyXSlpta2SXgM0EXcLSc",
     authDomain: "koobi-89a2d.firebaseapp.com",
     databaseURL: "https://koobi-89a2d.firebaseio.com",
@@ -6,27 +6,51 @@
     storageBucket: "koobi-89a2d.appspot.com",
     messagingSenderId: "186224022769",
     gcm_sender_id : "103953800507"
-  };
+  };//Live*/
+  // Initialize Firebase
+/*  var config = {
+    apiKey: "AIzaSyD_uX3hbydbD0BEhcaMqKlOs0xQH7jf1FM",
+    authDomain: "koobdevelopment.firebaseapp.com",
+    databaseURL: "https://koobdevelopment.firebaseio.com",
+    projectId: "koobdevelopment",
+    storageBucket: "koobdevelopment.appspot.com",
+    messagingSenderId: "696055690698",
+    gcm_sender_id : "103953800507"
+  };//Development*/
+
+  var config = {
+    apiKey: "AIzaSyDhPcvN0liBX24VqG0tQ38WjODxELozeQQ",
+    authDomain: "mualablocal.firebaseapp.com",
+    databaseURL: "https://mualablocal.firebaseio.com",
+    projectId: "mualablocal",
+    storageBucket: "mualablocal.appspot.com",
+    messagingSenderId: "714386763021"
+  };//local
+ let key = 'AAAAK1vRFPE:APA91bFDJlGE-pK5f7JarrELoglCDCZl2Bnnm495IBiYjWXte8BInV8ZSdNT9fcW-xx96LQFIQAAGiwvMXYpK8ap6uJX6qfiPXfMCEwbGbfd7KMXtSSm9MLdfpD6AhdpbHbzSQbew5wF';
+
+
  firebase.initializeApp(config);
 
 //notifications = 'webnotification';
- notifications = 'webnotification-local';
+notifications = 'webnotification-local';
+//notifications = 'webnotification-developmet';
 
 
   var reciveIdRef = firebase.database().ref().child(notifications).child(senderId);
    reciveIdRef.on("value",rgotData);
 function rgotData(rdata){
-
     var rdata = rdata.val();
-    var keys = Object.keys(rdata);
-    for (var i = 0; i < keys.length; i++) {
-          var k = keys[i];
-         var message = rdata[k].body;
-         var title = rdata[k].title;
-         var url = rdata[k].url;
-       notifyBrowser(title, message, url);
-      firebase.database().ref().child(notifications).child(senderId).child(k).set(null);
+   if(rdata){
+        var keys = Object.keys(rdata);
+        for (var i = 0; i < keys.length; i++) {
+              var k = keys[i];
+             var message = rdata[k].body;
+             var title = rdata[k].title;
+             var url = rdata[k].url;
+           notifyBrowser(title, message, url);
+          firebase.database().ref().child(notifications).child(senderId).child(k).set(null);
 
+        }
     }
  }
 
@@ -88,7 +112,6 @@ function notificationGet(e=''){
                 $(".loading").show();
             }, 
             success: function(data){
-                 $(".loading").hide();
                 var rs = data.notificationList;
                 if(rs.length>0){
                     for (var i = 0; i < rs.length; i++) {
@@ -98,6 +121,8 @@ function notificationGet(e=''){
                         var url ="#";
                         if(s.type=="booking"){
                            var  url = "/bookingInfo/"+s.redirectId;
+                        }else  if(s.type=="certificate"){
+                           var  url = "/aboutUs?id="+s.redirectId;
                         }
                         $("#notifications_list").append('<a class="content" href="'+url+'"><div class="notification-item"><h4 class="item-title">'+s.message+'</h4><p class="item-info">'+s.timeElapsed+'</p></div></a>');
 
@@ -129,5 +154,3 @@ setInterval(function(){   $("#page").val(0);
     scrollTop: $("#notifications_list").position().top
 });
  }, 1000000);
-   
-

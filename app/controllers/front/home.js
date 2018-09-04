@@ -5,6 +5,8 @@ var followUnfollow 	= require('../../models/front/followersFollowing.js');
 var artistFavorite 	= require('../../models/front/artisteFavorite.js');
 var booking 		= require('../../models/front/booking.js');
 var artistService 	= require('../../models/front/artistService.js');
+var staff	   			= require('../../models/front/staff_model.js');
+
 var feeds = require('../../models/front/feed.js');
 
 
@@ -287,11 +289,12 @@ exports.userProfile = function(req, res){
 
 exports.certificateCount = function(req, res, next){
 
+			urlId = '';
+		if(req.query.id || req.params.id){
 
-		if(req.query.id){
+			var id = req.params.id ? cryptr.decrypt(req.params.id) :  (req.query.uId) ? req.query.uId : cryptr.decrypt(req.query.id);
 
-			var id = cryptr.decrypt(req.query.id);
-
+				urlId = id;
 			   User.aggregate([
 
 				    {  
@@ -722,6 +725,21 @@ exports.userprofileUpdate = function(req,res){
             data.address = fields.address;
             if(fields.recImageData){
             	data.profileImage = imageName;
+            	re = {
+            		'userName' : req.session.fUser.userName,
+            		'profileImage' : imageName
+            	};
+            	staff.updateMany({artistId:Number(req.session.fUser._id)},{$set: {'staffInfo':re}},function(err, docs){});
+            	var baseUrl =  req.protocol + '://'+req.headers['host'];
+            	var userObj = {
+		                        "firebaseToken" :"",
+		                        "userName" : req.session.fUser.userName,
+		                        "profilePic" : imageName ?  baseUrl+'/uploads/profile/'+imageName : 'http://koobi.co.uk:3000/uploads/default_user.png',
+		                        'isOnline' : 1,
+		                        'lastActivity' : Date.now()
+		                    } 
+
+				notify.register(req.session.fUser._id,userObj);
             }
             if(row){
             	data.city = row[0].city;
@@ -1180,3 +1198,13 @@ exports.artistFavorite = function(req,res){
 		 
 }
     
+exports.chat = function(req, res){
+
+	res.render('front/chat.ejs', {
+			error : req.flash("error"),
+			success: req.flash("success"),
+			session:req.session,
+			cryptr : cryptr,
+			baseUrl : req.protocol + '://'+req.headers['host']
+	 	});
+}

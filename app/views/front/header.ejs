@@ -33,7 +33,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-<body class="static" onload="$('.loading').hide();$('body').removeClass('static');">
+<body class="static">
  <div class="loading">Loading&#8230;</div>   
 <!--Navbar-->
 <header id="header">
@@ -117,7 +117,7 @@
           <a class="nav-link" href="/explore"><i class="fa fa-search-plus"></i></a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" href="javascript:void();" id="chat"><i class="fa fa-send"></i></a>
+          <a class="nav-link" href="/chat"><i class="fa fa-send"></i></a>
       </li>
       <% if (session.fUser.userType=="artist") {%>
       <li class="nav-item">

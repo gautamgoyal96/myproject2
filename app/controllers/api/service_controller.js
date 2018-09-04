@@ -427,6 +427,11 @@ exports.registation = function(req, res) {
                         if (!validUrl.isUri(newUser.profileImage)){
                                  newUser.profileImage = "/uploads/profile/" + newUser.profileImage;
                         } 
+                
+                let firebaseToken = fields.firebaseToken ? fields.firebaseToken : '';        
+                let deviceToken = fields.deviceToken ? fields.deviceToken : '';        
+                User.update({firebaseToken: firebaseToken}, {$set:{firebaseToken:''}},function(err, docs) { });
+                User.update({firebaseToken: deviceToken}, {$set:{deviceToken:''}},function(err, docs) { });
                     res.json({
                         status: "success",
                         message: 'Registration successfully',
@@ -525,6 +530,10 @@ exports.artistRegistration = function(req, res) {
                         });
                         return;
                     } else {
+                        
+                        let firebaseToken = fields.firebaseToken ? fields.firebaseToken : '';        
+                        let deviceToken = fields.deviceToken ? fields.deviceToken : '';
+                        
                         if (newUser.profileImage)
                             newUser.profileImage = baseUrl+"/uploads/profile/" + newUser.profileImage;
                         res.json({
@@ -610,17 +619,15 @@ exports.userLogin = function(req, res) {
         } else {
             var test = user.authtoken();
              // User.updateMany({'_id':{$ne :user._id},'firebaseToken':user.firebaseToken,'userType':typ},{$set:{'firebaseToken':''}}, function(err, result){});
-            User.update({
-                    _id: user._id
-                }, {
-                    $set: {
+            let data = {
                         authToken: test,
                         deviceType: deviceType,
                         deviceToken: deviceToken,
-                        firebaseToken: firebaseToken
-                    }
-                },
-                function(err, docs) {
+                        firebaseToken: firebaseToken ? firebaseToken : deviceToken
+                    };
+            User.update({firebaseToken: firebaseToken}, {$set:{firebaseToken:''}},function(err, docs) { });
+            User.update({firebaseToken: deviceToken}, {$set:{deviceToken:''}},function(err, docs) { });
+            User.update({_id: user._id}, {$set:data},function(err, docs) {
                     if (err) res.json(err);
                     user.authToken = test;
                     user.deviceType=deviceType;
@@ -812,6 +819,48 @@ else {
    
 }
 
+
+exports.sendNotificationOld = function(req,res){
+
+    var FCM = require('fcm-node');
+    var serverKey = 'AAAAK1vRFPE:APA91bFDJlGE-pK5f7JarrELoglCDCZl2Bnnm495IBiYjWXte8BInV8ZSdNT9fcW-xx96LQFIQAAGiwvMXYpK8ap6uJX6qfiPXfMCEwbGbfd7KMXtSSm9MLdfpD6AhdpbHbzSQbew5wF'; //put your server key here
+    var fcm = new FCM(serverKey);
+ 
+    var message = {
+       //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+      
+        //to: 'eO-FFDWF1W4:APA91bGBmNojXuNPpZnYWYwZsiYOKyEMA73-coJ7c4n4hS_0PabxxX3yFWUUZeC7or_KHflw-lK8OJJOdAqeQ87WXBv1A2R_TioQXzDD4HOVo-XdFqa_kl3ARBUI0laz2u3arfFm-XIK', 
+        //to: 'fBl62qfkPyU:APA91bEaduLriCWqlcsVy5NZp1pyOQ2G4w-LAkUFunWCxK6EST_jDY1q9Ol34oycimZhwYyv-Yz7r681mlX9wxpOlCyx4qODsdbdAdPnwBM3c7OSZDIHoHwXjYq6qlBnMPBIrwU8seO7', 
+        to:'fg9Oe5V2QrY:APA91bFebUSErvOfyxOLmyO1szJqCFPWO_aRi8QXbOw0n-_CthKkDBoQRSu7aZxJn_Rw7Kk2wme-6Dnblcbwl5moAauyxH4HAB6vpy_0plWF1mFV8i320lzfuE70qr9ntjStyJ23dFPhAtFH5M5jmrm55IOXZs5y-A', /// android 
+        collapse_key: 'your_collapse_key',
+
+        delay_while_idle : false,
+        priority : "high", 
+        content_available: true,
+        mutable_content: true,
+        category : '',
+         notification: {
+            title: 'Koobi', 
+            body: 'Welcome to koobi world.' 
+        },
+        
+        data: {  //you can send only notification or only data(or include both)
+            title: 'Koobi',
+            urlImageString: 'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+        }
+
+    };
+    
+    fcm.send(message, function(err, response){
+        if (err) {
+           console.log(err);
+            console.log("Something has gone wrong!");
+        } else {
+            res.json({status:"success",message:'Successfully sent with response',data:response});
+            //("Successfully sent with response: ", response);
+        }
+    });
+}
 
 
 

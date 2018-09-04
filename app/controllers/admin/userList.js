@@ -6,12 +6,17 @@ var booking         = require('../../models/front/booking.js');
 var Certificate     = require('../../models/front/artistCertificate.js');
 var staff               = require('../../models/front/staff_model.js');
 var followUnfollow  = require('../../models/front/followersFollowing.js');
+var addNotification     = require('../../models/front/notification.js');
+var staffService        = require('../../models/front/staffService.js');
 var bcrypt = require('bcrypt-nodejs');
 var dateFormat = require('dateformat');
 var url = require('url');
 var moment = require('moment');
 var Cryptr = require('cryptr'),
- cryptr = new Cryptr('1234567890');
+cryptr = new Cryptr('1234567890');
+var lodash = require('lodash');
+
+
 exports.userList = function(req, res) {
 
 	res.render('admin/customerList.ejs', {
@@ -171,6 +176,7 @@ exports.listartist = function(req, res) {
     var latitude = req.query.latitude; 
     var longitude = req.query.longitude; 
     var gender = req.query.gender; 
+    var businessType = req.query.businessType; 
 
     data = datae = {};
 
@@ -179,6 +185,10 @@ exports.listartist = function(req, res) {
     if(gender){
 
         datae['gender'] = gender;
+    }
+    if(businessType){
+
+        datae['businessType'] = businessType;
     }
     if(latitude){
         data = {
@@ -422,23 +432,76 @@ exports.artistview = function(req, res){
 
 exports.certificateUpdate = function(req, res){
 
-    Certificate.update({_id:cryptr.decrypt(req.params.id)}, 
-        {$set: {status:cryptr.decrypt(req.params.status)}},
-        function(err, docs){
-            if(err) res.json(err);
-            else    {
+    var artistId = req.params.artistId;
 
-                 req.flash("success","");
-                if(cryptr.decrypt(req.params.status)=="1"){
+    query = User.findOne({'_id':cryptr.decrypt(artistId)});
+    querySecound = addNotification.findOne().sort([['_id', 'descending']]).limit(1);
 
-                    req.flash("success","Certificate verified successfully");
+    query.exec(function(err,result){
 
-                }else{
+            deviceType = result.deviceType;
+            token = result.deviceToken;
 
-                   req.flash("success","Certificate unverified successfully"); 
-                }
-                res.redirect('/artistview/'+req.params.artistId);
-            };
+            Certificate.update({_id:cryptr.decrypt(req.params.id)}, 
+                {$set: {status:cryptr.decrypt(req.params.status)}},
+                function(err, docs){
+                    if(err) res.json(err);
+                    else    {
+
+                         req.flash("success","");
+                        if(cryptr.decrypt(req.params.status)=="1"){
+
+
+                                    body = 'Your certificate has been verified by admin.';
+                                    title = 'Certificate verified';
+                                    type = 15;
+                                    receiverId = result._id
+                                   
+                                    notification = { title:title,body: body,notifincationType:type,sound: "default"};                                   
+                                    data = {title:title,body: body,notifincationType:type };                                   
+                                    webData = {title:title,body:body,url:'/aboutUs?id='+artistId};
+
+                                    insertData = {
+                                        'senderId' : 1,
+                                        'receiverId' : receiverId,
+                                        'notifincationType' : type,
+                                        'crd' : moment().format(),
+                                        'upd' : moment().format(),
+                                        'notifyId' : result._id,
+                                        'type' : 'certificate'
+                                    };                           
+                                                                   
+                                    querySecound.exec(function(err, result) {
+
+                                        if (result) {
+                                            insertData._id = result._id + 1;
+                                        }else{
+                                            insertData._id = 1;
+                                        }
+
+
+                                        addNotification(insertData).save(function(err, notifyData) {
+                                            
+                                            if(deviceType =='3'){
+                                            
+                                                notify.sendWebNotification(receiverId,webData);
+                                            
+                                            }else{
+                                                  notify.sendNotification(token,notification,data);
+                                            }
+                                        });
+                                  
+                                   });   
+                            req.flash("success","Certificate verified successfully");
+
+                        }else{
+
+                           req.flash("success","Certificate unverified successfully"); 
+                        }
+                        res.redirect('/artistview/'+artistId);
+                    };
+            });
+
     });
 
 
@@ -619,6 +682,44 @@ exports.staff_List = function(req, res) {
 }
 
 
+exports.artistServicesListData = function(req, res, next){
+    
+    var userId = req.query.id;
+    datae = {};
+    datae['artistId'] = Number(userId);
+    datae['status'] = 1;
+    datae['deleteStatus'] = 1;
+
+     artistService.aggregate([
+        { $lookup:
+          {
+            from: 'services',
+            localField: 'serviceId',
+            foreignField: '_id',
+            as: 'category'
+          }
+         
+        },
+        { $lookup:
+          {
+            from: 'subservices',
+            localField: 'subserviceId',
+            foreignField: '_id',
+            as: 'subcategory'
+          }
+         
+        },
+        {
+         $match: datae
+        }
+
+      ]).exec(function(err, data) {
+
+
+            row = data; 
+            next();   
+    });
+}
 exports.artistServicesList = function(req, res){
     
     var userId = req.query.id;
@@ -698,7 +799,6 @@ exports.artistServicesList = function(req, res){
     
     });
 }
-
 exports.booking_data = function(req, res, next) {
 
 
@@ -1252,3 +1352,94 @@ exports.payment_list = function(req, res) {
     });
      
 }
+
+exports.staff_Info = function(req, res, next){
+
+
+        var id = cryptr.decrypt(req.params.id);
+        var staffData = staffInfo = [];
+        businessType = cryptr.decrypt(req.params.businessType);
+
+    var query = staff.aggregate([
+
+                        {
+                            "$lookup": {
+                                "from": "users",
+                                "localField": "businessId",
+                                "foreignField": "_id",
+                                "as": "artistDetail"
+                            }
+                        },
+
+                        {
+                            $match: {'_id' : Number(id)}
+                        },
+                    ]);    
+
+
+        query.exec(function(err, data) {
+
+
+
+                    var newdata= [];
+                    staffData = data[0]; 
+                    if(staffData){
+
+
+                            userData = (businessType=="business") ? staffData.staffInfo : staffData.artistDetail[0];
+                            staffData.staffInfo =  userData;
+                            if(userData.profileImage){ 
+
+                                staffData.staffInfo.profileImage = "/uploads/profile/"+userData.profileImage;
+
+                            }else{
+
+                              staffData.staffInfo.profileImage = 'http://www.cubaselecttravel.com/Content/images/default_user.png';
+
+                            }
+                        
+
+                    }
+
+                    staffInfo = staffData;  
+                    next();
+
+        });     
+
+}
+
+exports.staffview = function(req, res){
+
+    res.render('admin/staffview.ejs', {
+        error : req.flash("error"),
+        success: req.flash("success"),
+        session:req.session,
+        data : staffInfo,
+        moment : moment, 
+        hours : staffInfo.staffHours,
+        cryptr : cryptr,
+        businessType : businessType
+    });
+
+}
+
+exports.staffServiceList  = function(req, res){
+
+    artistId =  req.query.artistId; 
+    businessId =  req.query.id;
+
+    query =  staffService.find({'artistId':artistId,'businessId':businessId});
+
+    query.exec(function(err,data) {
+
+        res.render('admin/staffServiceList.ejs',{
+            data : data,
+            seession : req.session,
+            lodash : lodash
+        });
+
+
+    });
+}
+
+

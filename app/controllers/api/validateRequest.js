@@ -12,8 +12,14 @@ exports.checkaccessToken = function(req, res, next){
               res.json({status:'fail',message:'Invalid Auth Token',"authtoken":""});
               
             }else{ //console.log(userData);
-              authData = userData;
-              next();
+
+              if(userData.status=='1'){
+                authData = userData;
+                next();
+              }else{
+                res.status(301);
+                res.json({status:'fail',message:'Your account has been inactivated by admin, please contact to activate',"authtoken":""});
+              }
              
             }
 

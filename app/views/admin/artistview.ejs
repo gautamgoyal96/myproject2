@@ -247,8 +247,11 @@
                         <img class="img-responsive" alt="" src="<%= '/uploads/certificateImage/'+rs.certificateImage %>"  style="width: 250px !important;height: 200px !important;" width="250"/>
                         </a>
                           <center><label><%= (rs.status==1) ? 'Verified' : (rs.status==2) ? 'Unverified' : 'Pending' %></label></center>
-                          <div class="col-sm-6"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(1) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn artist-btn btn-success">Verified</a></div>
-                          <div class="col-sm-6"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(2) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn artist-btn btn-danger">Unverified</a></div>
+                          <% if(rs.status==2 || rs.status==0){ %>
+                            <div class="col-sm-12"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(1) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn btn-success">Verify</a></div>
+                          <% }else{ %>
+                            <div class="col-sm-12"> <a href="/certificateUpdate/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(2) %>/<%= cryptr.encrypt(rs.artistId) %>" class="btn btn-danger">Unverify</a></div>
+                          <% }%>  
                       </div>
                     <%  }); %>
 

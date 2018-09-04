@@ -986,6 +986,19 @@ exports.addFavorite = function(req,res){
                     res.json({status:"fail",message:err});
                     return;
                 } else {
+                        /*code for notification*/ 
+                        var typ = '12';
+                        var sender     =userId;
+                        var receiver   = artistId; 
+                        var notifyId   = artistId;
+                        var notifyType = 'social';  
+    
+                        if(sender!=receiver){
+                           notify.notificationUser(sender,receiver,typ,notifyId,notifyType); 
+                        }
+
+                        /*end notification code*/ 
+
                     res.json({status:"success",message: 'ok'});
                     return;
                 }
@@ -1039,167 +1052,195 @@ exports.addMyStory = function(req,res){
     var moment = require('moment');
     var crd =  moment().format();
     form.parse(req, function(err, fields, files) { 
-      
-       if(fields.userId){
-        var userId = Number(fields.userId);
-       }else{
-         var userId = authData._id;
-       }
-        
-        var baseUrl =  req.protocol + '://'+req.headers['host'];
-            jsArr = []
-            thumbArr = []
-            if(files.myStory){
-                
-                var imgArray = files.myStory;
-                for (var i = 0; i < imgArray.length; i++) {
-                     
-                var newPath = './public/uploads/myStory/';
-               
-                var singleImg = imgArray[i];
-                nmFeed = Date.now()+i;
-                if(imgArray[i].headers['content-type']=='video/mp4'){
-                     nm = nmFeed+ '.mp4';
-                     feedUrl = nm;
-                     //thumb   =  nmFeed+ '.jpg';
-                     thumb   =  nmFeed+ '.jpg';
+        followUnfollow.find({'userId':Number(fields.userId),'status':1}).sort([['_id', 'ascending']]).exec(function(err, followData) {
+            folInfo = [];   
+            if(followData){
 
-                }else{
-                     nm = Date.now()+i+ '.jpg';
-                     feedUrl = nm;
-                     thumb='';
-                }    
-                
-               
-                newPath+= nm;
-                //console.log(newPath);
-                videopath ='./public/uploads/myStory/'+nm;
-                readAndWriteFile(singleImg, newPath);
-              /* if(imgArray[i].headers['content-type']=='video/mp4'){
-                 var ffmpeg=require('fluent-ffmpeg');
-                 
-                    ffmpeg(videopath).screenshots({
-                            count: 1, //number of thumbnail want to generate
-                            folder: './public/uploads/myStory',//path where you want to save
-                            filename: nmFeed + '.jpg',
-                            size: '320x240'
-                        }).on('end', function () {
-     
-                       });
-                        
-               }*/
-                jsArr.push({
-                 myStory: feedUrl,
-                 type:'image'
-                 
-               
-            });
-                       
-                }  
+                 a = [];
+                 a= followData.map(a => a.followerId);
+                 a.push(Number(fields.userId));         
+                 folInfo.flUser =a ;
 
+            }else{
+                folInfo.flUser = [];
+                
             }
 
-            if(files.videoThumb){
-                
-                var imgArray1 = files.videoThumb;
-                for (var i = 0; i < imgArray1.length; i++) {
+           if(fields.userId){
+            var userId = Number(fields.userId);
+           }else{
+             var userId = authData._id;
+           }
+            
+            var baseUrl =  req.protocol + '://'+req.headers['host'];
+                jsArr = []
+                thumbArr = []
+                if(files.myStory){
+                    
+                    var imgArray = files.myStory;
+                    for (var i = 0; i < imgArray.length; i++) {
+                         
+                    var newPath = './public/uploads/myStory/';
+                   
+                    var singleImg = imgArray[i];
+                    nmFeed = Date.now()+i;
+                    if(imgArray[i].headers['content-type']=='video/mp4'){
+                         nm = nmFeed+ '.mp4';
+                         feedUrl = nm;
+                         //thumb   =  nmFeed+ '.jpg';
+                         thumb   =  nmFeed+ '.jpg';
+
+                    }else{
+                         nm = Date.now()+i+ '.jpg';
+                         feedUrl = nm;
+                         thumb='';
+                    }    
+                    
+                   
+                    newPath+= nm;
+                    //console.log(newPath);
+                    videopath ='./public/uploads/myStory/'+nm;
+                    readAndWriteFile(singleImg, newPath);
+                  /* if(imgArray[i].headers['content-type']=='video/mp4'){
+                     var ffmpeg=require('fluent-ffmpeg');
                      
-                var newPath = './public/uploads/myStory/';
-               
-                var singleImg = imgArray1[i];
-                nmFeed = Date.now()+i;
-                nm = Date.now()+i+ '.jpg';
-                feedUrl = nm;
-               
-               
-                newPath+= nm;
-                
-                videopath ='./public/uploads/myStory/'+nm;
-                readAndWriteFile2(singleImg, newPath);
-                 thumbArr.push({
-                 videoThumb: feedUrl
-                 
-               
-            });
-                       
-                }  
+                        ffmpeg(videopath).screenshots({
+                                count: 1, //number of thumbnail want to generate
+                                folder: './public/uploads/myStory',//path where you want to save
+                                filename: nmFeed + '.jpg',
+                                size: '320x240'
+                            }).on('end', function () {
+         
+                           });
+                            
+                   }*/
+                    jsArr.push({
+                     myStory: feedUrl,
+                     type:'image'
+                     
+                   
+                });
+                           
+                    }  
 
-            }
+                }
 
-       /* feeds = jsArr;*/
-        stor =[];
-      if(thumbArr.length>0){
-       for(var i = 0; i < jsArr.length; i++) {
-                 
-            for(var j = 0; j < thumbArr.length; j++) {
-                 //console.log(thumbArr[j].videoThumb);
-                 if(i==j){
+                if(files.videoThumb){
+                    
+                    var imgArray1 = files.videoThumb;
+                    for (var i = 0; i < imgArray1.length; i++) {
+                         
+                    var newPath = './public/uploads/myStory/';
+                   
+                    var singleImg = imgArray1[i];
+                    nmFeed = Date.now()+i;
+                    nm = Date.now()+i+ '.jpg';
+                    feedUrl = nm;
+                   
+                   
+                    newPath+= nm;
+                    
+                    videopath ='./public/uploads/myStory/'+nm;
+                    readAndWriteFile2(singleImg, newPath);
+                     thumbArr.push({
+                     videoThumb: feedUrl
+                     
+                   
+                });
+                           
+                    }  
+
+                }
+
+           /* feeds = jsArr;*/
+            stor =[];
+          if(thumbArr.length>0){
+           for(var i = 0; i < jsArr.length; i++) {
+                     
+                for(var j = 0; j < thumbArr.length; j++) {
+                     //console.log(thumbArr[j].videoThumb);
+                     if(i==j){
+                        stor.push({
+                            myStory: jsArr[i].myStory,
+                            videoThumb:thumbArr[j].videoThumb,
+                            type:'video',
+                            userId: userId
+                        });
+                    }
+
+                }
+
+
+           
+
+               }
+            }else{
+                  for(var i = 0; i < jsArr.length; i++) {
                     stor.push({
-                        myStory: jsArr[i].myStory,
-                        videoThumb:thumbArr[j].videoThumb,
-                        type:'video',
-                        userId: userId
+                    myStory: jsArr[i].myStory,
+                    videoThumb:'',
+                    type:'image',
+                    userId: userId
+
+
                     });
-                }
+               }
 
             }
+           
+            var addNew = [];
 
+            autoId = 1;
+            
+                story.find().sort([
+                    ['_id', 'descending']
+                ]).limit(1).exec(function(err, userdata) {
+                    var autoId = 1;
 
-       
+                    if (userdata.length > 0) {
+                        autoId = userdata[0]._id + 1;
 
-           }
-        }else{
-              for(var i = 0; i < jsArr.length; i++) {
-                stor.push({
-                myStory: jsArr[i].myStory,
-                videoThumb:'',
-                type:'image',
-                userId: userId
+                    }
 
+                    for (var k = 0; k < stor.length; k++) {
+                        inc = autoId + k;
 
-                });
-           }
+                        addNew.push({
+                            _id: inc,
+                            myStory: stor[k].myStory,
+                            videoThumb: stor[k].videoThumb,
+                            type: stor[k].type,
+                            userId: stor[k].userId,
+                            crd: crd,
+                            upd: crd
+                            
+                        });
 
-        }
-       
-        var addNew = [];
+                    }
+                   // console.log(addNew);
 
-        autoId = 1;
-        
-            story.find().sort([
-                ['_id', 'descending']
-            ]).limit(1).exec(function(err, userdata) {
-                var autoId = 1;
+                    story.insertMany(addNew);
+                    if(folInfo.flUser){
+                        console.log(folInfo.flUser);
+                           /*code for notification*/   
 
-                if (userdata.length > 0) {
-                    autoId = userdata[0]._id + 1;
+                               var appUser = require("./user");  
+                               req.body.notifincationType = '13';
+                               req.body.notifyId   = inc;
+                               req.body.notifyType = 'social'; 
+                               req.body.userId = userId; 
 
-                }
-
-                for (var k = 0; k < stor.length; k++) {
-                    inc = autoId + k;
-
-                    addNew.push({
-                        _id: inc,
-                        myStory: stor[k].myStory,
-                        videoThumb: stor[k].videoThumb,
-                        type: stor[k].type,
-                        userId: stor[k].userId,
-                        crd: crd,
-                        upd: crd
-                        
+                               appUser.sendMultiple(req,res); 
+                                         
+                            /*end notification code*/   
+                    } 
+                    res.json({
+                        'status': "success",
+                        "message": 'ok'
                     });
-
-                }
-               // console.log(addNew);
-
-                story.insertMany(addNew);
-                res.json({
-                    'status': "success",
-                    "message": 'ok'
+                   return;
                 });
-               return;
-            });
+        });
     });
 }
 function readAndWriteFile2(singleImg, newPath) {
@@ -1235,6 +1276,7 @@ exports.deleteOldStory = function(req,res,next){
           
             }
             story.remove({'_id':{'$in':jsArr}},function(err,result){
+           	addNotification.remove({'notifyId':{'$in':jsArr},'notifincationType':13},function(err,result){});
              nextData = result;
              next(); 
             })
@@ -1938,11 +1980,11 @@ exports.like = function(req,res){
             feedId:req.body.feedId,
             userId:req.body.userId,
             likeById:req.body.likeById,
-            gender:req.body.gender,
-            age:req.body.age,
-            city:req.body.city,
-            state:req.body.state,
-            country:req.body.country,
+            gender:req.body.gender ? req.body.gender : 'male',
+            age:req.body.age ? req.body.age : 20,
+            city:req.body.city ? req.body.city : 'indore',
+            state:req.body.state ? req.body.state : 'mp',
+            country:req.body.country ? req.body.country : 'India',
             type:req.body.type
             
          };
@@ -1958,7 +2000,8 @@ exports.like = function(req,res){
                 addNew._id = result[0]._id + 1;
             }
              likes.findOne({'feedId':req.body.feedId,'likeById':req.body.likeById,'type':'feed'}, function(err, data) {
-            if(data){ 
+            if(data){
+ 
                         feed.findOne({'_id':req.body.feedId,'status':1}, function(err, result1) {
                             
                             if(data.status==1){
@@ -1978,10 +2021,27 @@ exports.like = function(req,res){
                             feed.update({ _id:req.body.feedId },{ $set:{likeCount:count}},
                             function(err, result2) {res.json({status: "success",message: 'ok'});
                                     return; });
+
+                            if(data.status==0){
+
+                               /*code for notification*/ 
+                                var typ = '10';
+                                var sender     = addNew.likeById;
+                                var receiver   = addNew.userId; 
+                                var notifyId   = addNew.feedId;
+                                var notifyType = 'social';  
+                                if(sender!=receiver){
+                                   notify.notificationUser(sender,receiver,typ,notifyId,notifyType); 
+                                }
+
+                                /*end notification code*/
+                                
+                            } 
                          });
                     }else{
 
                             likes(addNew).save(function(err, data) {
+             
                                 if (err) {
                                     res.json({
                                         status: "fail",
@@ -1989,6 +2049,7 @@ exports.like = function(req,res){
                                     });
                                     return;
                                 } else {
+
                                     feed.findOne({'_id':req.body.feedId,'status':1}, function(err, result4) {
                                       
                                      count = Number(result4.likeCount)+1;
@@ -2003,7 +2064,6 @@ exports.like = function(req,res){
                                     var receiver   = addNew.userId; 
                                     var notifyId   = addNew.feedId;
                                     var notifyType = 'social';  
-                                    
                                     if(sender!=receiver){
                                        notify.notificationUser(sender,receiver,typ,notifyId,notifyType); 
                                     }
@@ -2148,7 +2208,7 @@ exports.likeListFinal = function (req,res){
     },
  
     function(callback) {
-        var query = followUnfollow.find({'userId':req.body.userId,'status':1})
+        var query = followUnfollow.find({'followerId':req.body.userId,'status':1})
         query.exec(function(err, s) {
             if (err) {
                 callback(err);
@@ -2195,7 +2255,9 @@ function(err, results) {
             results[0][i].followerStatus = 0;
          }*/  
 
-        var likeFeed = results[1].map(a => a.followerId);
+        var likeFeed = results[1].map(a => a.userId);
+        console.log(likeFeed);
+        console.log(results[0][i].likeById);
         if(results[1].length>0){
             var a = likeFeed.indexOf(results[0][i].likeById);
 
@@ -2218,7 +2280,7 @@ function(err, results) {
 }
    // var combineResults =   { goal1: results[0], goal: results[1]};
     var combineResults =    results[0];
-   
+   console.log(combineResults);
     res.json({status:"success",message:'ok',likeList:combineResults,'total':newData});
 });
 }
@@ -2264,15 +2326,28 @@ exports.followFollowing = function(req, res) {
                         User.update({_id:userId},{$set:{followingCount: followingUserCount}},function(err, result) {});    
                     
                         followUnfollow.update({_id:data._id},{$set:setValue},function(err, docs) {
-                            console.log(data._id);
-                            console.log("/////........./////");
+
+                            if(data.status==0){
+
+                                /*code for notification*/ 
+                                    var type = '12';
+                                    var sender     =userId;
+                                    var receiver   = followerId; 
+                                    var notifyId   = userId;
+                                    var notifyType = 'social';  
+                
+                                    if(sender!=receiver){
+                                       notify.notificationUser(sender,receiver,type,notifyId,notifyType); 
+                                    }
+
+                                /*end notification code*/ 
+                            }
                             if (err) res.json(err);
                             return res.json({status: "success",message: 'ok'});
                         });
 
                     }else{
                             followUnfollow(addNew).save(function(err, data) {
-                                console.log(data);
                                 if (err) {
                                     return res.json({status:"fail",message:err});
                                 } else {
@@ -2281,7 +2356,19 @@ exports.followFollowing = function(req, res) {
                                                   
                                         User.update({_id:followerId},{$set:{followersCount:followerUserCount}},function(err, result) {});
                                         User.update({_id:userId},{$set:{followingCount: followingUserCount}},function(err, result) {});
-                                   
+                                            
+                                         /*code for notification*/ 
+                                            var type = '12';
+                                            var sender     =userId;
+                                            var receiver   = followerId; 
+                                            var notifyId   = userId;
+                                            var notifyType = 'social';  
+                        
+                                            if(sender!=receiver){
+                                               notify.notificationUser(sender,receiver,type,notifyId,notifyType); 
+                                            }
+
+                                         /*end notification code*/ 
                                         return res.json({status:"success",message:'ok'});
                                 }
 
@@ -2964,11 +3051,11 @@ exports.addComment = function(req,res){
             postUserId:req.body.postUserId,
             commentById:req.body.userId,
             comment:imageName,
-            gender:req.body.gender,
-            age:req.body.age,
-            city:req.body.city,
-            state:req.body.state,
-            country:req.body.country,
+            gender:req.body.gender ? req.body.gender : 'male',
+            age:req.body.age ? req.body.age : 20,
+            city:req.body.city ? req.body.city : 'Indore',
+            state:req.body.state ? req.body.state : 'mp',
+            country:req.body.country ? req.body.country : 'India',
             type:req.body.type,
             crd:crd,
             upd:crd
@@ -2979,11 +3066,11 @@ exports.addComment = function(req,res){
             postUserId:req.body.postUserId,
             commentById:req.body.userId,
             comment:req.body.comment,
-            gender:req.body.gender,
-            age:req.body.age,
-            city:req.body.city,
-            state:req.body.state,
-            country:req.body.country,
+            gender:req.body.gender ? req.body.gender : 'male' ,
+            age:req.body.age ? req.body.age : 20,
+            city:req.body.city ? req.body.city : 'Indore',
+            state:req.body.state ? req.body.state : 'mp',
+            country:req.body.country ? req.body.country : 'India',
             type:req.body.type,
             crd:crd,
             upd:crd
@@ -3095,11 +3182,11 @@ exports.commentLike = function(req,res){
             feedId:req.body.commentId,
             userId:req.body.userId,
             likeById:req.body.likeById,
-            gender:req.body.gender,
-            age:req.body.age,
-            city:req.body.city,
-            state:req.body.state,
-            country:req.body.country,
+            gender:req.body.gender ? req.body.gender : 'male',
+            age:req.body.age ? req.body.age : 20,
+            city:req.body.city ? req.body.city :'Indore',
+            state:req.body.state ? req.body.state :'mp',
+            country:req.body.country ? req.body.country : 'Indore',
             type:req.body.type
             
          };
@@ -3152,7 +3239,7 @@ exports.commentLike = function(req,res){
                                                                          /*code for notification (feed user and comment user) */
                                     var typ = '11';
                                     var sender     =likeById;
-                                    var notifyId   = addNew.feedId;
+                                    var notifyId   = result.feedId;
                                     var notifyTyp = 'social';
                                     if(sender!= result.postUserId){
                                         notify.notificationUser(sender,result.postUserId,typ,notifyId,notifyTyp);
@@ -3338,7 +3425,7 @@ exports.exploreSearch = function(req, res,next) {
 
     }
     if(type =='top'){
-        User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 }).exec(function(err, data) {
+        User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1,'userType' : 1  }).exec(function(err, data) {
                 if(data){
                     nextDataTotal = data.length;
                     next();
@@ -3349,7 +3436,7 @@ exports.exploreSearch = function(req, res,next) {
     }else if(type =='people'){
          
         
-         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 }).exec(function(err, data) {
+         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1,'userType' : 1 }).exec(function(err, data) {
                 if(data){
                     nextDataTotal = data.length;
                     next();
@@ -3393,8 +3480,8 @@ exports.exploreSearchFinal = function(req,res){
     var id =[];
     id =  Number(req.body.userId); 
     search   = {};
-    search['_id'] = { $nin: id};
-    search['userName'] = {$regex:ser,$options:'i'}
+/*    search['_id'] = { $nin: id};
+*/    search['userName'] = {$regex:ser,$options:'i'}
     search['OTP'] = 'checked';
     if (req.body.page) {
           page = Number(req.body.page)*Number(req.body.limit);
@@ -3419,7 +3506,7 @@ exports.exploreSearchFinal = function(req,res){
     if(type =='top'){  
          var id =[];
          id =  Number(req.body.userId); 
-         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 }).skip(page).limit(limit).exec(function(err, data) {
+         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 ,'userType' : 1  }).skip(page).limit(limit).exec(function(err, data) {
                 if(data){
                     
                     for (i = 0 ; i < data.length ; i++) {
@@ -3436,7 +3523,7 @@ exports.exploreSearchFinal = function(req,res){
          
          var id =[];
          id =  Number(req.body.userId); 
-         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 }).skip(page).limit(limit).exec(function(err, data) {
+         User.find(search,{"_id":1,"userName":1,"firstName":1,"lastName":1,"profileImage":1,'postCount':1 ,'userType' : 1 }).skip(page).limit(limit).exec(function(err, data) {
                 if(data){
                     
                     for (i = 0 ; i < data.length ; i++) {
@@ -3450,7 +3537,7 @@ exports.exploreSearchFinal = function(req,res){
          });
 
     }else if(type =='hasTag'){
-            tag.find({'type':'hastag','tag':{$regex:Value_match,$options:'i'}},{"_id":1,"tag":1,"tagCount":1}).sort([['tagCount', 'descending']]).skip(page).limit(limit).exec(function(err, data) {
+            tag.find({'type':'hastag','tag':{$regex:Value_match,$options:'i'}},{"_id":1,"tag":1,"tagCount":1 }).sort([['tagCount', 'descending']]).skip(page).limit(limit).exec(function(err, data) {
                 if(data){
                   
                     res.json({status: "success",message: 'ok',totalCount:nextDataTotal,hasTagList:data});
@@ -3859,6 +3946,7 @@ feedSearch['_id'] =Number(req.body.feedId);
                         "country":1,
                         "location":1,
                         "likeCount":1,
+                        "peopleTag":1,
                         "crd":1,
                         "commentCount":1,
                         "peopleTag":1,
@@ -4643,61 +4731,67 @@ exports.getProfile = function(req,res){
       },
       
     ],function(err,jsArr){
-       
-        artistCertificate.findOne({'artistId':userId,'status':1}).count().exec(function(err, data){
-         feed.findOne({'userId':userId}).count().exec(function(err, postData){
-         artistservices.findOne({'artistId':userId,'status':1,'deleteStatus':1}).count().exec(function(err, serviceData){            
-          if(jsArr){
-                jsArr[0].postCount = postData;
-                jsArr[0].serviceCount = serviceData;
-                
-                if(viewBy == 'user'){
-                     jsArr[0].certificateCount = data;  
-                } 
-               
-                if(data>0){
-                    jsArr[0].isCertificateVerify = 1;
-                }else{
-                     jsArr[0].isCertificateVerify =0;
-                }
-               
-                if(jsArr[0].profileImage){
-                    if(!validUrl.isUri(jsArr[0].profileImage)){
-                         jsArr[0].profileImage = baseUrl+"/uploads/profile/"+jsArr[0].profileImage;
+       if(jsArr==''){
+
+          res.json({status: "fail",message: 'Your account has been inactivated by admin, please contact to activate',userDetail: jsArr});
+          return;
+
+       }else{
+            artistCertificate.findOne({'artistId':userId,'status':1}).count().exec(function(err, data){
+             feed.findOne({'userId':userId}).count().exec(function(err, postData){
+             artistservices.findOne({'artistId':userId,'status':1,'deleteStatus':1}).count().exec(function(err, serviceData){            
+              if(jsArr!=''){
+                    jsArr[0].postCount = postData;
+                    jsArr[0].serviceCount = serviceData;
+                    
+                    if(viewBy == 'user'){
+                         jsArr[0].certificateCount = data;  
                     } 
-                 
-                }
-
-               if(mData){
-                        
-                    var picked = lodash.filter(mData, { 'followerId': jsArr[0]._id} );
-                    if(picked.length){
-
-                       jsArr[0].followerStatus = 1;    
+                   
+                    if(data>0){
+                        jsArr[0].isCertificateVerify = 1;
                     }else{
-
-                       jsArr[0].followerStatus = 0;
+                         jsArr[0].isCertificateVerify =0;
                     }
-                }
-              
-                if(favData){
-                        
-                    var picked = lodash.filter(favData, { 'artistId': jsArr[0]._id} );
-                    if(picked.length){
-
-                       jsArr[0].favoriteStatus = 1;    
-                    }else{
-
-                       jsArr[0].favoriteStatus = 0;
+                   
+                    if(jsArr[0].profileImage){
+                        if(!validUrl.isUri(jsArr[0].profileImage)){
+                             jsArr[0].profileImage = baseUrl+"/uploads/profile/"+jsArr[0].profileImage;
+                        } 
+                     
                     }
-                }
-           
 
-            res.json({status: "success",message: 'ok',userDetail: jsArr});
-        }
-    });
-    });
-    }); 
+                   if(mData){
+                            
+                        var picked = lodash.filter(mData, { 'followerId': jsArr[0]._id} );
+                        if(picked.length){
+
+                           jsArr[0].followerStatus = 1;    
+                        }else{
+
+                           jsArr[0].followerStatus = 0;
+                        }
+                    }
+                  
+                    if(favData){
+                            
+                        var picked = lodash.filter(favData, { 'artistId': jsArr[0]._id} );
+                        if(picked.length){
+
+                           jsArr[0].favoriteStatus = 1;    
+                        }else{
+
+                           jsArr[0].favoriteStatus = 0;
+                        }
+                    }
+               
+
+                res.json({status: "success",message: 'ok',userDetail: jsArr});
+            }
+        });
+        });
+        }); 
+    }
 
 });
 
@@ -4883,79 +4977,103 @@ exports.finalProfileFeed = function(req, res) {
 
 }
 exports.sendNotification = function(senderId,receiverId,type,dataInfo,notifyId,notifyType){
-   
-    switch (type) {
+      
+
+  
+            switch (type) {
+
+                 case '1':
+
+                     var body = 'sent a booking request.';
+                     var title = 'Booking Request';
+                     break;
+
+                 case '2':
+                     var body = 'accepted your booking request.'
+                     var title = 'Booking Accept';
+                     break;
+
+                 case '3':
+                     var body = 'rejected your booking request.';
+                     var title = 'Booking Reject';
+                     break;
+
+                 case '4':
+                     var body = 'has cancelled your booking request';
+                     var title = 'Booking Cancel';
+                     break;
+
+                 case '5':
+                     var body = 'completed your booking request.';
+                     var title = 'Booking Complete';
+                     break;
+
+                 case '6':
+                     var body = 'given review for booking.';
+                     var title = 'Booking Review';
+                     break;
+
+                 case '7':
+                     var body = 'added a new post.';
+                     var title = 'New Post';
+                     break;
+
+                case '8':
+                    var body = 'Payment has completed by';
+                    var title = 'Payment';
+                    break;
+
+                 case '9':
+                     var body = 'commented on your post.';
+                     var title = 'Comment';
+                     break;
+
+                 case '10':
+                     var body = 'likes your post.';
+                     var title = 'Post Like';
+                     break;
+
+                 case '11':
+                     var body = 'likes your comment.';
+                     var title = 'Comment Like';
+                     break;
+                 case '12':
+                     var body = 'started following you.';
+                     var title = 'Following';
+                     break;
+
+                case '13':
+                     var body = 'added to their story.';
+                     var title = 'Story';
+                     break;
+               
+                case '14':
+                     var body = 'added you as a favourites.';
+                     var title = 'Favourites';
+                     break;  
+                case '16':
+                 var body = 'tagged you in a post.';
+                 var title = 'Tag';
+                 break;         
 
 
-     case '1':
-   
-    var body  = 'sent a booking request.';
-    var title = 'Booking request';
-    break;    
-   
-    case '2':
-    var body ='accepted your booking request.'
-    var title = 'Booking accept';
-    break;
-   
-    case '3':
-    var body = 'rejected your booking request.';
-    var title = 'Booking reject';
-    break;
-   
-    case '4':
-    var body = 'cancelled your booking request.';
-    var title = 'Booking cancel';
-    break;
-   
-    case '5':
-    var body = 'completed your booking request.';
-    var title = 'Booking complete';
-    break;
-
-    case '6':
-    var body = 'given the review for booking.';
-    var title = 'Booking Review';
-    break;
-
-    case '7':
-    var body = 'added new post.';
-    var title = 'New post';
-    break;
-
-    case '8':
-    var body = 'Payment has completed by';
-    var title = 'Payment';
-    break;
-
-    case '9':
-    var body = 'commented on your post.';
-    var title = 'Comment';
-    break;
-
-    case '10':
-    var body = 'likes your post.';
-    var title = 'Post like';
-    break;
-
-    case '11':
-    var body = 'likes your comment.';
-    var title = 'Comment like';
-    break;
-   
-    }
+            }
    
     notification = {
         title:title, 
         body: body,
         notifincationType:type,
-        sound: "default"
+        sound: "default",
+        'notifyId' : notifyId,
+        click_action:"ChatActivity"
     };
    
     data = {
         title:title, 
         body: body,
-        notifincationType:type 
+        notifincationType:type,
+        notifyId : notifyId,
+        click_action:"ChatActivity"
     };
    
     webData = {
@@ -4963,13 +5081,11 @@ exports.sendNotification = function(senderId,receiverId,type,dataInfo,notifyId,n
         body:body,
         url:'/allBookinghistory'
     }
-
     if(dataInfo){
   
         var i = 0;
         async.each(dataInfo, function(rs, callback){
 
-      
        
         if(rs._id==receiverId){
 
@@ -4981,6 +5097,8 @@ exports.sendNotification = function(senderId,receiverId,type,dataInfo,notifyId,n
             }else{
 
                userName = rs.userName;
+               profileImage = "http://koobi.co.uk:3000/uploads/profile/"+rs.profileImage;
+               userType = rs.userType;
                businessName = rs.businessName;
 
             }
@@ -4995,12 +5113,16 @@ exports.sendNotification = function(senderId,receiverId,type,dataInfo,notifyId,n
                 webData.body =body+' '+uName;
 
             }else{
-                 notification.body = uName+' '+body;
+
+                notification.body = uName+' '+body;
                 data.body = uName+' '+body;
                 webData.body = uName+' '+body;
             }
            
-            
+            data.urlImageString = profileImage;
+            data.userType =  notification.userType =  userType;
+            data.userName =  notification.userName =  uName;
+  
             var moment = require('moment');
             var crd = moment().format();
             insertData={};
@@ -5688,6 +5810,7 @@ exports.getNotificationList = function(req,res,next){
             firstName :"$userInfo.firstName",
             lastName :"$userInfo.lastName",
             profileImage :"$userInfo.profileImage",
+            userType :"$userInfo.userType",
             notifincationType :1,
             type :1,
             readStatus :1
@@ -5756,6 +5879,7 @@ exports.getNotificationListFinal = function(req,res){
             firstName :"$userInfo.firstName",
             lastName :"$userInfo.lastName",
             profileImage :"$userInfo.profileImage",
+            userType :"$userInfo.userType",
             notifincationType :1,
             notifyId :1,
             type :1,
@@ -5772,98 +5896,111 @@ exports.getNotificationListFinal = function(req,res){
                 
                 if(data[i].profileImage){
 
-                    data[i].redirectId = cryptr.encrypt(data[i].notifyId);
                     if(!validUrl.isUri(data[i].profileImage)){
                          data[i].profileImage = baseUrl+"/uploads/profile/"+data[i].profileImage;
                     } 
                  
                 }
+            data[i].redirectId = cryptr.encrypt(data[i].notifyId);
             data[i].timeElapsed = moment(data[i].crd).fromNow();
             switch (String(data[i].notifincationType)) {
-          
-                 case '1':
-               
-                var body  = 'sent a booking request.';
-                var title = 'Booking request';
-                break;    
-               
-                case '2':
-                var body ='accepted your booking request.'
-                var title = 'Booking accept';
-                break;
-               
-                case '3':
-                var body = 'rejected your booking request.';
-                var title = 'Booking reject';
-                break;
-               
-                case '4':
-                var body = 'cancelled your booking request.';
-                var title = 'Booking cancel';
-                break;
-               
-                case '5':
-                var body = 'completed your booking request.';
-                var title = 'Booking complete';
-                break;
-                
-                case '6':
-                var body = 'given the review for booking.';
-                var title = 'Booking Review';
-                break;
 
-                case '7':
-                var body = 'added new post.';
-                var title = 'New post';
-                break;
+                case '1':
+
+                     var body = 'sent a booking request.';
+                     var title = 'Booking Request';
+                     break;
+
+                 case '2':
+                     var body = 'accepted your booking request.'
+                     var title = 'Booking Accept';
+                     break;
+
+                 case '3':
+                     var body = 'rejected your booking request.';
+                     var title = 'Booking Reject';
+                     break;
+
+                 case '4':
+                     var body = 'has cancelled your booking request';
+                     var title = 'Booking Cancel';
+                     break;
+
+                 case '5':
+                     var body = 'completed your booking request.';
+                     var title = 'Booking Complete';
+                     break;
+
+                 case '6':
+                     var body = 'given review for booking.';
+                     var title = 'Booking Review';
+                     break;
+
+                 case '7':
+                     var body = 'added a new post.';
+                     var title = 'New Post';
+                     break;
 
                 case '8':
-                var body = 'Payment has completed by';
-                var title = 'Payment';
-                break;
+                    var body = 'Payment has completed by';
+                    var title = 'Payment';
+                    break;
 
-                case '9':
-                var body = 'commented on your post.';
-                var title = 'Comment';
-                break;
+                 case '9':
+                     var body = 'commented on your post.';
+                     var title = 'Comment';
+                     break;
 
-                case '10':
-                var body = 'likes your post.';
-                var title = 'Post like';
-                break;
+                 case '10':
+                     var body = 'likes your post.';
+                     var title = 'Post Like';
+                     break;
 
-                case '11':
-                var body = 'likes your comment.';
-                var title = 'Comment like';
-                break;
-
-                case '12':
-                     var body = 'followed you.';
-                     var title = 'following';
+                 case '11':
+                     var body = 'likes your comment.';
+                     var title = 'Comment Like';
+                     break;
+                 case '12':
+                     var body = 'started following you.';
+                     var title = 'Following';
                      break;
 
                 case '13':
                      var body = 'added to their story.';
-                     var title = 'story';
+                     var title = 'Story';
                      break;
                
                 case '14':
-                     var body = 'added you as a favorite.';
-                     var title = 'story';
-                     break;
+                     var body = 'added you as a favourites.';
+                     var title = 'Favourites';
+                     break;  
 
-           
+                case '15':
+
+                    data[i].profileImage = baseUrl+'/front/img/loader.png';
+                    data[i].userName = '';
+                    var body = 'Your certificate has been verified by admin.';
+                    var title = 'Certificate verified';
+                    break;   
+                case '16':
+                 var body = 'tagged you in a post.';
+                 var title = 'Tag';
+                 break;          
             }
+            
+
+            data[i].message = body;
+            
             if(data[i].notifincationType =='8'){
                 
                  data[i].message = body+' '+data[i].userName;
 
-            }else{
+            }else if(data[i].notifincationType !='15'){
               
                  data[i].message = data[i].userName+' '+body;
+                
             }
 
-               
             }
              res.json({status:"success",message:'ok',total:total,notificationList:data});    
 
@@ -6110,49 +6247,63 @@ exports.paymentListFinal = function(req,res){
  });
 
 }
+
+
  exports.sendMultiple = function(req, res) {
 
      userId = Number(req.body.userId);
      senderId = userId;
      notifincationType = req.body.notifincationType;
      notifyId = req.body.notifyId;
+     nId = req.body.notifyId;
      notifyType = req.body.notifyType;
-     User.find({'_id':{$in:folInfo.flUser}},{'_id':1,'userName':1,'businessName':1,'userType':1,'firebaseToken': 1,'deviceType': 1
+
+     User.find({'_id':{$in:folInfo.flUser}},{'_id':1,'userName':1,'businessName':1,'userType':1,'firebaseToken': 1,'deviceType': 1,'profileImage': 1
      }).exec(function(err, userData) {
+
+
+
          if (userData.length>0) {
             
              var filteredAry = userData.filter(function(e) {
                  return e._id !== userId
              });
-             myArray = userData.filter(i => i._id == userId);
+
+              var myArray = userData.filter(function(i) {
+                 return i._id == userId
+             });
+
              userName = myArray[0].userName;
-         
+             userType = myArray[0].userType;
+             var baseUrl =  req.protocol + '://'+req.headers['host'];
+             profileImage = baseUrl+"/uploads/profile/"+myArray[0].profileImage;
+            var notifyId = req.body.notifyId;
             switch (notifincationType) {
 
                  case '1':
 
                      var body = 'sent a booking request.';
-                     var title = 'Booking request';
+                     var title = 'Booking Request';
                      break;
 
                  case '2':
                      var body = 'accepted your booking request.'
-                     var title = 'Booking accept';
+                     var title = 'Booking Accept';
                      break;
 
                  case '3':
                      var body = 'rejected your booking request.';
-                     var title = 'Booking reject';
+                     var title = 'Booking Reject';
                      break;
 
                  case '4':
-                     var body = 'cancelled your booking request.';
-                     var title = 'Booking cancel';
+                     var body = 'has cancelled your booking request.';
+                     var title = 'Booking Cancel';
                      break;
 
                  case '5':
                      var body = 'completed your booking request.';
-                     var title = 'Booking complete';
+                     var title = 'Booking Complete';
                      break;
 
                  case '6':
@@ -6162,9 +6313,13 @@ exports.paymentListFinal = function(req,res){
 
                  case '7':
                      var body = 'added a new post.';
-                     var title = 'new post';
+                     var title = 'New Post';
                      break;
 
+                case '8':
+                    var body = 'Payment has completed by';
+                    var title = 'Payment';
+                    break;
 
                  case '9':
                      var body = 'commented on your post.';
@@ -6173,27 +6328,32 @@ exports.paymentListFinal = function(req,res){
 
                  case '10':
                      var body = 'likes your post.';
-                     var title = 'Post like';
+                     var title = 'Post Like';
                      break;
 
                  case '11':
                      var body = 'likes your comment.';
-                     var title = 'Comment like';
+                     var title = 'Comment Like';
                      break;
                  case '12':
-                     var body = 'followed you.';
-                     var title = 'following';
+                     var body = 'started following you.';
+                     var title = 'Following';
                      break;
 
                 case '13':
                      var body = 'added to their story.';
-                     var title = 'story';
+                     var title = 'Story';
+                     var notifyId = userId;
                      break;
                
                 case '14':
-                     var body = 'added you as a favorite.';
-                     var title = 'story';
-                     break;     
+                     var body = 'added you as a favourites.';
+                     var title = 'Favourites';
+                     break;  
+                case '16':
+                 var body = 'tagged you in a post.';
+                 var title = 'Tag';
+                 break;            
 
 
              }
@@ -6202,13 +6362,17 @@ exports.paymentListFinal = function(req,res){
                  title: title,
                  body: body,
                  notifincationType: notifincationType,
-                 sound: "default"
+                 sound: "default",
+                 notifyId : notifyId,
+                 click_action:"ChatActivity"
              };
 
              data = {
                  title: title,
                  body: body,
-                 notifincationType: notifincationType
+                 notifincationType: notifincationType,
+                 notifyId : notifyId,
+                 click_action:"ChatActivity"
              };
        
              webData = {
@@ -6219,7 +6383,6 @@ exports.paymentListFinal = function(req,res){
 
              multiDta = [];
              tok = []
-
              async.each(filteredAry, function(rs, callback) {
 
                  var moment = require('moment');
@@ -6257,7 +6420,7 @@ exports.paymentListFinal = function(req,res){
                              senderId: multiDta[i].senderId,
                              receiverId: multiDta[i].receiverId,
                              notifincationType: multiDta[i].notifincationType,
-                             notifyId: notifyId,
+                             notifyId: nId,
                              type: notifyType,
                              crd: multiDta[i].crd,
                              upd: multiDta[i].upd
@@ -6269,6 +6432,9 @@ exports.paymentListFinal = function(req,res){
                      notification.body = uName + ' ' + body;
 
                      data.body = uName + ' ' + body;
+                     data.urlImageString = profileImage;
+                     data.userType = notification.userType = userType;
+                     data.userName = notification.userName = uName;
                      webData.body = uName + ' ' + body;
                      notify.sendNotificationMultiple(tok, notification, data);
 

@@ -1,0 +1,681 @@
+<% include ./header %> 
+<style type="text/css">
+  .pre-img-modal{display:none;position:fixed;z-index:1;padding-top:12%;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.9);padding-top: 50px;}
+.modal-content-cht{margin:auto;display:block;width:80%;max-width:700px;}
+#myModal{z-index:99999;}
+#myModal .close-img-modal{opacity:1;}
+.cicle-i{float: right;font-size: 12px;margin-top: 22px;color:#a51d29}
+@-webkit-keyframes zoom{from{-webkit-transform:scale(0)}
+to{-webkit-transform:scale(1)}
+}
+@keyframes zoom{from{transform:scale(0)}
+to{transform:scale(1)}
+}
+.close-img-modal{position:absolute;top:15px;right:35px;color:#f1f1f1;font-size:40px;font-weight:bold;transition:0.3s;}
+.close-img-modal:hover,
+.close-img-modal:focus{color:#bbb;text-decoration:none;cursor:pointer;}
+@media only screen and (max-width:700px){.modal-content{width:100%;}
+}
+
+.UploadicChat>div>label{
+  cursor: pointer;
+}
+.emojiPicker{
+  top: 324.5px !important;
+}
+.ChatInput .emojiPickerIcon {
+  background-color: #fff !important;
+}
+.emojiPickerIcon {
+  top: 4px !important;
+}
+.emojiPickerIconWrap .black {
+  background-size: 43% !important;
+  margin-top: 7px !important;
+}
+
+.mutetxt {
+  float: right;
+  position: relative;
+  top: -33px;
+  line-height: 28px;
+  font-size: 16px;
+}
+.radio_div{
+  padding: 0px 15px;
+}
+.radio_div input[type="radio"]{
+  /*display: none;*/
+}
+.radio_div  input[type="radio"]:checked + label{
+  color:#f83272!important;
+  border-bottom: 2px solid;
+padding-bottom: 3px;
+}
+.radioCs {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+.chatHisUser {
+    padding: 5px 15px 15px;
+}
+.slimScrollDiv12 {
+  height: 350px;
+  overflow: auto;
+  padding: 25px 15px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/front/css/jquery.emojipicker.css">
+<link rel="stylesheet" type="text/css" href="/front/css/jquery.emojipicker.tw.css">
+
+<div class="header-margin"></div>
+<div class="MainWrapper">
+<section class="ChatSec sec-pad">
+  <div class="container">
+    <div class="row justify-content-md-center hidden" id="not_chat">   <div class="col-md-12" align="center"><p> <div class="ChatLink">No chat available <a href="followers?id=<%= cryptr.encrypt(user._id) %>"><b>New Message</b></a></div></p></div></div>
+    <div class="row justify-content-md-center" id="record_not">
+      <div class="col-md-6">
+        <div class="chatContent">
+          <div class="chatTab">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" href="#profile" id="message" role="tab" data-toggle="tab">Messages <span id="unreadMsg"></span></a>
+              </li>
+            <!--   <li class="nav-item">
+                <a class="nav-link" href="#buzz" role="tab" data-toggle="tab">Group Messages</a>
+              </li> -->
+              
+            </ul>
+          </div>
+          <div class="chatCnt">
+            <div class="tab-content">
+
+              <div role="tabpanel" class="tab-pane fade show active" id="profile">
+                <div class="ChatLink">
+                  <div class="float-left">
+                    <a href="#" href="javascript:void(0);" onclick="broadcast();">  <i class="fa fa-plus"></i> Create new chat</a>
+                  </div>
+                   <div class="float-right">
+
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#createGroup" onclick="getUserGet();">
+                      <i class="fa fa-plus"></i> Create Group</a>
+                    <a href="javascript:void(0);" onclick="getAllGroup();">join Group</a>
+                    <a href="javascript:void(0);" onclick="getGroupRequest();">Request</a>
+                  </div>
+
+                   <!--  <div class="float-right">
+                          <div>  <i class="fa fa-users" data-toggle="dropdown"></i></div>  
+                          <div class="dropdown  dropleft">
+                            <i class="fa fa-plus" data-toggle="dropdown"></i>
+                            <div class="dropdown-menu drop_itm dropdown-menu-right">
+                              <a href="javascript:void();" href="javascript:void();" onclick="broadcast();">Create new chat</a>
+                              <a href="javascript:void();" data-toggle="modal" data-target="#createGroup" onclick="getUserGet();"> Create New Group</a>
+                              <a href="javascript:void();"> Join New Group</a>                                               
+
+                            </div>
+                          </div>
+                   
+                  </div> -->
+                </div>
+
+                
+                 <div class="FeedSearch hidden backButton">
+                  <a class="searchIc pull-left" id="back_buttton">
+                    <i class="fa fa-angle-left"></i> Back
+                  </a>
+                </div>
+                <div class="FeedSearch chatFilter">
+                  <input class="form-control" type="text" placeholder="Search..." id="search_chat">
+                  <a class="searchIc" id="icon">
+                    <i class="fa fa-search"></i>
+                  </a>
+                </div>
+                  <div class="radio_div form-group text-center hidden" id="filter">
+                    <div class="row"> 
+                      <div class="col-md-2">
+                        <input type="radio" class="form-control radioCs" id="all" name="fliter" value="1" checked>
+                        <label class="radio-inline" for="all">All                         
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                       <input type="radio" class="form-control radioCs" id="all_group" name="fliter" value="2">
+                        <label class="radio-inline" for="all_group">  All Group                        
+                        </label>
+                      </div>
+                      <div class="col-md-2">                         
+                       <input type="radio" class="form-control radioCs" id="my_group" name="fliter" value="3">
+                        <label class="radio-inline" for="my_group">My Group                          
+                        </label>
+                      </div>                      
+                      <div class="col-md-2">
+                        <input type="radio" class="form-control radioCs" id="read" name="fliter" value="4">
+                        <label class="radio-inline" for="read"> Read                         
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                         <input type="radio" class="form-control radioCs" id="unread" name="fliter" value="5">
+                        <label class="radio-inline" for="unread">Unread </label>
+                      </div> 
+                      <div class="col-md-2">
+                         <input type="radio" class="form-control radioCs" id="favourite" name="fliter" value="6">
+                        <label class="radio-inline" for="favourite">Favourite </label>
+                      </div> 
+                    </div>
+                    </div>
+              
+                <div>
+            
+            
+            </div>
+                <div class="chat-user chatHisUser csScroll slimScrollDiv">
+                  <div class="record_not hidden" style="text-align: center;">No record found</div>
+                  <div class="list-group" id="chatHistory">                  
+                  </div>
+                   <div class="list-group hidden" id="joinGroup">                  
+                  </div>
+                </div>
+              </div>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div id="demo-chat-body" class="chat-user white chatChUser">
+            <div class="ChatUsHead cht-div clearfix hidden" id="user">
+              <div class="cht-lft">
+                
+                <div class="cht-lft-img" id="user_img">
+                </div>
+                <div class="cht-lft-txt">
+                  <h2 id="user_name"></h2>
+                  <div id="isOnline"></div>
+                  <div id="typing"></div> 
+                </div>
+              </div>
+              <div class="pull-right cht-rht">
+                <div class="dropdown hide22  dropleft">
+                  <i class="fa fa-ellipsis-v" data-toggle="dropdown"></i>
+                  <div class="dropdown-menu drop_itm dropdown-menu-right">
+                    <a href="javascript:void(0)" id="block"><i class="fa fa-ban"></i>  Block User</a>
+                    <a href="javascript:void(0)" id="unblock"><i class="fa fa-ban"></i>  Unblock User</a>
+                    <a href="javascript:void(0)" class="addFaveroite"><i class="fa fa-star"></i>  Add To Favourite</a>
+                    <a href="javascript:void(0)" class="removeFaveroite"><i class="fa fa-star-o"></i> Unfavourite</a>
+                    <a href="javascript:void(0)" id="mute"><i class="fa fa-bell-slash" aria-hidden="true"></i> Mute</a>
+                    <a href="javascript:void(0)" id="unmute"><i class="fa fa-bell" aria-hidden="true"></i> Unmute</a>
+                    <a href="javascript:void(0)" id="delete_chat" ><i class="fa fa-trash"></i> Delete Chat</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <div class="ChatUsHead cht-div clearfix hidden" id="group">
+                  <div class="cht-lft">
+                    
+                    <div class="cht-lft-img user_img">
+                    </div>
+                    <div class="cht-lft-txt">
+                      <h2 class="user_name"></h2>
+                      <div class="typing"></div> 
+                      <div class="isOnline"></div>
+                    </div>
+                  </div>
+                  <div class="pull-right cht-rht">
+                    <div class="dropdown hide22  dropleft">
+                      <i class="fa fa-ellipsis-v" data-toggle="dropdown"></i>
+                      <div class="dropdown-menu drop_itm dropdown-menu-right">
+                        <a href="javascript:void(0)" id="group_details"><i class="fa fa-info"></i>  Group  Details</a>
+                         <a href="javascript:void(0)" id="group_add_new_member" class="hidden"><i class="fa fa-user-plus"></i>  Add member</a>
+                        <a href="javascript:void(0)" class="addFaveroite"><i class="fa fa-star"></i>  Add To Favourite</a>
+                        <a href="javascript:void(0)" class="removeFaveroite"><i class="fa fa-star-o"></i>  Unfavourite</a>
+                        <a href="javascript:void(0)" class="mute"><i class="fa fa-bell-slash" aria-hidden="true"></i> Mute</a>
+                        <a href="javascript:void(0)" class="unmute"><i class="fa fa-bell" aria-hidden="true"></i> Unmute</a>
+                        <a href="javascript:void(0)" id="group_delete" ><i class="fa fa-trash"></i> Delete this group</a>
+                        <a href="javascript:void(0)" id="adminRequest"><i class="fa fa-user-md"></i>  Admin Request</a>
+                        <a href="javascript:void(0)" id="group_delete_chat" ><i class="fa fa-times"></i> Clear Chat</a>
+                        <a href="javascript:void(0)" id="group_report"><i class="fa fa-flag"></i>Report</a>
+
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+             <div class="ChatUsHead cht-div clearfix hidden" id="broadcast">
+                  <div class="cht-lft">
+                    
+                      <div class="cht-lft-img user_img">
+                      </div>
+                      <div class="cht-lft-txt">
+                        <h2 class="user_name"></h2>
+                        <div class="typing"></div> 
+                        <div class="isOnline"></div>
+                      </div>
+                  </div>
+                  <div class="pull-right cht-rht">
+                    <div class="dropdown hide22  dropleft">
+                      <i class="fa fa-ellipsis-v" data-toggle="dropdown"></i>
+                      <div class="dropdown-menu drop_itm dropdown-menu-right">
+                        <a href="javascript:void(0)" id="broadcast_details"><i class="fa fa-info"></i> Broadcast  Details</a>
+                        <a href="javascript:void(0)" id="broadcast_add_new_member" class="hidden"><i class="fa fa-user-plus"></i>  Add member</a>
+                        <a href="javascript:void(0)" id="broadcast_delete_chat" ><i class="fa fa-times"></i> Clear Chat</a>
+                        <a href="javascript:void(0)" id="broadcast_delete" ><i class="fa fa-trash"></i> Delete Broadcast</a>
+
+                      </div>
+                    </div>
+                  </div>
+                
+            </div>
+           
+          <div class="slimScrollDiv csScroll" id="slimScrollDiv">
+            <div class="scrollerchat">
+              <div class="pad-all">
+                <ul class="list-unstyled media-block" id="get_chat">
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="block_data" align="center" class="hidden"></div>
+          <div id="progressbar"></div>
+        </div>
+        <div id="message_send">
+          <div class="panel-footer" id="send_msg">
+            <div class="row">
+                <div class="col-lg-9 col-sm-9">
+                    <div class="ChatInput">
+                      <input type="text" placeholder="Enter your text" class="chat-input"  id="msg">
+                      <div class="UploadicChat">
+                        <div>
+                          <input accept="image/*" class="inputfile hideDiv" id="fileInput" style="display: none;" type="file">
+                          <label for="fileInput" ><i class="fa fa-image"></i></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-3">
+                    <button class="btn btn-primary" type="button" onclick="sendmsg();">Send</button>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hidden" id="get_chat1"></div>
+<% include ./footer %> 
+
+
+<div class="modal fade csCicon" id="broadcast_details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Broadcast</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList">
+            <div class="text-center">
+              <div class="log_div user_img">
+                <img src="http://www.cubaselecttravel.com/Content/images/default_user.png">               
+              </div>
+            </div>
+            <div class="FeedSearch">
+               <p class="text-center user_name"></p>
+            </div>
+            <ul id="bMemberList" class="slimScrollDiv12">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade csCicon" id="broadcast_add_new_member_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Add Broadcast Member</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList add_b_memberList">
+
+             
+             <div class="add_broadcast_record_not hidden" style="text-align: center;">No record found</div>
+            <ul id="add_b_userList">
+            </ul>
+          </div>
+           <div  class="err_msg" id="add_broadcast_member-err"></div>
+
+          <div class="AddedMember getmemberList" id="add_b_memberList">
+          </div>
+
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="broadcast_add_member">Add</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade csCicon" id="createGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Create Group</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList cmemberList">
+            <div class="text-center">
+              <div class="log_div">
+                <img src="http://koobi.co.uk:3000/uploads/default_group.png" id="pImg" class="pImg">
+                <div class="text-center upload_pic_in_album">
+                  <input accept="image/*" class="inputfile hideDiv group_img" id="group_img" name="profileImage"
+                    style="display: none;" type="file">
+                  <label for="group_img" class="upload_pic">
+                    <span class="fa fa-camera"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="err_msg" id="group_img-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <input class="form-control" type="text" placeholder="Group Name" id="groupName" oninput="$('#groupName-err').html('');" maxlength="25">
+              <div  class="err_msg" id="groupName-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <textarea class="md-textarea" id="groupDescription" placeholder="Group Description"  oninput="$('#groupDescription-err').html('');" maxlength="200"></textarea>
+              <div  class="err_msg" id="groupDescription-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <input class="form-control" type="text" placeholder="Search..." id="search_user">
+              <a class="searchIc">
+                <i class="fa fa-search"></i>
+              </a>
+            </div>
+             <div  class="err_msg" id="group_member-err"></div>
+             
+             <div class="user_record_not hidden" style="text-align: center;">No record found</div>
+            <ul id="userList">
+            </ul>
+          </div>
+          <div class="AddedMember getmemberList" id="memberList">
+          </div>
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="group_create">Create</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<div class="modal fade csCicon" id="group_edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Edit Group</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList">
+            <div class="text-center">
+             <div class="log_div">
+                <img src="http://koobi.co.uk:3000/uploads/default_group.png" id="e_pImg" class="pImg g_img">
+                <div class="text-center upload_pic_in_album">
+                  <input accept="image/*" class="inputfile hideDiv group_img" id="e_group_img" name="profileImage"
+                    type="file">
+                  <label for="group_img" class="upload_pic">
+                    <span class="fa fa-camera"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="err_msg" id="e_group_img-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <input class="form-control" type="text" placeholder="Group Name" id="e_groupName" oninput="$('#groupName-err').html('');" maxlength="25">
+              <div  class="err_msg" id="e_groupName-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <textarea class="md-textarea description" id="e_groupDescription" placeholder="Group Description"  oninput="$('#groupDescription-err').html('');" maxlength="200"></textarea>
+              <div  class="err_msg" id="e_groupDescription-err"></div>
+            </div>           
+          </div>
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="group_update">Update</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="modal fade csCicon" id="group_report_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Group Report</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList report_group">
+            <div class="FeedSearch">
+              <input class="form-control" type="text" placeholder="Title" id="r_title" oninput="$('#r_title-err').html('');" maxlength="50">
+              <div  class="err_msg" id="r_title-err"></div>
+            </div>
+            <div class="FeedSearch">
+              <textarea class="md-textarea" id="r_description" placeholder="Description"  oninput="$('#r_description-err').html('');" maxlength="200"></textarea>
+              <div  class="err_msg" id="r_description-err"></div>
+            </div>
+          </div>
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="report_group">Send</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<div class="modal fade csCicon" id="group_details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title user_name">Group</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList">
+           <div class="pull-right"><a  href="javascript:void(0);" id="group_edit" title="Edit"><i class="fa fa-edit"></i>Edit</a></div>
+            <div class="text-center">
+              <div class="log_div user_img">
+                <img src="http://www.cubaselecttravel.com/Content/images/default_user.png">               
+              </div>
+            </div>
+            <div class="FeedSearch">
+               <p class="text-center user_name"></p>
+               <p class="text-center description"></p>
+            </div>
+            <ul id="gMemberList" class="slimScrollDiv12">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade csCicon" id="group_add_new_member123" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Add Group Member</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList add_memberList">
+
+             
+             <div class="add_user_record_not hidden" style="text-align: center;">No record found</div>
+            <ul id="add_userList">
+            </ul>
+          </div>
+           <div  class="err_msg" id="add_group_member-err"></div>
+
+          <div class="AddedMember getmemberList" id="add_memberList">
+          </div>
+
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="group_add_member">Add</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade csCicon" id="group_admin_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Group Admin</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList">
+
+             
+             <div class="add_alll_user_record_not hidden" style="text-align: center;">No record found</div>
+            <ul id="admin_gMemberList">
+            </ul>
+          </div>
+           <div  class="err_msg" id="add_group_admin_member-err"></div>
+
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="group_add_admin">Add</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade csCicon" id="group_admin_request_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Group Admin Request</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+          <div class="memberList">
+
+             
+             <div class="r_no_msg hidden" style="text-align: center;">No record found</div>
+            <ul id="admin_req">
+            </ul>
+          </div>
+          <div class="text-center mt-1-half" id="r_action">
+            <button class="btn btn-success" id="group_admin_accept">Accept</button>
+            <button class="btn btn-danger" id="group_admin_reject">Reject</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade csCicon" id="broadcast_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">Broadcast</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mb-0">
+
+             <div class="FeedSearch">
+              <input class="form-control" type="text" placeholder="Search..." id="broadcast_search_user">
+              <a class="searchIc">
+                <i class="fa fa-search"></i>
+              </a>
+            </div>
+             <div  class="err_msg" id="broadcast_member-err"></div>
+          <div class="memberList broadcast_memberList">
+
+             
+             <div class="broadcast_record_not hidden" style="text-align: center;">No record found</div>
+            <ul id="broadcastUser">
+            </ul>
+          </div>
+           <div  class="err_msg" id="broadcast_member-err"></div>
+
+          <div class="AddedMember getmemberList" id="broadcast_memberList">
+          </div>
+
+          <div class="text-center mt-1-half">
+            <button class="btn btn-theme" id="send_Broadcast">Send</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script type="text/javascript" src="/front/js/emojis_picker.js"></script>
+<script src="/front/js/firebase_groupchat.js" defer="defer"></script>
+<script type="text/javascript">
+
+/*$('#msg').emojiPicker();
+        $(".emojiable-option").on("keyup", function () {
+    });*/
+/*$('#groupName').emojiPicker();
+        $(".emojiable-option").on("keyup", function () {
+});*/
+var userId = '<%= user._id %>';
+var urlId = '<%= urlId ? urlId : "me" %>';
+$( document ).ready(function() {
+    $(".loading").show();
+    setValue('userName1','<%= lUser.userName%>');
+    setValue('ProfilePic1','<%= baseUrl+lUser.profileImage%>');
+    setValue('userName','<%= user.userName%>');
+    setValue('ProfilePic','<%= baseUrl+user.profileImage%>');
+    show_chat('','<%= user._id %>',urlId);
+    getchatHistory(); 
+    isTyping(userId);
+    firebase.database().ref('tempData').child(senderId).set(null); 
+    get_member(); 
+
+});
+
+</script>
+<div id="myModal" class="pre-img-modal">
+    <span class="close-img-modal">&times;</span>
+    <img class="modal-content-cht" id="img01">
+</div>
+

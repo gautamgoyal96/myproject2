@@ -33,7 +33,7 @@
                      <button type="button" class="btn btn-theme btn-maxWidth" onclick="followUnfollow('<%= id %>','1','<%= rId %>');" title="follow">Follow</button>
                     <% } %>
                    </span> 
-                    <a href="#" class="btn btn-theme btn-maxWidth">Message</a>
+                    <a href="/chat/?id=<%= cryptr.encrypt(id) %>" class="btn btn-theme btn-maxWidth">Message</a>
                 
                 <% }}else{ %>
 

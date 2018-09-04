@@ -4,6 +4,7 @@
                                 <th>Profile Image</th>
                                 <th><%= ((businessType=="business") ? 'Artist' : 'Company' ); %></th>
                                 <th>Job</th>
+                                <th>Action</th>
                             </tr>
 
                             <%   var startTime = (Number(currentPage)-1)*10;
@@ -19,7 +20,8 @@
                                 <td> <a href="/artistview/<%= cryptr.encrypt((businessType=="business") ? rs.artistId : rs.businessId ); %>" class="black"><%= (businessType=="business") ? rs.staffInfo.userName : rs.staffInfo.businessName ;   %> </a>
                                 </td>
 
-                                <td><span class="label label-primary"><%= rs.job %></span></td>                               
+                                <td><span class="label label-primary"><%= rs.job %></span></td>   
+                                <td><a href="/staffview/<%= cryptr.encrypt(rs._id) %>/<%= cryptr.encrypt(businessType) %>" class="btn artist-btn btn-warning" title="view"><span class="fa fa-eye"></span></a> </td>                           
                             </tr>
                             <% i++;}); }else{ %>
 

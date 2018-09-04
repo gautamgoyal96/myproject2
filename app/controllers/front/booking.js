@@ -835,6 +835,7 @@ exports.artistservicesList = function(req, res, next){
 	}else{
 
 		userId = req.session.fUser ? req.session.fUser._id : '';
+
 	}
 	datae = {};
 	datae['artistId'] = userId;
@@ -1451,6 +1452,7 @@ exports.bookingUpdate = function(req, res,next){
 
 exports.userDetail = function(req, res,next){
 
+	console.log(req.params);
 
 	if(req.params.id){
 

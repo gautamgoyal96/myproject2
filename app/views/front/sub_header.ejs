@@ -35,7 +35,11 @@
                                   </div>
                                   </div>
                                   <p><span><%= (user.serviceType==3 || user.serviceType==2) ?  user.radius+' Miles' : ''; %> </span> </p>
-                                  <span class="msg"><i class="fa fa-send"></i></span>
+                                  <%
+                                  if(session.fUser){
+                                   if(session.fUser._id!=user._id) { %>
+                                    <span class="msg" onclick=" window.location.href = '/chat?id=<%= cryptr.encrypt(user._id) %>';" style="cursor: pointer;"><i class="fa fa-send"></i></span>
+                                  <% } } %>
                                 </div>
                               </div>
                               <div id="DivThird" class="col-lg-8 col-md-12 text-md-left">

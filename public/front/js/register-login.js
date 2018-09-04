@@ -1598,6 +1598,7 @@ function authTokenCheck() {
                     
                     auth_message = 'Your session has been expired. Please re-login to renew your session';
                     $('#authTokenCheckModel').modal({backdrop: 'static'});
+                     setTimeout(function(){ window.location.href = "/userLogout";}, 7000);
 
                 }else if (data.status == 1) {
                     

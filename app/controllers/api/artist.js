@@ -169,8 +169,8 @@ exports.updateRange = function(req,res){
 	if(docs.ok ==1){
      res.json({'status':"success","message":'Record updated successfully'});
 	}
-	console.log(docs);
-	}); 
+/*	console.log(docs);
+*/	}); 
 }
 exports.allCategory = function(req, res) {
     var baseUrl = req.protocol + '://' + req.headers['host'];
@@ -362,7 +362,7 @@ exports.addArtistService = function(req, res){
         var result1 = [];
         artistservices.deleteMany({'artistId':authData._id}, function(err, results){ 
             User.update({_id:authData._id},{$set:{serviceCount:'0'}},function(err, docs) {});
-            console.log('delete artist service');
+            /*console.log('delete artist service');*/
         });
         artistMainService.deleteMany({'artistId':authData._id}, function(err, results){ console.log('main service data'); });
         artistSubService.deleteMany({'artistId':authData._id}, function(err, results){  console.log('subService data');});
@@ -673,6 +673,8 @@ exports.addTag = function(req, res, next) {
 }
 exports.addFeed = function(req, res) {
 
+
+
     var fs = require('fs');
     var moment = require('moment');
     var crd = moment().format();
@@ -695,6 +697,9 @@ exports.addFeed = function(req, res) {
         var country = '';
 
     }
+
+    var tagData = fields.tagData ? fields.tagData :'';
+
     count = Number(authData.postCount) + 1;
 
     var baseUrl = req.protocol + '://' + req.headers['host'];
@@ -704,6 +709,8 @@ exports.addFeed = function(req, res) {
     oldTag = [];
     newTag = [];
     tagInfo = [];
+
+
     if (files.feed) {
 
         var imgArray = files.feed;
@@ -802,12 +809,12 @@ exports.addFeed = function(req, res) {
         location: fields.location,
         tagId: tagId,
         serviceTagId: fields.serviceTagId,
-        peopleTag: fields.peopleTag ? fields.peopleTag : '',
+        peopleTag: fields.peopleTag ? fields.peopleTag[0] ? JSON.parse(fields.peopleTag) : [] : [],
         crd: crd,
         upd: crd
 
     };
-    autoId = 1;
+    autoId = 1; 
     feed.find().sort([
         ['_id', 'descending']
     ]).limit(1).exec(function(err, result) {
@@ -815,6 +822,18 @@ exports.addFeed = function(req, res) {
         if (result.length > 0) {
             autoId = result[0]._id + 1;
             addNew._id = autoId;
+        }
+        if(JSON.parse(tagData)){
+            t = JSON.parse(tagData);
+            t.push(userId);
+            var appUser = require("./user");  
+           req.body.notifincationType = '16';
+           req.body.notifyId   = autoId;
+           req.body.notifyType = 'social'; 
+           req.body.userId = userId; 
+           folInfo.flUser = t;
+
+           appUser.sendMultiple(req,res); 
         }
 
         feed(addNew).save(function(err, data) {
@@ -832,19 +851,31 @@ exports.addFeed = function(req, res) {
                 feed.findOne({
                     '_id': autoId
                 }).exec(function(err, data) {
-                       console.log(folInfo.flUser);
                     if (data) {
-                        if(folInfo.flUser){
-                               /*code for notification*/   
+
+                    	followUnfollow.find({'userId':Number(userId),'status':1}).sort([['_id', 'ascending']]).exec(function(err, followData) {
+							folInfo.flUser  = [];
+					        if(followData){
+
+					             a = [];
+					             a= followData.map(a => a.followerId);
+					             a.push(Number(fields.userId));         
+					             folInfo.flUser =a ;
+
+					        }            
+	        				if(folInfo.flUser){
+                               /*code for notification*/  
                                  var appUser = require("./user");  
                                    req.body.notifincationType = '7';
                                    req.body.notifyId   = autoId;
                                    req.body.notifyType = 'social'; 
-                                                       
+                                   req.body.userId = userId; 
                                    appUser.sendMultiple(req,res); 
                                              
                                 /*end notification code*/   
-                          } 
+                          	} 
+
+                        }); 
                         res.json({status: "success",message: 'Feed added successfully',feeds:data});
                     }
                 })
@@ -1282,6 +1313,8 @@ exports.getAllCertificate = function(req, res) {
      where['status'] =1;
 
    }
+
+
    artistCertificate.find(where, function(err, data)
    {
     if (data.length==0){
@@ -1579,10 +1612,12 @@ exports.finalFeed = function(req, res) {
       var Value_match = {$regex:req.body.feedType};
       var feedSearch ={};
      feedSearch['feedType'] =Value_match;
-     if(folInfo.flUser.length){
-        
-       feedSearch['userId'] ={$in:folInfo.flUser};
-     }
+     if(folInfo.flUser){
+         if(folInfo.flUser.length){
+            
+           feedSearch['userId'] ={$in:folInfo.flUser};
+         }
+    }
      feedSearch['feedType'] =Value_match;
     if (req.body.page) {
           page = Number(req.body.page)*Number(req.body.limit);
@@ -2295,7 +2330,7 @@ exports.bookingAction = function(req, res) {
             notifyType = '3';
             break;
        
-        case 'cancle':
+        case 'cancel':
           
             updateData['bookStatus'] =2; 
             bookStatus = 2
@@ -2350,8 +2385,17 @@ exports.bookingAction = function(req, res) {
         var userId    = data['userId'];
         var artistId  = data['artistId'];
         var notifyId   = data['_id'];
-        var notifyTy = 'booking';   
-        notify.notificationUser(artistId,userId,notifyType,notifyId,notifyTy); 
+        var notifyTy = 'booking';
+              console.log(userId) ;  
+              console.log(artistId) ;  
+        if(type=="cancel"){
+
+            notify.notificationUser(userId,artistId,notifyType,notifyId,notifyTy); 
+ 
+        }else{
+            notify.notificationUser(artistId,userId,notifyType,notifyId,notifyTy); 
+
+        }
         
         /*end notification code*/       
 
@@ -2406,6 +2450,7 @@ exports.bookingDetails = function(req,res){
                         "paymentType": 1,
                         "paymentStatus": 1,
                         "transjectionId":1,
+                        "artistId":1,
                         "location": 1,
                         "bookStatus": 1,
                         "staffInfo.profileImage":1,
@@ -2516,7 +2561,7 @@ exports.bookingDetails = function(req,res){
                 }else{
                      results[0][0].isFinsh = 0;
                 }
-         
+                console.log(results);   
                for (var i = 0; i < results[0].length; i++) {
                   if(results[0][i].userDetail[0].profileImage){
                          results[0][i].userDetail[0].profileImage =  baseUrl+"/uploads/profile/"+results[0][i].userDetail[0].profileImage; 
@@ -2598,14 +2643,16 @@ exports.followerFeed = function(req,res,next){
     }else{
          type = req.body.type;
     }
+
     if(type =='newsFeed'){
         followUnfollow.find({'followerId':Number(req.body.userId),'status':1}).sort([['_id', 'ascending']]).exec(function(err, followData) {
+            if(followData){
 
-            if(followData.length){
                  a = [];
                  a= followData.map(a => a.userId);
                  a.push(Number(req.body.userId));         
                  folInfo.flUser =a ;
+
 
             }else{
                 folInfo.flUser = [];
@@ -2618,6 +2665,36 @@ exports.followerFeed = function(req,res,next){
     }
 
 }
+
+exports.followerFeedGet = function(req,res,next){
+
+    folInfo = {};
+    
+    if(fields.userId ==''){
+       res.json({status: "fail",message: 'userId is required.'});
+       return;
+    }
+
+    followUnfollow.find({'userId':Number(fields.userId),'status':1}).sort([['_id', 'ascending']]).exec(function(err, followData) {
+      
+        if(followData){
+
+             a = [];
+             a= followData.map(a => a.followerId);
+             a.push(Number(fields.userId));         
+             folInfo.flUser =a ;
+
+        }else{
+            folInfo.flUser = [];
+            
+        }
+
+        next();
+
+    });
+
+}
+
 exports.allArtist =function(req,res,next){
   var Value_match = escapere(req.body.search);
   var baseUrl =  req.protocol + '://'+req.headers['host'];
@@ -2809,7 +2886,7 @@ exports.addStaffService = function(req,res){
 
     }
        timeSl = JSON.parse(req.body.staffService);
-       console.log(timeSl);
+       /*console.log(timeSl);*/
         jsArr = []
         staffService.deleteMany({'businessId':req.body.businessId,'artistId':req.body.artistId}, function(err, results){});
         staffService.find().sort([['_id', 'descending']]).limit(1).exec(function(err, userdata) {

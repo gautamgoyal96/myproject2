@@ -51,7 +51,6 @@ exports.servicesdata = function(req, res, next){
         });
 
 }
-
 exports.serviceManagement = function(req, res) {
 
 

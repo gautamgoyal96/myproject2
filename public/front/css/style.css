@@ -306,7 +306,7 @@ to{opacity:0;}
 .ui-datepicker .ui-datepicker-next-hover{right:2px;}
 .ui-datepicker .ui-datepicker-prev span{background-position:-96px 0;}
 .modal-backdrop{z-index:99999999;}
-.modal{z-index:999999999;}
+.modal{z-index:999999993;}
 .ui.label{font-family:proximanovaregular;font-weight:normal;color:#626262 !important;background:#f2f2f2;}
 .menu .item{color:#626262 !important;font-family:proximanovaregular;}
 .ui.label i{margin-left:6px;}
@@ -416,9 +416,10 @@ to{opacity:0;}
 .pad-hor{padding-left:15px;padding-right:15px;}
 .speech::before{border-bottom:7px solid transparent;border-right:7px solid #f2f2f2;border-top:7px solid transparent;content:"";display:block;height:0;left:0;margin:15px 0 0 -6px;position:absolute;top:0;width:0;}
 .speech-right > .speech::before{border-color:transparent currentcolor transparent #f2f2f2;border-style:solid none solid solid;border-width:7px 0 7px 7px;left:auto;margin:15px -6px 0 0;right:0;}
-.speech{background:#f2f2f2 none repeat scroll 0 0;border-radius:0;color:#000;display:inline-block;padding:12px 20px;position:relative;}
+.speech{background:#f2f2f2 none repeat scroll 0 0;border-radius:0;color:#000;display:inline-block;padding:2px 20px;position:relative;}
 .speech-time{font-size:14px !important;font-weight:300;margin-bottom:0;margin-top:0;color:#828282 !important;}
-.speech > p{color:#333;font-size:16px;}
+.speech > p{color:#333;font-size:16px;padding: 0;margin: 0;}
+.speech > pre{color:#333 !important;font-size:16px !important;padding: 0 !important;margin: 0 !important; white-space: pre-wrap !important;}
 .speech-right{text-align:right !important;}
 .media-block .media-left{display:block;float:left;}
 .media-block .media-right{float:right;}
@@ -493,7 +494,7 @@ label.upload_pic span.fa{font-size:18px;padding:8px;}
 .team-person-sep{margin:0 auto 10px;width:30px;border:1px solid #dec6c0;}
 .team-person-name a{color:#333;font-size:20px;font-weight:700;margin-bottom:5px;display:inline-block;}
 .team-person-position{color:#626262;font-size:16px;margin-bottom:10px;}
-.msg{color:#fff;display:none;font-size:30px;left:20px;}
+.msg{color:#fff;display:block;font-size:30px;left:20px;}
 .usImg > img{border-radius:50%;height:120px;width:120px;border:3px solid #fff;}
 .UsPdata{margin-top:15px;}
 .UsPdata h2{color:#fff;font-size:26px;}
@@ -1717,3 +1718,83 @@ input[type="number"]{-moz-appearance:textfield;}
 input[type="text"]:disabled{
 	cursor: no-drop;
 }
+
+/* chat screen changes*/
+
+  .unread{
+    float: right;
+    color: #828282 !important;
+  }
+  .unread i{
+    font-size: 12px; 
+  }
+   .read{
+    float: right;
+    color: #f83272 !important;
+    font-size: 12px;
+  }
+  .typing_color{
+    color: #f83272 !important;
+  }
+  .hide22 >i{
+    padding:20px;
+    cursor: pointer;
+  }
+  .drop_itm a{
+    color:#000;
+    display: block;
+  }
+  .drop_itm a i{
+    padding: 15px;
+  }
+  .cht-div{
+    width: 100%;
+  }
+  .cht-div .cht-lft,
+  .cht-div .cht-rht{
+    max-width: 50%;
+    display: inline-block;
+  }
+  .cht-div .cht-lft{
+    padding: 10px;
+  }
+  .cht-lft .cht-lft-img{
+    float:left;
+  }
+  .cht-lft .cht-lft-txt{
+    padding-left: 5px;
+    overflow: hidden;
+  }
+  .cht-lft .cht-lft-txt h2{
+    padding: 0!important;
+    margin: 0!important;
+  }
+  .msg_txt{
+    background: #fff;
+    color: #f83272;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    line-height: 22px;
+    font-size: 12px;
+  }
+  .msgstxt{
+    display: inline-block;
+    float: right;
+    position: relative;
+    top: -20px;
+    background: #f83272;
+    color: #fff;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+.ChatInput .emojiPickerIcon{
+	background-color: rgb(238, 238, 238)!important;
+}
+  /* end*/}

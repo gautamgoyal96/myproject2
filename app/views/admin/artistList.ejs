@@ -26,7 +26,7 @@
                         <div class="box-tools">
 
 
-                            <div class="input-group" style="width: 210px;display: inline-block !important;">
+                            <div class="input-group" style="display: inline-block !important;">
                                 <select class="form-control form-title" id="gender" onchange="ajax_fun('1');" />
                                     <option value="">-- select gender --</option>
                                     <option value="male">Male</option>
@@ -34,7 +34,15 @@
                                 </select>
                             </div>
 
-                            <div class="input-group" style="width: 210px; display: inline-block !important;">
+                            <div class="input-group" style="display: inline-block !important;">
+                                <select class="form-control form-title" id="businessType" onchange="ajax_fun('1');" />
+                                    <option value="">--  Business Type --</option>
+                                    <option value="business">Business</option>
+                                    <option value="independent">Independent</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group" style="display: inline-block !important;">
                                
                                 <input type="text" id="location" name="table_search" class="form-control input-sm pull-right" placeholder="Search by location....">
                                 <input type="hidden" id="latitude">
@@ -82,7 +90,7 @@ function ajax_fun(e)
 
         url: '/listArtist',
         type: "GET", 
-        data:{'location':$('#location').val(),'latitude':$('#latitude').val(),'longitude':$('#longitude').val(),'gender':$('#gender').val(),'page':e} ,                 
+        data:{'location':$('#location').val(),'latitude':$('#latitude').val(),'longitude':$('#longitude').val(),'gender':$('#gender').val(),'businessType':$('#businessType').val(),'page':e} ,                 
         cache: false,
         beforeSend: function() {
             $("#ajaxdata").html('<div class="overlay" style="padding-top:150px"><i class="fa fa-refresh fa-spin"></i></div>');

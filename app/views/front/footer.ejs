@@ -280,7 +280,7 @@
                 
 
                     <div class="md-form form-sm ">
-                          <p style="text-align: center;font-size: 18px;font-weight: normal;" id="message"></p>
+                          <p style="text-align: center;font-size: 18px;font-weight: normal;" id="message" class="message"></p>
                     </div>
                    <div class="text-center mt-1-half">
                         <button class="btn btn-theme mb-1"  type="button" data-dismiss="modal" aria-label="Close">ok</button>
@@ -357,7 +357,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyie5SLruC8QRsZ4VYSaK1uwUE6g4w2IY&libraries=places" type = "text/javascript" defer="defer"></script> 
 <script type="text/javascript">
   var senderId = '';
-</script><% if (session.fUser) { %>
+</script><% if (session.fUser) {%>
 <script type="text/javascript">
   var senderId = '<%= session.fUser._id%>';
   var authToken = '<%= session.fUser.authToken%>';
@@ -365,14 +365,20 @@
 <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 <script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
 <script src="/front/js/web-notification.js" defer="defer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" defer="defer"></script>
+<script src="/front/js/firebase_chat.js" defer="defer"></script>
+
 <% }%>
+
 <script src="/front/js/register-login.js" defer="defer"></script>
 </body>
 </html>
 
 <script type="text/javascript">
-
-
+$( document ).ready(function() {
+  $('.loading').hide();
+  $('body').removeClass('static');
+});
 $(".form-control,.md-textarea,.emoji-wysiwyg-editor").on("input", function(e) {
 
     var d = $(e.target).val();
@@ -387,9 +393,9 @@ $("#passwordLogin,#passwrd2,#cpassword").on("input", function(e) {
     $(e.target).val(string);
 });
 function errorMsg(message){
-
+    $(".message").html(message);
     $("#errormsg").modal({backdrop: 'static'});  
-    $("#message").html(message);
+
 }
 
 

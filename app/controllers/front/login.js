@@ -179,27 +179,18 @@ exports.userLogin = function(req, res) {
 
 				    		var email = user.email;
 							var name = user.userName;
-
-							firebase.signInWithEmail(email, password, function(err, result){
-							    if (err){
-									firebase.registerWithEmail(email, password, name, function(err, result){
-
-									    if (err){
-									        console.log(err);
-									    }
-									    else{
-									        console.log(result.user[UserProfile]);
-									        console.log('result.user[UserProfile]');
-									    }
-
-
-
-									});
-							    }else{
-							        console.log(result.user[FirebaseUser]);
-							    }
-							});
 							var authtoken = user.authtoken();
+            				
+            				var baseUrl =  req.protocol + '://'+req.headers['host'];
+							var userObj = {
+  		                        "firebaseToken" :"",
+		                        "userName" : user.userName,
+		                        "profilePic" : user.profileImage ?  baseUrl+'/uploads/profile/'+user.profileImage : 'http://koobi.co.uk:3000/uploads/default_user.png',
+		                        'isOnline' : 1,
+		                        'lastActivity' : Date.now()			
+		                    } 
+
+							notify.register(user._id,userObj); 
 
 				            User.updateMany({'_id':user._id},{$set:{'firebaseToken':'','deviceType':'3','deviceToken':'0','authToken':authtoken}}, function(err, result){
 				    		
@@ -542,8 +533,17 @@ exports.UserSignup = function(req, res){
                         User.update({_id:fields.userId}, 
                         {$set: data},
                         function(err, docs){
+            			var baseUrl =  req.protocol + '://'+req.headers['host'];
+                        	var userObj = {
+			                        "firebaseToken" :"",
+			                        "userName" : data.userName,
+			                        "profilePic" : data.profileImage ? baseUrl+'/uploads/profile/'+data.profileImage : 'http://koobi.co.uk:3000/uploads/default_user.png',
+			                        'isOnline' : 1,
+			                        'lastActivity' : Date.now()			
+			                    } 
 
-
+							notify.register(fields.userId,userObj); 
+							
                             data._id = fields.userId;
                             req.session.fUser = data;
                             req.flash('success', 'Account Created Successfully');
@@ -864,12 +864,20 @@ exports.businessSignup = function(req, res){
 	                        data.userType = "artist";
 	                        data.isDocument = 0;
 	                        data.profileImage = imageName;
-	                        console.log(data);
-	                         console.log(fields.userId);
 	                        User.update({_id:fields.userId}, 
 	                        {$set: data},
 	                        function(err, docs){
+            					
+            					var baseUrl =  req.protocol + '://'+req.headers['host'];
+	                        	var userObj = {
+			                        "firebaseToken" :"",
+			                        "userName" : data.userName,
+			                        "profilePic" : data.profileImage ? baseUrl+'/uploads/profile/'+data.profileImage : 'http://koobi.co.uk:3000/uploads/default_user.png',
+			                        'isOnline' : 1,
+			                        'lastActivity' : Date.now()			
+			                    } 
 
+								notify.register(fields.userId,userObj); 
 
 	                            data._id = fields.userId;
 	                            req.session.fUser = data;
